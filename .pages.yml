@@ -1,0 +1,162 @@
+# Pages CMS settings: https://pagescms.org/docs/configuration/
+media:
+  input: images
+  output: /images
+
+content:
+  - name: events
+    label: Calendar events
+    type: collection
+    path: content/events
+    format: json
+    filename: "{year}-{month}-{day}-{primary}.json"
+    view:
+      fields: [t, s, cat, verified]
+      primary: t
+      sort: [s, t]
+      default:
+        sort: s
+        order: desc
+    fields:
+      - name: t
+        label: Event name
+        type: string
+        required: true
+      - name: s
+        label: Start date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: e
+        label: End date (multi-day events only)
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: cat
+        label: Type
+        type: select
+        required: true
+        options:
+          values:
+            - { name: "3d", label: "3D & trail" }
+            - { name: "target", label: "Indoor / target / field" }
+            - { name: "mtn", label: "Mountain 3D challenge" }
+            - { name: "fun", label: "Fun shoot / meeting" }
+            - { name: "national", label: "National (out of state)" }
+            - { name: "weekly", label: "Weekly shoot" }
+      - name: ser
+        label: Series (leave blank if none)
+        type: select
+        options:
+          values:
+            - { name: "umac", label: "Buckle: AZ 3D Championship Series (UMAC)" }
+            - { name: "abfaa", label: "Buckle: ABFAA Shooter of the Year" }
+            - { name: "sw3d", label: "Buckle: Southwest 3D Series" }
+            - { name: "gma", label: "Buckle: Granite Mountain Series" }
+            - { name: "nast", label: "Points: National Archery Scholarship Tour" }
+            - { name: "usaaz", label: "Points: USA Archery Arizona state events" }
+            - { name: "dsa", label: "Points: Desert Sky Archers series" }
+            - { name: "nfaa", label: "Points: NFAA Shooter of the Year" }
+      - name: host
+        label: Host club
+        type: string
+      - name: where
+        label: Location
+        type: string
+      - name: reg
+        label: Registration details
+        type: text
+      - name: notes
+        label: Notes
+        type: text
+      - name: link
+        label: Link (must start with https://)
+        type: string
+      - name: src
+        label: Added by
+        type: select
+        default: team
+        options:
+          values:
+            - { name: "team", label: "Team member" }
+            - { name: "web", label: "Weekly web check" }
+      - name: verified
+        label: Checked by a team member (tick to remove the "unconfirmed" tag on web-check events)
+        type: boolean
+        default: false
+
+  - name: gallery
+    label: Photo gallery
+    type: collection
+    path: content/gallery
+    format: json
+    filename: "{year}-{month}-{day}-{primary}.json"
+    view:
+      fields: [title, date, album]
+      primary: title
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title (e.g. "UMAC Leg 3")
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: album
+        label: Album
+        type: select
+        required: true
+        options:
+          values: ["Thursday Night 3D", "AZ 3D Championship Series", "Mountain shoots", "Podiums & buckles", "Team gear", "Road trips"]
+      - name: caption
+        label: Caption (optional)
+        type: string
+      - name: photos
+        label: Photos (get the OK from people pictured, and a parent's OK for youth archers)
+        type: image
+        list: true
+        options:
+          path: images/gallery
+
+  - name: tac
+    label: Total Archery Challenge stops
+    type: file
+    path: content/tac.json
+    format: json
+    list: true
+    fields:
+      - name: id
+        label: Short ID (lowercase, no spaces)
+        type: string
+        required: true
+      - name: loc
+        label: Venue
+        type: string
+        required: true
+      - name: st
+        label: State
+        type: string
+      - name: s
+        label: Start date
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: e
+        label: End date
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: url
+        label: Learn more link
+        type: string
+      - name: note
+        label: Note
+        type: string

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pueblo Mechanical Archery Team</title>
+<link rel="icon" href="logo.png">
+<meta name="description" content="Pueblo Mechanical Archery Team — West Valley Phoenix. Arizona archery calendar, buckle series, Total Archery Challenge stops, ranges and pro shops.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@1,700;1,800&family=Saira+Condensed:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* NAV: black banner with the Arizona flag's 13 red/gold rays at low opacity fanning from a copper star at center.
+   VOICE: the team's own kit — fast, bold, a little loud, like the jersey; practical for members on a phone.
+   IDEA: the Pueblo Mechanical jersey: jet black body, electric-blue brush slashes, topo contour lines, orange sponsor accents.
+   PICTURE: the live event calendar, under a hero that carries the team badge over blue slashes and contour lines.
+   COLOUR and TYPE: jet black + jersey blue #1c99ed, orange #f26b1d for buckle legs; Saira heavy italic like the name bar, Saira Condensed + Source Sans 3.
+   LAYOUT: black nav with the badge home link, black hero, then calendar, buckle tracker, national path, ranges, team. */
+:root{color-scheme:light dark;--jet:#0c0e11;--jblue:#1c99ed;
+--bg:light-dark(#eef2f5,#0a0c0f);--card:light-dark(#ffffff,#141920);--ink:light-dark(#0c0e11,#eef3f7);--mute:light-dark(#56606b,#9aa7b4);
+--line:light-dark(#d6dde4,#26303a);--adobe:#1c99ed;--adobe2:light-dark(#0b6fb8,#5cbcff);--gold:#f26b1d;--goldbg:light-dark(#ffe8da,#3a1c08);
+--blue:light-dark(#0b6fb8,#5cbcff);--c3d:light-dark(#1279c9,#1c8ad6);--ctarget:light-dark(#c8202a,#c4303a);--cweekly:light-dark(#56606b,#4f5b67);--cnat:light-dark(#0c0e11,#3a4652);--cfun:light-dark(#a35400,#b8620f);--cmtn:light-dark(#3f6b2a,#4d7f33)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Saira Condensed",Impact,sans-serif;line-height:1.05;text-wrap:balance;margin:0 0 .4em}
+h1,h2{font-family:"Saira",Impact,sans-serif;font-style:italic;letter-spacing:-.5px}h2{font-size:clamp(32px,4.4vw,46px);font-weight:800}h3{font-size:24px;font-weight:700}
+a{color:var(--adobe2)}
+.band{padding:clamp(28px,4vw,60px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.lede{color:var(--mute);max-width:68ch;margin:0 0 20px}
+nav.top{position:sticky;top:0;z-index:20;background:var(--jet);color:#fff;display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;padding:8px max(5vw,16px);border-bottom:4px solid var(--jblue)}
+nav.top{isolation:isolate}nav.top .rays{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:block}
+nav.top .azstar{position:absolute;left:50%;bottom:-16px;width:34px;height:34px;transform:translateX(-50%);z-index:1;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
+nav.top a.brand b{text-shadow:0 1px 3px rgba(0,0,0,.6)}
+@media(max-width:600px){nav.top .azstar{display:none}}
+nav.top a.brand{display:flex;align-items:center;gap:12px;margin-right:auto;text-decoration:none;padding:2px 0}
+nav.top a.brand img{width:auto;height:62px;border-radius:8px;background:#fff;border:3px solid var(--jblue);padding:2px;display:block;transition:transform .2s}
+nav.top a.brand:hover img{transform:rotate(-4deg) scale(1.05)}
+nav.top a.brand b{font-family:"Saira",sans-serif;font-style:italic;font-weight:800;font-size:20px;line-height:1.05}
+nav.top a.brand b span{display:block;font-size:13px;font-weight:700;color:var(--jblue)}
+nav.top .links{display:flex;gap:4px 18px;overflow-x:auto;scrollbar-width:none}nav.top .links a{flex:none}
+nav.top a{color:#fff;text-decoration:none;font-weight:600;padding:8px 2px}nav.top a:hover{text-decoration:underline}
+.hero{background:var(--jet);color:#fff;padding-top:16px;position:relative;overflow:hidden}.hero .topo{position:absolute;inset:0;width:100%;height:100%;opacity:.16;pointer-events:none}.hero .wrap{position:relative}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero h1{font-size:clamp(40px,6vw,64px);font-weight:800;margin-bottom:12px}.hero h1 em{color:var(--jblue);font-style:inherit}
+.hero p{font-size:18px;max-width:52ch;margin:0 0 18px;color:#c9d6e2}
+.next{background:#fff;color:#0c0e11;border-left:8px solid var(--jblue);border-radius:14px;padding:18px 20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;max-width:560px}
+.next .days{font-family:"Saira Condensed";font-size:56px;font-weight:800;line-height:.9;color:var(--adobe);text-align:center}
+.next .days small{display:block;font-size:14px;color:#56606b;font-family:"Source Sans 3";font-weight:600}
+.next .lab{font-size:13px;color:#56606b;font-weight:700}.next .tt{font-weight:700;font-size:19px;line-height:1.2}
+.heroart{position:relative;display:grid;place-items:center;min-height:300px}.heroart svg.slash{position:absolute;inset:-40px -10vw -40px 0;width:calc(100% + 10vw);height:calc(100% + 80px)}.heroart img{position:relative;width:min(320px,72%);height:auto;border-radius:18px;background:#fff;border:6px solid var(--jblue);padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.page{display:none}.page.on{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+nav.top .links a[aria-current=page]{color:var(--jblue);box-shadow:inset 0 -3px 0 var(--jblue)}nav.top .links a.mem{display:inline-flex;gap:6px;align-items:center}
+.pagehead{background:linear-gradient(105deg,var(--jet) 0 72%,var(--jblue) 72% 79%,var(--jet) 79% 80.5%,var(--jblue) 80.5% 86%,var(--jet) 86% 87%,var(--jblue) 87%);color:#fff;padding:clamp(28px,4vw,52px) max(5vw,16px)}
+.pagehead h1{font-family:"Saira",Impact,sans-serif;font-style:italic;font-weight:800;font-size:clamp(34px,5vw,52px);margin:0 0 6px;max-width:22ch}.pagehead p{margin:0;color:#c9d6e2;max-width:52ch;font-size:17px}
+@media(max-width:600px){.pagehead{background:linear-gradient(105deg,var(--jet) 0 84%,var(--jblue) 84% 90%,var(--jet) 90% 92%,var(--jblue) 92%)}.pagehead p{max-width:85%}}
+.sechead{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:14px}.sechead h2{margin:0}
+.btn.pri{background:var(--jblue);border-color:var(--jblue);color:#fff;text-decoration:none;display:inline-flex;align-items:center}
+.up3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.uc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:12px;padding:16px;text-align:left;font-weight:400;display:grid;gap:6px;align-content:start;min-height:0;cursor:pointer}
+.uc .d{font-family:"Saira Condensed";font-size:26px;font-weight:700;line-height:1}.uc .d small{font:600 14px "Source Sans 3";color:var(--mute);margin-left:6px}.uc .nm{font-weight:700;font-size:17.5px;line-height:1.25}.uc .meta{color:var(--mute);font-size:14.5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tile{display:grid;gap:4px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--jblue);border-radius:12px;padding:16px;text-decoration:none;color:var(--ink)}.tile b{font-family:"Saira",sans-serif;font-style:italic;font-size:21px}.tile span{color:var(--mute);font-size:15px}.tile:hover{border-color:var(--jblue)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.ph{margin:0;aspect-ratio:4/3;border-radius:12px;background:repeating-linear-gradient(105deg,var(--card) 0 22px,light-dark(#e6edf3,#18202a) 22px 26px);border:2px dashed var(--line);display:grid;place-items:center;align-content:center;gap:8px;color:var(--mute)}.ph svg{width:44px;height:44px}.ph figcaption{font-weight:700;font-size:15px;text-align:center;padding:0 10px}
+.join{margin-top:20px;background:var(--jet);color:#fff;border-radius:16px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-left:10px solid var(--jblue)}.join h2{color:#fff}.join p{margin:0;max-width:60ch;color:#c9d6e2}
+.soon{background:var(--gold);color:#fff;font-weight:700;border-radius:999px;padding:8px 14px;white-space:nowrap}
+.lock{max-width:560px;margin:0 auto;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px 24px}
+.pagehead+.band{padding-top:clamp(22px,3vw,40px)}
+button.pri{background:var(--jblue);border-color:var(--jblue);color:#fff}button.danger{color:light-dark(#b3261e,#ff8a80);border-color:currentColor}
+.frm{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.frm label{display:grid;gap:4px;font-size:14px;font-weight:700;color:var(--mute)}.frm .full{grid-column:1/-1}
+.frm input,.frm select,.frm textarea{font:inherit;font-size:16px;font-weight:400;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}.frm textarea{min-height:80px;resize:vertical}
+.frm .err{grid-column:1/-1;color:light-dark(#b3261e,#ff8a80);font-weight:700;margin:0}.by{font-size:13.5px;color:var(--mute);margin:4px 0 0}
+@media(max-width:600px){.frm{grid-template-columns:1fr}}
+.tacsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.tacsum div{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--jblue);border-radius:12px;padding:12px 16px}.tacsum b{display:block;font-family:"Saira Condensed";font-size:30px;line-height:1.05}.tacsum span{color:var(--mute);font-size:14px;font-weight:600}
+.key{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;font-weight:600;color:var(--mute);margin:6px 0 12px}.key span{display:inline-flex;gap:6px;align-items:center}.kd{width:14px;height:14px;border-radius:4px;background:var(--cnat);display:inline-block}.kd.az{background:var(--gold)}.kd.near{background:var(--jblue)}
+.tacmonths{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.mm{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}.mm h3{font-size:20px;margin:0 0 8px}.mmg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center;font-size:13px}
+.mmg .h{color:var(--mute);font-weight:700;font-size:11.5px}.mmg .c{aspect-ratio:1;display:grid;place-items:center;border-radius:6px}
+.mmg a.c{color:#fff;font-weight:700;text-decoration:none;background:var(--cnat)}.mmg a.c.near{background:var(--jblue)}.mmg a.c.az{background:var(--gold)}
+.taclist{display:grid;gap:10px}.tc{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--cnat);border-radius:12px;padding:12px 16px;scroll-margin-top:90px}
+.tc.near{border-left-color:var(--jblue)}.tc.az{border-left-color:var(--gold)}.tc.flash{box-shadow:0 0 0 3px var(--jblue)}.tc.past{opacity:.55}
+.tc .dt{font-family:"Saira Condensed";font-size:22px;font-weight:700;line-height:1;white-space:nowrap}.tc .dt small{display:block;font:600 13px "Source Sans 3";color:var(--mute);margin-top:4px}.tc .nm{font-weight:700;font-size:17.5px}.tc .meta{color:var(--mute);font-size:14.5px}
+.tc a.btn{text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center}
+@media(max-width:600px){.tc{grid-template-columns:96px minmax(0,1fr)}.tc .dt{font-size:19px;white-space:normal}.tc a.btn{grid-column:1/-1;justify-content:center}}
+.locs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.loc{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--jblue);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.loc .kind{font-size:13px;font-weight:700;color:var(--mute)}.loc h3{margin:0}.loc .addr{margin:0;font-weight:600}.loc ul{margin:0;padding-left:18px}.loc li{margin:4px 0}.loc .pl{margin:0;font-size:15px}
+.loc .acts{margin-top:auto;padding-top:6px;display:flex;flex-wrap:wrap;gap:8px}.loc .acts a{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.clubs{columns:2 280px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);background:var(--jet);color:#fff;border:2px solid var(--jblue);border-radius:12px;padding:10px 16px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:90vw}.toast.on{opacity:1;transform:translate(-50%,0)}
+.hello{margin:0 0 10px;color:var(--mute)}.mtabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;scrollbar-width:thin}.mtabs button{flex:none}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}.mgrid .box ul{margin:0}
+.gcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}.gcard{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--jblue);border-radius:12px;padding:14px}.gcard .gh{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.spec{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 12px;margin:8px 0 0;font-size:15px}.spec dt{color:var(--mute);font-weight:600}.spec dd{margin:0}
+.marks{display:flex;flex-wrap:wrap;gap:6px}.marks span{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-size:14px}
+.frm .chk{display:flex;flex-direction:row;align-items:center;gap:8px;color:var(--ink)}.frm .chk input{min-height:0;width:20px;height:20px}
+.pbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:14px}.pbs div{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:10px 12px;display:grid}.pbs span{color:var(--mute);font-size:14px}
+.rrow{display:grid;grid-template-columns:130px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.resbox{margin-top:8px;background:var(--goldbg);border-radius:8px;padding:8px 10px;font-size:15px}.code{font-family:"Saira Condensed";font-size:26px;font-weight:700;margin:6px 0 0;letter-spacing:.5px}
+.rsvp{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}.rbtns{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.rride{display:flex;flex-wrap:wrap;gap:12px}.rride label{display:grid;gap:4px;font-size:14px;font-weight:700;color:var(--mute)}.rride select,.rride input{font:inherit;font-size:16px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 10px;width:auto}
+.albh{margin-top:24px}.gph{padding:0;border:0;border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--line);min-height:0}.gph img{width:100%;height:100%;object-fit:cover;display:block}
+.upl{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--jblue);border-radius:12px;padding:14px;margin-bottom:16px}.upl label{display:grid;gap:4px;font-size:14px;font-weight:700;color:var(--mute)}.upl input,.upl select{font:inherit;font-size:16px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:6px 10px}.upl .note{flex-basis:100%;margin:0}
+.dlg img.big{width:100%;height:auto;border-radius:10px;display:block}
+@media(max-width:600px){.rrow{grid-template-columns:minmax(0,1fr)}.rrow button{justify-self:start}}
+.kidr{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:6px}.kidr .rbtns{margin:4px 0}
+.imp{width:100%;min-height:110px;font:14px/1.4 ui-monospace,Menlo,monospace;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:10px}
+details.box>summary{cursor:pointer;min-height:32px;display:flex;align-items:center}
+.ptd{margin-top:6px}.ptd summary{cursor:pointer;font-size:14px;color:var(--adobe2);font-weight:600}.pt{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}.pt span{display:flex;gap:3px}.pt i{font-style:normal;font-size:13px;font-weight:700;min-width:26px;text-align:center;padding:3px 4px;border-radius:6px;background:var(--bg);border:1px solid var(--line)}.pt i.top{background:var(--goldbg);border-color:var(--gold)}.pt i.miss{opacity:.5}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+button,.btn{font:inherit;font-size:15px;font-weight:600;min-height:44px;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mtitle{font-family:"Saira Condensed";font-size:28px;font-weight:700;min-width:190px;text-align:center}
+input[type=search]{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);flex:1 1 200px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;gap:8px}.chip[aria-pressed=true]{background:var(--card);color:var(--ink);border:2px solid var(--jblue)}.chip[data-cat][aria-pressed=false]{opacity:.5;text-decoration:line-through}#bonly[aria-pressed=true]{background:var(--gold);color:#fff;border-color:var(--gold)}.sw{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--line);gap:1px}
+.dow{background:var(--card);font-size:13px;font-weight:700;color:var(--mute);padding:6px 8px}
+.day{background:var(--card);min-height:112px;padding:6px;display:flex;flex-direction:column;gap:3px;cursor:pointer}
+.day.out{background:light-dark(#f3f6f8,#0e1217);color:var(--mute)}.day.today .dn{background:var(--adobe);color:#fff;border-radius:50%}
+.dn{font-size:13px;font-weight:700;width:24px;height:24px;display:grid;place-items:center}
+.pill{font-size:12.5px;line-height:1.25;padding:3px 6px;border-radius:6px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:0;min-height:0;text-align:left;font-weight:600;display:flex;gap:4px;align-items:center}
+.pill.bk{box-shadow:inset 0 0 0 2px var(--gold)}.pill.unv{outline:2px dashed var(--ink);outline-offset:-2px}.webnote{background:var(--goldbg);border-radius:8px;padding:8px 12px;font-size:14.5px;margin:8px 0}.pill.tba{opacity:.75;font-style:italic}
+.more{font-size:12px;color:var(--mute);font-weight:600}
+.bkic{width:14px;height:10px;flex:none}
+.daydetail{margin-top:14px}
+.list{display:grid;gap:10px}
+.mhead{font-family:"Saira Condensed";font-size:24px;font-weight:700;margin:18px 0 4px;border-bottom:2px solid var(--line)}
+.ev{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left;width:100%;font-weight:400}
+.ev .dt{font-family:"Saira Condensed";font-size:22px;font-weight:700;line-height:1;white-space:nowrap}.ev .dt small{display:block;font:600 13px "Source Sans 3";color:var(--mute);margin-top:3px}
+.ev .nm{font-weight:700;font-size:17px}.ev .meta{color:var(--mute);font-size:14.5px}
+.tag{display:inline-flex;gap:5px;align-items:center;font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--goldbg);color:light-dark(#9a3a06,#ffb48a);white-space:nowrap}
+.tag.past{background:var(--line);color:var(--mute)}
+.empty{padding:24px;border:1px dashed var(--line);border-radius:12px;color:var(--mute);text-align:center}
+.tbas{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+.tb{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px}.tb b{display:block;font-size:16px}
+.series{background:light-dark(#e3eaf0,#10151b)}
+.scards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.sc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.sc .scope{font-size:13px;font-weight:700;color:var(--mute)}
+.sc .rule{font-size:15px;background:var(--goldbg);border-radius:8px;padding:10px 12px}
+.prog{height:12px;border-radius:6px;background:var(--line);overflow:hidden}.prog i{display:block;height:100%;background:var(--gold);transition:width .4s}
+.status{font-weight:700;font-size:15px}
+.legs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.legs li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;font-size:15px;border-top:1px solid var(--line);padding-top:6px}
+.legs .ld{color:var(--mute);font-size:13.5px}
+.legbtn{min-height:40px;font-size:13.5px;padding:6px 10px;white-space:nowrap}
+.legbtn[data-s=plan]{background:var(--goldbg);border-color:var(--gold)}.legbtn[data-s=shot]{background:var(--adobe);color:#fff;border-color:var(--adobe)}
+table{border-collapse:collapse;width:100%;background:var(--card);border-radius:12px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15.5px}th{font-size:13.5px;color:var(--mute)}
+td.nw{white-space:nowrap}
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}.box ul{margin:0;padding-left:18px}.box li{margin:6px 0}
+.sponsors{display:flex;flex-wrap:wrap;gap:8px}.sponsors span{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:600;background:var(--card)}
+footer{background:var(--jet);color:#c9d6e2;font-size:14.5px;border-top:4px solid var(--jblue)}footer a{color:#5cbcff}footer .fl{display:flex;align-items:center;gap:14px}footer .fl img{width:auto;height:72px;border-radius:8px;background:#fff;border:3px solid var(--jblue);padding:2px}
+.modal{position:fixed;inset:0;background:rgba(20,12,6,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.on{display:flex}.dlg{background:var(--card);color:var(--ink);border-radius:16px;max-width:560px;width:100%;max-height:90vh;overflow:auto;padding:22px;border-top:8px solid var(--c)}
+.dlg dl{display:grid;grid-template-columns:7em minmax(0,1fr);gap:6px 12px;margin:12px 0}.dlg dt{color:var(--mute);font-weight:700;font-size:14px}.dlg dd{margin:0}
+.dlg .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.note{font-size:14px;color:var(--mute)}
+pre,.scroll{overflow-x:auto}
+@media(max-width:820px){.hero .wrap{grid-template-columns:1fr}.heroart{order:-1;min-height:220px}.heroart img{width:210px}}
+@media(max-width:600px){nav.top .links{flex:1 1 100%;gap:16px}.mtitle{font-size:22px;white-space:nowrap;order:-1;flex:1 1 100%;text-align:left}}
+@media(max-width:520px){nav.top a.brand b{font-size:17px}nav.top a.brand img{height:52px}}
+@media(max-width:600px){.day{min-height:58px;padding:4px}.pill span{display:none}.pill{padding:0;width:10px;height:10px;border-radius:50%}.day .pills{display:flex;flex-wrap:wrap;gap:3px}.more{display:none}
+.ev{grid-template-columns:72px minmax(0,1fr)}.ev .tg{grid-column:2}
+table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute);font-weight:700}.stack td:empty{display:none}}
+</style><script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="buckle" viewBox="0 0 28 20"><rect x="1.5" y="1.5" width="25" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="3"/><rect x="9" y="7" width="10" height="6" rx="2" fill="currentColor"/></symbol></svg>
+
+<nav class="top" aria-label="Site"><svg class="rays" viewBox="0 0 2400 100" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="raysfade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c0e11" stop-opacity=".45"/><stop offset="1" stop-color="#0c0e11" stop-opacity="0"/></linearGradient></defs><g opacity=".32"><path d="M1200 102L-1400 102L-1324 -520Z" fill="#BF0A30"/><path d="M1200 102L-1324 -520L-1102 -1106Z" fill="#FED700"/><path d="M1200 102L-1102 -1106L-746 -1622Z" fill="#BF0A30"/><path d="M1200 102L-746 -1622L-277 -2038Z" fill="#FED700"/><path d="M1200 102L-277 -2038L278 -2329Z" fill="#BF0A30"/><path d="M1200 102L278 -2329L887 -2479Z" fill="#FED700"/><path d="M1200 102L887 -2479L1513 -2479Z" fill="#BF0A30"/><path d="M1200 102L1513 -2479L2122 -2329Z" fill="#FED700"/><path d="M1200 102L2122 -2329L2677 -2038Z" fill="#BF0A30"/><path d="M1200 102L2677 -2038L3146 -1622Z" fill="#FED700"/><path d="M1200 102L3146 -1622L3502 -1106Z" fill="#BF0A30"/><path d="M1200 102L3502 -1106L3724 -520Z" fill="#FED700"/><path d="M1200 102L3724 -520L3800 102Z" fill="#BF0A30"/></g><rect width="2400" height="100" fill="url(#raysfade)"/></svg><svg class="azstar" viewBox="0 0 34 34" aria-hidden="true"><polygon points="17.0,2.0 20.8,12.7 32.2,13.1 23.2,20.0 26.4,30.9 17.0,24.5 7.6,30.9 10.8,20.0 1.8,13.1 13.2,12.7" fill="#CE5C17" stroke="#7a3008" stroke-width="1.5"/></svg><a class="brand" href="#home" id="homelink" aria-label="Pueblo Mechanical Archery Team — home"><img src="logo.png" alt="" width="56" height="62"><b>Pueblo Mechanical<span>Archery Team</span></b></a><div class="links"><a href="#calendar">Calendar</a><a href="#buckle-series">Buckle Series</a><a href="#national">National</a><a href="#tac">TAC</a><a href="#gallery">Gallery</a><a href="#team">Team</a><a href="#ranges">Ranges &amp; Shops</a><a href="#members" class="mem"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="3" y="7" width="10" height="8" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Members</a></div></nav>
+
+<main>
+<div class="page" data-page="home" data-title="Home">
+<header class="hero band">
+ <svg class="topo" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#5cbcff" stroke-width="1.4" id="topo"></g></svg>
+ <div class="wrap">
+  <div>
+   <h1>Every Arizona shoot. Every buckle leg. <em>One board.</em></h1>
+   <p>The West Valley team's home base for tournaments, 3D shoots and buckle series across Arizona — from Thursday nights at Ben Avery to mountain 3D challenges and the state Shooter of the Year race.</p>
+   <div class="next" id="next"></div>
+  </div>
+  <div class="heroart">
+   <svg class="slash" viewBox="0 0 400 400" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M150 0 L215 0 L120 400 L40 400Z" fill="#1c99ed"/><path d="M240 0 L300 0 L205 400 L150 400Z" fill="#1c99ed" opacity=".85"/>
+    <path d="M318 0 L400 0 L400 400 L230 400Z" fill="#1c99ed"/><path d="M196 0 L206 0 L110 400 L100 400Z" fill="#0c0e11"/><path d="M300 0 L312 0 L218 400 L206 400Z" fill="#0c0e11"/>
+   </svg>
+   <img src="logo-lg.png" alt="Pueblo Mechanical Archery Team logo: an archer kneeling at full draw, with ARCHERY TEAM below">
+  </div>
+ </div>
+</header>
+<section class="band"><div class="wrap">
+ <div class="sechead"><h2>Coming up next</h2><a class="btn pri" href="#calendar">Full calendar →</a></div>
+ <div class="up3" id="up3"></div>
+ <p class="note" style="margin-top:12px">Plus Thursday Night Indoor 3D at Ben Avery every week.</p>
+</div></section>
+<section class="band series"><div class="wrap">
+ <h2>Explore the site</h2>
+ <div class="tiles">
+  <a class="tile" href="#buckle-series"><b>Buckle Series</b><span>What to shoot to qualify — and track your own progress.</span></a>
+  <a class="tile" href="#national"><b>National</b><span>Out-of-state events that build national rankings.</span></a>
+  <a class="tile" href="#tac"><b>Total Archery Challenge</b><span>All 2027 TAC stops on one calendar, with links to each event.</span></a>
+  <a class="tile" href="#gallery"><b>Team Gallery</b><span>Photos from shoots, trips and team days.</span></a>
+  <a class="tile" href="#team"><b>Team</b><span>Organizers, gear, sponsors and how to join.</span></a>
+  <a class="tile" href="#ranges"><b>Ranges &amp; Shops</b><span>Our range and pro shop partners, with maps.</span></a>
+  <a class="tile" href="#members"><b>Members</b><span>Gear, rounds, events, results and team codes.</span></a>
+ </div>
+</div></section>
+</div>
+
+<div class="page" data-page="calendar" data-title="Calendar">
+<header class="pagehead"><div class="wrap"><h1>Arizona events calendar</h1><p>Every competition and shoot we track across Arizona, plus the out-of-state nationals.</p></div></header>
+<section class="band"><div class="wrap">
+ <p class="lede">All competitions and shoots we track across Arizona, plus the out-of-state nationals that feed national rankings. Orange-ringed events (with the buckle mark) count toward a buckle series. Tap any event for details.</p>
+ <div class="toolbar">
+  <button id="prev" aria-label="Previous month">◀</button><div class="mtitle" id="mtitle"></div><button id="nextm" aria-label="Next month">▶</button>
+  <button id="todayb">Today</button>
+  <button id="addev" class="pri" hidden>+ Add event</button>
+  <button id="vMonth" aria-pressed="true">Month</button><button id="vList" aria-pressed="false">List</button>
+  <input type="search" id="q" placeholder="Search events, hosts, cities" aria-label="Search events">
+ </div>
+ <p class="note" id="webst"></p><p class="note" id="livest" aria-live="polite"></p>
+ <div class="chips" id="chips"></div>
+ <div id="view"></div>
+ <div id="daydetail" class="daydetail"></div>
+ <h3 style="margin-top:28px">Announced, dates not yet posted</h3>
+ <p class="note">Hosts have announced these for 2027 but not published dates. They stay off the calendar until confirmed — check back or contact the host.</p>
+ <div class="tbas" id="tbas"></div>
+</div></section>
+</div>
+
+<div class="page" data-page="buckle-series" data-title="Buckle Series">
+<header class="pagehead"><div class="wrap"><h1>Buckle series &amp; rankings</h1><p>Series by series: the rules, every leg, and your progress toward a buckle.</p></div></header>
+<section class="band series"><div class="wrap">
+ <p class="lede">What you need to shoot to qualify, series by series. Mark each leg as <b>Planned</b> or <b>Shot</b> to track your own progress — it's saved in this browser only.</p>
+ <div class="scards" id="scards"></div>
+</div></section>
+</div>
+
+<div class="page" data-page="national" data-title="National">
+<header class="pagehead"><div class="wrap"><h1>The national path</h1><p>Where Arizona archers go to chase national rankings and titles.</p></div></header>
+<section class="band"><div class="wrap">
+ <p class="lede">Out-of-state events that build national rankings and Shooter of the Year standings. They also appear on the calendar under “National.”</p>
+ <table class="stack" id="ntable"><thead><tr><th>Dates</th><th>Event</th><th>Where</th><th>Why it matters</th></tr></thead><tbody></tbody></table>
+</div></section>
+</div>
+
+<div class="page" data-page="tac" data-title="TAC">
+<header class="pagehead"><div class="wrap"><h1>Total Archery Challenge</h1><p>The traveling mountain 3D festival — every 2027 stop, with the ones closest to the Valley called out.</p></div></header>
+<section class="band"><div class="wrap">
+ <div class="tacsum" id="tacsum"></div>
+ <p class="lede" style="margin-top:14px">Each stop runs several courses on resort or ranch terrain. You reserve a Nock Time (a course and start slot) when you register, groups are capped at six, and a stop sells out when its Nock Times are gone. There are no standings or buckles; it's a destination shoot. Tap a highlighted date or use Learn more for courses, tickets and lodging.</p>
+ <div class="key"><span><i class="kd az"></i>Arizona</span><span><i class="kd near"></i>Near Arizona (UT, CO)</span><span><i class="kd"></i>Other stops</span></div>
+ <div class="tacmonths" id="tacmonths"></div>
+ <h2 style="margin-top:28px">2027 tour stops</h2>
+ <div class="taclist" id="taclist"></div>
+ <p class="note" style="margin-top:14px">Schedule from <a href="https://totalarcherychallenge.com/pages/events">totalarcherychallenge.com/pages/events</a>, checked Nov 24, 2026, and rechecked by the weekly calendar update.</p>
+</div></section>
+</div>
+
+<div class="page" data-page="gallery" data-title="Gallery">
+<header class="pagehead"><div class="wrap"><h1>Team photo gallery</h1><p>Shoots, road trips, podiums and range days.</p></div></header>
+<section class="band"><div class="wrap">
+ <div id="galadmin"></div>
+ <div id="galview"></div>
+ <div id="galempty">
+ <div class="gal">
+  <figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>Thursday Night 3D</figcaption></figure><figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>AZ 3D Championship Series</figcaption></figure><figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>Mountain shoots</figcaption></figure><figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>Podiums &amp; buckles</figcaption></figure><figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>Team gear</figcaption></figure><figure class="ph"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="13" width="36" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="26" r="7" fill="none" stroke="currentColor" stroke-width="3"/><rect x="17" y="8" width="14" height="6" rx="2" fill="currentColor"/></svg><figcaption>Road trips</figcaption></figure>
+ </div>
+ <div class="empty" style="margin-top:16px">No photos yet. Monty, Travis and Darvie add photos here — send yours to one of them.</div>
+ </div>
+</div></section>
+</div>
+
+<div class="page" data-page="team" data-title="Team">
+<header class="pagehead"><div class="wrap"><h1>The team</h1><p>West Valley archers — Surprise, Peoria and NW Phoenix — shooting statewide.</p></div></header>
+<section class="band"><div class="wrap">
+ <div class="cols3">
+  <div class="box"><h3>Organizers</h3><ul><li><b>Travis Grimm</b> (Pueblo Mechanical)</li><li><b>Darvie Grimm</b></li></ul></div>
+  <div class="box"><h3>What we shoot</h3><ul>
+   <li><b>Target:</b> Mathews Title, Hoyt Concept X — also Darton Tritech, PSE, Bowtech</li>
+   <li><b>Hunting:</b> Mathews ARC and Lift, Hoyt RX and AX</li></ul></div>
+  <div class="box"><h3>Sponsors on our jerseys</h3><p class="note" style="margin-top:0">Ask an organizer about team discounts.</p>
+   <div class="sponsors"><span>Pueblo Mechanical</span><span>Easton Archery</span><span>Threadz</span><span>Muley Freak</span><span>Annihilator Broadheads</span><span>Q2i Archery</span><span>Rinehart</span><span>BHE</span><span>Leupold</span></div></div>
+ </div>
+
+ <div class="join">
+  <div><h2>Want to shoot with us?</h2><p>The easiest way to meet the team is on the line at Thursday Night Indoor 3D at Ben Avery. Find Travis or Darvie Grimm and ask about joining. An online sign-up is on the way.</p></div>
+  <span class="soon">Online sign-up coming soon</span>
+ </div>
+</div></section>
+</div>
+
+<div class="page" data-page="ranges" data-title="Ranges &amp; Shops">
+<header class="pagehead"><div class="wrap"><h1>Ranges &amp; shops</h1><p>The ranges and pro shops that keep Arizona archers shooting — and keep our team tuned, equipped and practicing.</p></div></header>
+<section class="band"><div class="wrap">
+ <p class="lede">Each of these partners brings something to the archery community. Stop in, say you shoot with Pueblo Mechanical, and support the shops and ranges that support the sport. Hours and fees change, so check each website before you go.</p>
+ <h2>Ranges</h2>
+ <div class="locs">
+  <article class="loc"><div class="kind">Public outdoor range · Arizona Game &amp; Fish</div><h3>Ben Avery Shooting Facility</h3><p class="addr">4044 W Black Canyon Blvd, Phoenix, AZ 85086</p><ul><li>NFAA-certified 5-star archery courses and a World Archery target range</li><li>Field course of 14 spot targets out to 80 yards; animal and hill courses with shots up to 60 yards; a 28-target hunter course</li><li>Daily passes online or at the Clay Target Center Pavilion, where archers check in</li><li>Thursday Night Indoor 3D fun shoot: $15 adults, $8 youth 8–17</li><li>Home to many of the state championships and series shoots on our calendar</li></ul>
+   <div class="acts"><a class="btn pri" href="https://www.google.com/maps/search/?api=1&query=Ben+Avery+Shooting+Facility+4044+W+Black+Canyon+Blvd%2C+Phoenix%2C+AZ+85086" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Google Maps</a><a class="btn" href="https://www.azgfd.com/?p=1718" target="_blank" rel="noopener">Website ↗</a></div></article>
+  <article class="loc"><div class="kind">Public outdoor range · Usery Mountain Archers</div><h3>Usery Mountain Park Archery Range</h3><p class="addr">3939 N Usery Pass Rd, Mesa, AZ 85207</p><ul><li>Home of the Arizona 3D Championship Series, the Cactus Classic and ASA qualifiers</li><li>Usery Mountain Archers runs a Thursday Night 3D program</li><li>Park entry: $10 per vehicle plus $4 per archer 15 and older</li></ul><p class="pl"><b>Phone:</b> (480) 326-2011</p>
+   <div class="acts"><a class="btn pri" href="https://www.google.com/maps/search/?api=1&query=Usery+Mountain+Park+Archery+Range+3939+N+Usery+Pass+Rd%2C+Mesa%2C+AZ+85207" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Google Maps</a><a class="btn" href="https://userymountainarchers.com/az-3d-championship-series" target="_blank" rel="noopener">Website ↗</a></div></article>
+ </div>
+ <h2 style="margin-top:28px">Indoor ranges &amp; pro shops</h2>
+ <div class="locs">
+  <article class="loc"><div class="kind">Indoor range &amp; pro shop</div><h3>Arizona Archery Club</h3><p class="addr">1115 W Deer Valley Rd, Phoenix, AZ 85027</p><ul><li>Large indoor, climate-controlled range with 28 lanes out to 40 yards, plus a kids range</li><li>Full pro shop with bow tuning and a demo room for trying equipment</li><li>Lessons, group events and the Arizona Archery Club JOAD youth program</li><li>Host of The Phoenix 600 (Feb 12–14, 2027) and the 2027 State JOAD Indoor Championships</li></ul><p class="pl"><b>Phone:</b> (623) 266-4647</p>
+   <div class="acts"><a class="btn pri" href="https://www.google.com/maps/search/?api=1&query=Arizona+Archery+Club+1115+W+Deer+Valley+Rd%2C+Phoenix%2C+AZ+85027" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Google Maps</a><a class="btn" href="https://azarcheryclub.com" target="_blank" rel="noopener">Website ↗</a></div></article>
+  <article class="loc"><div class="kind">Indoor range &amp; pro shop</div><h3>Corner Archery</h3><p class="addr">5008 W Northern Ave, Ste 8, Glendale, AZ 85301</p><ul><li>Full-service pro shop serving archers since 1995, with new and pre-owned equipment</li><li>20-yard (18 m) indoor range for practice, lessons and indoor Vegas-style shoots</li><li>Target and competition gear, plus USA Archery instructor certification courses</li><li>Hosts the USA Archery Arizona State Outdoor and JOAD Championships and ABFAA state shoots at Ben Avery</li></ul><p class="pl"><b>Phone:</b> (623) 842-3337</p>
+   <div class="acts"><a class="btn pri" href="https://www.google.com/maps/search/?api=1&query=Corner+Archery+5008+W+Northern+Ave%2C+Ste+8%2C+Glendale%2C+AZ+85301" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Google Maps</a><a class="btn" href="https://cornerarchery.com" target="_blank" rel="noopener">Website ↗</a></div></article>
+  <article class="loc"><div class="kind">Indoor range &amp; pro shop</div><h3>Ross Outdoors</h3><p class="addr">407 S 17th Ave, Phoenix, AZ 85007</p><ul><li>Family-owned archery, optics and hunting pro shop in downtown Phoenix since 2004</li><li>20-yard indoor range with 10 lanes: $15 daily pass or $30 monthly</li><li>Bow service and private lessons for new archers, bowhunters and target shooters</li><li>Wide selection of bowhunting equipment and optics</li></ul>
+   <div class="acts"><a class="btn pri" href="https://www.google.com/maps/search/?api=1&query=Ross+Outdoors+407+S+17th+Ave%2C+Phoenix%2C+AZ+85007" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>Google Maps</a><a class="btn" href="https://www.rossoutdoors.com/pages/indoor-archery-range-in-phoenix" target="_blank" rel="noopener">Website ↗</a></div></article>
+ </div>
+ <div class="box" style="margin-top:28px"><h3>Clubs that host our shoots</h3><ul class="clubs">
+   <li><a href="https://userymountainarchers.com/az-3d-championship-series">Usery Mountain Archers</a> — Mesa</li>
+   <li><a href="https://www.granitemountainarchers.org">Granite Mountain Archers</a> — 3755 Willow Creek Rd, Prescott · <a href="https://www.google.com/maps/search/?api=1&query=Granite+Mountain+Archers+3755+Willow+Creek+Rd+Prescott+AZ" target="_blank" rel="noopener">Map</a></li>
+   <li>Full Draw Bowhunters — Ben Avery, (602) 525-5006</li>
+   <li><a href="https://www.abfaa.info/tournament-schedule">ABFAA</a> — Arizona's NFAA state association</li>
+   <li><a href="https://desertarchers.com/">Desert Archers</a> — Tucson</li>
+   <li>Desert Sky Archers — indoor events at Ben Avery</li>
+ </ul></div>
+</div></section>
+</div>
+
+<div class="page" data-page="members" data-title="Members">
+<header class="pagehead"><div class="wrap"><h1>Members area</h1><p>Your gear, rounds, events and results, plus team codes, carpools and the roster.</p></div></header>
+<section class="band"><div class="wrap">
+ <div id="memroot"></div>
+</div></section>
+</div>
+</main>
+
+<footer class="band"><div class="wrap"><div class="fl"><img src="logo.png" alt=""><b style="font-family:Saira,sans-serif;font-style:italic;font-size:20px">Pueblo Mechanical Archery Team</b></div>
+ <p><b>Dates last checked November 24, 2026.</b> Hosts change dates, venues and registration windows — always confirm on the host's page before you drive. Sources: <a href="https://www.abfaa.info/tournament-schedule">ABFAA schedule</a> · <a href="https://www.abfaa.info/abfaa-buckle-series">ABFAA buckle rules</a> · <a href="https://userymountainarchers.com/az-3d-championship-series">UMAC AZ 3D Championship Series</a> · <a href="https://desertarchers.com/az3d/">Southwest 3D Championship Series</a> · <a href="https://www.granitemountainarchers.org">Granite Mountain Archers</a> · <a href="https://nfaausa.com/news/a-new-season-is-set-2027-nfaa-indoor-calendar-released">NFAA 2027 indoor calendar</a> · <a href="https://www.usarchery.org/news/usa-archery-announces-the-2027-calendar-for-indoor-and-outdoor-events">USA Archery 2027 calendar</a> · <a href="https://www.azgfd.com/?p=10004153">AZGFD Thursday 3D</a> · <a href="https://southernarizonashootersassociation.blogspot.com/">SASA Tucson</a> · <a href="https://www.azarchery.com/events">USA Archery Arizona events</a> · <a href="https://www.archeryscholarshiptour.com/2027-indoor/the-phoenix-600-az">The Phoenix 600</a> · <a href="https://www.totalarcherychallenge.com/">Total Archery Challenge</a> · <a href="https://www.strideevents.com/hike-to-hunt-flagstaff-az/event-information">Hike to Hunt</a> · <a href="https://www.snowbowl.ski/event/bow-crazy-archery-shoot/">Bow Crazy</a></p>
+ <p>Pueblo Mechanical Archery Team · West Valley, Phoenix metro</p>
+</div></footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="dlg" id="dlg"></div></div>
+
+<script>
+{
+const CATS={'3d':{n:'3D & trail',c:'var(--c3d)'},target:{n:'Indoor / target / field',c:'var(--ctarget)'},weekly:{n:'Weekly shoot',c:'var(--cweekly)'},national:{n:'National (out of state)',c:'var(--cnat)'},mtn:{n:'Mountain 3D challenge',c:'var(--cmtn)'},fun:{n:'Fun shoot / meeting',c:'var(--cfun)'}};
+const SERIES={
+ umac:{buckle:1,n:'Arizona 3D Championship Series',by:'Usery Mountain Archers · Mesa',scope:'Local 3D buckle series',need:3,
+  rule:'4 legs of 25 targets. One drop leg — your best 3 scores decide class winners. Online registration only; it closes the Wednesday before each leg.',link:'https://userymountainarchers.com/az-3d-championship-series'},
+ abfaa:{buckle:1,n:'ABFAA State Shooter of the Year — 2027',by:'Arizona Bowhunters & Field Archery Assn (NFAA)',scope:'State ranking · buckle to 1st',need:5,
+  rule:'Shoot at least 5 ABFAA State tournaments in the same style and age group. Best 5 count; points by finish place (1st = 1 pt), lowest total wins. Buckle to 1st, awards to 2nd–3rd. NFAA member with Arizona residence. Register under ABFAA at combined events.',link:'https://www.abfaa.info/abfaa-buckle-series'},
+ sw3d:{buckle:1,n:'Southwest 3D Championship Series',by:'Southern Arizona clubs + Blythe, CA',scope:'Regional 3D buckle series',need:3,
+  rule:'Minimum 3 legs for the grand prize, with 3 scores in the same class. Best 3 count; one may be dropped. 40 targets per leg. Ties broken by most 12s. Buckle to each class winner.',link:'https://desertarchers.com/az3d/'},
+ gma:{buckle:1,n:'GMA 3D Series',by:'Granite Mountain Archers · Prescott',scope:'Local 3D buckle series',need:3,
+  rule:'Points accumulate across three legs starting in April. Buckles to 1st, 2nd and 3rd after the third leg. Exact leg dates for 2027 not yet posted.',link:'https://www.granitemountainarchers.org'},
+ nast:{n:'National Archery Scholarship Tour — 2027 Indoor',by:'31 indoor tournaments in 25 states · Phoenix stop: The Phoenix 600',scope:'National indoor ranking',need:0,
+  rule:'60 arrows (12 ends of 5) at 18 m. Age classes 14U, 19U, Collegiate (30 and under) and Adult (20+); Barebow, Compound, Fixed Pin, Genesis and Olympic Recurve. Results feed the tour\'s national indoor rankings and scholarship awards — see the 2027 rules for how they are calculated.',link:'https://www.archeryscholarshiptour.com/2027-indoor/the-phoenix-600-az'},
+ usaaz:{n:'USA Archery Arizona state championships — 2027',by:'USA Archery Arizona / ATAA',scope:'State titles (USA Archery)',need:0,
+  rule:'Separate state titles for indoor, JOAD indoor, JOAD outdoor, outdoor and field. USA Archery membership listing Arizona residence is required to compete for state titles; guests may shoot without awards.',link:'https://www.azarchery.com/events'},
+ dsa:{n:'DSA Points Series',by:'Desert Sky Archers · Ben Avery indoor',scope:'Local indoor points series',need:0,
+  rule:'Season points series at Ben Avery indoor events. The full series schedule and points rules are not posted publicly; ask Desert Sky Archers (desertskyarchers@gmail.com).',link:'https://form.jotform.com/253155111043139'},
+ nfaa:{n:'NFAA Shooter of the Year (national)',by:'National Field Archery Association',scope:'National ranking',need:0,
+  rule:'In 2026, ten NFAA events counted — including Rushmore Rumble, Indoor Sectionals, Indoor Nationals, the Vegas Shoot and Marked 3D Nationals. The 2027 qualifying list has not been posted; dates below are confirmed 2027 events.',link:'https://nfaausa.com/news/nfaa-introduces-an-enhanced-shooter-of-the-year-program-for-2026'}
+};
+const BA='Ben Avery Shooting Facility, Phoenix';
+const EV=[];
+/* legs that belong to a series but have no date yet */
+const TBA=[
+ {ser:'abfaa',t:'ABFAA Field State & Sectionals',d:'Date TBA (2026: Apr 25, Usery)'},
+ {ser:'abfaa',t:'ABFAA Sonoran Trail "Redding Style" Shoot',d:'Date TBA (2026: Apr 18–19, Full Draw at Ben Avery)'},
+ {ser:'abfaa',t:'ABFAA State Animal Round',d:'Date TBA (2026: Nov 15, Tucson)'},
+ {ser:'sw3d',t:'Leg — High Noon on the Gila (Yuma)',d:'2027 date TBA (2026: Jan 31–Feb 1)'},
+ {ser:'sw3d',t:'Leg — Buck Lewis Shoot (Sonoita)',d:'2027 date TBA (2026: Feb 28–Mar 1)'},
+ {ser:'sw3d',t:'Leg — Rumble in the Rocks (Dragoon)',d:'2027 date TBA — new format announced (2026: Mar 20–22)'},
+ {ser:'sw3d',t:'Leg — Bullseye Bonanza (Blythe, CA)',d:'2027 date TBA (2026: Apr 11–12)'},
+ {ser:'gma',t:'GMA Series — Leg 1',d:'April 2027, date TBA'},
+ {ser:'gma',t:'GMA Series — Leg 2',d:'2027, date TBA'},
+ {ser:'gma',t:'GMA Series — Leg 3',d:'2027, date TBA'}
+];
+const OTHER_TBA=[
+ {t:'Bow Crazy Archery Shoot — Arizona Snowbowl',d:'Lift-accessed mountain courses above Flagstaff. 2026 ran Sat Aug 1, 7 am–3 pm; 2027 date not posted yet.'},
+ {t:'Bows, Brews & BBQ — Sunrise Park Resort',d:'Eight 3D fun courses on the mountain. 2026 ran Sat Aug 15; 2027 date not posted yet.'},
+ {t:'Granite Mountain signature shoots',d:'Silver Arrow (April), Mile High (May), GMA (June), The Outlaw (July), Big Game (August), Youth Archers Tournament (May) — Prescott.'},
+ {t:'Full Draw Bowhunters',d:'3D80 Money & Fun Shoot (spring and fall) and the Father\'s Day Shoot at Perry Lake (June).'},
+ {t:'UMAC Cactus Classic & ASA qualifiers',d:'Usery Mountain hosts ASA Spring Qualifiers (2026: Apr 11–12) and the Cactus Classic.'},
+ {t:'NFAA Marked 3D Nationals — Redding, CA',d:'Held with the Western Classic Trail Shoot (2026: May 1–3). 2027 dates not posted.'},
+ {t:'ASA Pro/Am Tour 2027',d:'2026 stops ran Feb–Aug in AL, LA, KY and IL. 2027 schedule not yet published.'},
+ ];
+/* Weekly Thursday indoor 3D at Ben Avery, generated */
+{const d=new Date(2026,10,26);while(d<new Date(2027,11,31)){const y=d.getFullYear(),m=d.getMonth(),dd=d.getDate();const iso=y+'-'+String(m+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');
+ const hol=(m===10&&dd>=22&&dd<=28)||(m===11&&(dd===24||dd===31))||(m===6&&dd===4);
+ EV.push({id:'thu'+iso,t:'Thursday Night Indoor 3D',s:iso,cat:'weekly',host:'Ben Avery / AZ Game & Fish',where:BA+' — archery range',reg:'$15 adult, $8 youth 8–17',notes:'Evening fun shoot on life-size 3D animal targets, ages 8+. Bring your own bow and arrows.'+(hol?' Holiday week — confirm it is running.':''),link:'https://www.azgfd.com/?p=10004153',weekly:true});d.setDate(d.getDate()+7)}}
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const now=new Date();const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+const fmt=e=>{const a=pd(e.s);if(!e.e)return DOW[a.getDay()]+', '+MON[a.getMonth()]+' '+a.getDate()+', '+a.getFullYear();const b=pd(e.e);return MON[a.getMonth()]+' '+a.getDate()+'–'+(a.getMonth()===b.getMonth()?'':MON[b.getMonth()]+' ')+b.getDate()+', '+b.getFullYear()};
+const endOf=e=>pd(e.e||e.s);
+const isBk=e=>!!(e.ser&&SERIES[e.ser].buckle);
+const BK='<svg class="bkic" aria-label="buckle series"><use href="#buckle"/></svg>';
+let store={};try{store=JSON.parse(localStorage.getItem('pmat')||'{}')}catch(_){}
+const save=()=>{try{localStorage.setItem('pmat',JSON.stringify(store))}catch(_){}};
+store.off=store.off||{};store.legs=store.legs||{};
+let cur=new Date(today.getFullYear(),today.getMonth(),1);let view=store.view||'month';let q='';let buckleOnly=false;
+if(matchMedia('(max-width:600px)').matches&&!store.view)view='list';
+
+function visible(e){if(store.off[e.cat])return false;if(buckleOnly&&!isBk(e))return false;
+ if(q){const h=(e.t+' '+e.host+' '+e.where+' '+(e.ser?SERIES[e.ser].n:'')).toLowerCase();if(!h.includes(q))return false}return true}
+function on(dayIso){return EV.filter(e=>visible(e)&&e.s<=dayIso&&(e.e||e.s)>=dayIso).sort((a,b)=>(a.weekly?1:0)-(b.weekly?1:0))}
+
+function chips(){const c=Object.entries(CATS).map(([k,v])=>`<button class="chip" data-cat="${k}" aria-pressed="${!store.off[k]}"><span class="sw" style="background:${v.c}"></span>${v.n}</button>`).join('');
+ $('#chips').innerHTML=c+`<button class="chip" id="bonly" aria-pressed="${buckleOnly}">${BK} Buckle legs only</button>`;}
+function pill(e){const c=CATS[e.cat].c;const bk=isBk(e);return `<button class="pill${bk?' bk':''}${e.unv?' unv':''}" data-id="${esc(e.id)}" style="background:${c}" title="${esc(e.t)}">${bk?BK:''}<span>${esc(e.t)}</span></button>`}
+function month(){const y=cur.getFullYear(),m=cur.getMonth();$('#mtitle').textContent=MONL[m]+' '+y;
+ const start=new Date(y,m,1-new Date(y,m,1).getDay());let h=DOW.map(d=>`<div class="dow">${d}</div>`).join('');
+ for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(i===35&&d.getMonth()!==m)break;const di=iso(d);const evs=on(di);
+  const cls='day'+(d.getMonth()!==m?' out':'')+(+d===+today?' today':'');
+  h+=`<div class="${cls}" data-day="${di}" role="button" tabindex="0" aria-label="${MONL[d.getMonth()]} ${d.getDate()}, ${evs.length} events"><span class="dn">${d.getDate()}</span><div class="pills">${evs.slice(0,3).map(pill).join('')}</div>${evs.length>3?`<span class="more">+${evs.length-3} more</span>`:''}</div>`}
+ $('#view').innerHTML=`<div class="grid">${h}</div>`}
+function evRow(e){const a=pd(e.s);const c=CATS[e.cat].c;const past=endOf(e)<today;const bk=isBk(e);
+ return `<button class="ev" data-id="${esc(e.id)}" style="--c:${c}"><div class="dt">${MON[a.getMonth()]} ${a.getDate()}${e.e?'–'+pd(e.e).getDate():''}<small>${DOW[a.getDay()]}${e.e?' – '+DOW[pd(e.e).getDay()]:''}</small></div><div><div class="nm">${esc(e.t)}</div><div class="meta">${esc(e.where)} · ${esc(e.host)}</div></div><div class="tg">${e.unv&&!past?'<span class="tag">Found online · verify</span> ':''}${past?'<span class="tag past">Completed</span>':bk?`<span class="tag">${BK} ${esc(SERIES[e.ser].n.replace(' — 2027',''))}</span>`:e.ser?`<span class="tag">${esc(SERIES[e.ser].scope)}</span>`:''}</div></button>`}
+function list(){$('#mtitle').textContent='From '+MON[cur.getMonth()]+' '+cur.getFullYear();
+ const from=iso(cur);let evs=EV.filter(e=>visible(e)&&(e.e||e.s)>=from).sort((a,b)=>a.s.localeCompare(b.s));
+ const showWeekly=!store.off.weekly;const weekly=evs.filter(e=>e.weekly);evs=evs.filter(e=>!e.weekly);
+ if(!evs.length&&!weekly.length){$('#view').innerHTML='<div class="empty">No events match. Try clearing the search or turning categories back on.</div>';return}
+ let h='',lm='';if(showWeekly&&weekly.length)h+=`<p class="note">Thursday Night Indoor 3D at Ben Avery runs every week (${weekly.length} upcoming Thursdays) — shown on the month view, hidden here to keep the list readable.</p>`;
+ for(const e of evs){const a=pd(e.s);const k=MONL[a.getMonth()]+' '+a.getFullYear();if(k!==lm){h+=`<div class="mhead">${k}</div>`;lm=k}h+=evRow(e)}
+ $('#view').innerHTML=`<div class="list">${h}</div>`}
+function render(){$('#vMonth').setAttribute('aria-pressed',view==='month');$('#vList').setAttribute('aria-pressed',view==='list');chips();view==='month'?month():list();$('#daydetail').innerHTML=''}
+function dayDetail(di){const evs=on(di);const d=pd(di);$('#daydetail').innerHTML=`<div class="mhead">${DOW[d.getDay()]}, ${MONL[d.getMonth()]} ${d.getDate()}</div>`+(evs.length?`<div class="list">${evs.map(evRow).join('')}</div>`:'<div class="empty">Nothing scheduled this day.</div>')}
+
+function openEv(id){const e=EV.find(x=>x.id===id);if(!e)return;const s=e.ser?SERIES[e.ser]:null;const c=CATS[e.cat].c;
+ const txt=`${e.t}\n${fmt(e)}\n${e.where}\nHost: ${e.host}${e.reg?'\nRegistration: '+e.reg:''}${e.link?'\n'+e.link:''}`;
+ $('#dlg').style.setProperty('--c',c);
+ $('#dlg').innerHTML=`<h3 id="mt">${esc(e.t)}</h3>${s?`<span class="tag">${s.buckle?BK+' Buckle leg — ':''}Counts toward: ${esc(s.n)}</span>`:''}
+ <dl><dt>When</dt><dd>${esc(fmt(e))}</dd><dt>Where</dt><dd>${esc(e.where)}</dd><dt>Host</dt><dd>${esc(e.host)}</dd><dt>Type</dt><dd>${esc(CATS[e.cat].n)}</dd>${e.reg?`<dt>Registration</dt><dd>${esc(e.reg)}</dd>`:''}${e.notes?`<dt>Notes</dt><dd>${esc(e.notes)}</dd>`:''}${s?`<dt>Series rule</dt><dd>${esc(s.rule)}</dd>`:''}</dl>
+ ${e.conf?'<p class="note"><b>Confirm date with host.</b></p>':''}${e.unv?`<p class="webnote"><b>Found online by the weekly calendar check.</b> Confirm the details on the host page${canWrite?', then tap Mark verified':''}.</p>`:''}${e.by?'<p class="by" id="byl"></p>':''}<div id="rsvpbox"></div>
+ <div class="acts">${e.link?`<a class="btn" href="${esc(e.link)}" target="_blank" rel="noopener">Host page ↗</a>`:''}<button id="cp">Copy details</button>${s?`<button id="gos">See series tracker</button>`:''}${canWrite&&e.unv?'<button id="vf" class="pri">Mark verified</button>':''}${canWrite&&!e.weekly?'<button id="ed">Edit</button><button id="rm" class="danger">Remove</button>':''}<button id="cl">Close</button></div><p class="note" id="cpm" aria-live="polite"></p>`;
+ $('#modal').classList.add('on');$('#cl').focus();
+ $('#cl').onclick=close;$('#cp').onclick=()=>{navigator.clipboard.writeText(txt).then(()=>$('#cpm').textContent='Copied — paste into a text or your calendar.',()=>$('#cpm').textContent='Copy was blocked by the browser.')};
+ if($('#gos'))$('#gos').onclick=()=>{close();pendingScroll='s-'+e.ser;if(curPage()==='buckle-series')route();else location.hash='#buckle-series'}
+ if($('#ed'))$('#ed').onclick=()=>openForm(e);if($('#rm'))$('#rm').onclick=()=>removeEv(e);
+ if($('#vf'))$('#vf').onclick=async()=>{try{await db.collection('events').doc(e.id).update({verified:true,by:usr?await usr.id():'',at:Date.now()});close();$('#livest').textContent=`Verified "${e.t}".`}catch(_){$('#cpm').textContent='Could not save — you may not have edit access.'}};
+ if(e.by&&$('#byl'))byline(e);
+ rsvpBox(e)}
+function close(){$('#modal').classList.remove('on')}
+
+function nextUp(){const up=EV.filter(e=>isBk(e)&&endOf(e)>=today).sort((a,b)=>a.s.localeCompare(b.s))[0];
+ const anyUp=EV.filter(e=>!e.weekly&&endOf(e)>=today).sort((a,b)=>a.s.localeCompare(b.s))[0];
+ if(!up){$('#next').innerHTML='<div class="days">—</div><div><div class="lab">Next buckle leg</div><div class="tt">Check back for the next season\'s dates</div></div>';return}
+ const n=Math.max(0,Math.round((pd(up.s)-today)/864e5));
+ $('#next').innerHTML=`<div class="days">${n}<small>${n===1?'day':'days'}</small></div><div><div class="lab">Next buckle leg</div><div class="tt">${esc(up.t)}</div><div class="note" style="color:#56606b">${esc(fmt(up))} · ${esc(up.where)}${up.reg?'<br>'+esc(up.reg):''}</div>${anyUp&&anyUp.id!==up.id?`<div class="note" style="color:#56606b;margin-top:4px">Sooner: ${esc(anyUp.t)}, ${esc(MON[pd(anyUp.s).getMonth()]+' '+pd(anyUp.s).getDate())}</div>`:''}</div>`}
+
+function seriesCards(){const order=['umac','abfaa','sw3d','gma','nast','usaaz','dsa','nfaa'];
+ $('#scards').innerHTML=order.map(k=>{const s=SERIES[k];const legs=EV.filter(e=>e.ser===k).sort((a,b)=>a.s.localeCompare(b.s)).map(e=>({id:e.id,t:e.t,d:fmt(e),past:endOf(e)<today}));
+  const tb=TBA.filter(x=>x.ser===k).map((x,i)=>({id:k+'-tba'+i,t:x.t,d:x.d,tba:true}));const all=legs.concat(tb);
+  const st=id=>store.legs[id]||'';const shot=all.filter(l=>st(l.id)==='shot').length,plan=all.filter(l=>st(l.id)==='plan').length;
+  let status='',pct=0;if(s.need){pct=Math.min(100,(shot+plan)/s.need*100);const left=s.need-shot;
+   status=left<=0?`Qualified — ${shot} of ${s.need} shot`:shot+plan>=s.need?`On track — ${shot} shot, ${plan} planned (need ${s.need})`:`${shot} shot, ${plan} planned — ${s.need-shot-plan} more needed to qualify`}else status=`${shot} shot, ${plan} planned`;
+  return `<article class="sc" id="s-${k}"><div class="scope">${esc(s.scope)} · ${esc(s.by)}</div><h3>${s.buckle?BK.replace('bkic','bkic" style="width:22px;height:16px;color:var(--gold)')+' ':''}${esc(s.n)}</h3>
+  <div class="rule"><b>${s.need?'Need '+s.need+' legs. ':''}</b>${esc(s.rule)}</div>
+  ${s.need?`<div class="prog" aria-hidden="true"><i style="width:${pct}%"></i></div>`:''}<div class="status">${status}</div>
+  <ul class="legs">${all.map(l=>`<li><div>${esc(l.t)}<div class="ld">${esc(l.d)}${l.past?' · completed':''}</div></div><button class="legbtn" data-leg="${esc(l.id)}" data-s="${st(l.id)}">${st(l.id)==='shot'?'✓ Shot':st(l.id)==='plan'?'Planned':'Mark'}</button></li>`).join('')}</ul>
+  <a href="${esc(s.link)}" target="_blank" rel="noopener">Official rules &amp; registration ↗</a></article>`}).join('')}
+
+function nationals(){const n=EV.filter(e=>e.cat==='national').sort((a,b)=>a.s.localeCompare(b.s));
+ $('#ntable tbody').innerHTML=n.map(e=>`<tr><td class="nw">${esc(fmt(e))}</td><td><b>${esc(e.t)}</b></td><td>${esc(e.where)}</td><td>${e.ser==='nfaa'?'NFAA Shooter of the Year event in 2026; national rankings':e.ser==='nast'?'National Archery Scholarship Tour ranking event':e.cat==='mtn'?'Destination 3D challenge — no rankings':'USA Archery national championship'}</td></tr>`).join('')}
+function tbas(){$('#tbas').innerHTML=OTHER_TBA.map(x=>`<div class="tb"><b>${esc(x.t)}</b>${esc(x.d)}</div>`).join('')}
+
+$('#prev').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
+$('#nextm').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
+$('#todayb').onclick=()=>{cur=new Date(today.getFullYear(),today.getMonth(),1);render()};
+$('#vMonth').onclick=()=>{view='month';store.view=view;save();render()};$('#vList').onclick=()=>{view='list';store.view=view;save();render()};
+$('#q').oninput=ev=>{q=ev.target.value.trim().toLowerCase();render()};
+$('#chips').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.id==='bonly'){buckleOnly=!buckleOnly}else{const k=b.dataset.cat;store.off[k]=!store.off[k];save()}render()};
+$('#view').onclick=ev=>{const p=ev.target.closest('[data-id]');if(p){openEv(p.dataset.id);return}const d=ev.target.closest('[data-day]');if(d)dayDetail(d.dataset.day)};
+$('#view').onkeydown=ev=>{if((ev.key==='Enter'||ev.key===' ')&&ev.target.dataset.day){ev.preventDefault();dayDetail(ev.target.dataset.day)}};
+$('#daydetail').onclick=ev=>{const p=ev.target.closest('[data-id]');if(p)openEv(p.dataset.id)};
+$('#modal').onclick=ev=>{if(ev.target.id==='modal')close()};
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape')close();if($('#modal').classList.contains('on'))return;if(ev.target.matches('input')||curPage()!=='calendar')return;if(ev.key==='ArrowLeft'&&view==='month')$('#prev').click();if(ev.key==='ArrowRight'&&view==='month')$('#nextm').click()});
+$('#scards').onclick=ev=>{const b=ev.target.closest('[data-leg]');if(!b)return;const id=b.dataset.leg;const nx={'':'plan',plan:'shot',shot:''}[store.legs[id]||''];if(nx)store.legs[id]=nx;else delete store.legs[id];save();syncLegs();seriesCards();document.querySelector(`[data-leg="${CSS.escape(id)}"]`)?.focus()};
+
+{let g='';const ctr=[[200,120],[900,380],[1080,90]];for(const [cx,cy] of ctr){for(let r=1;r<=9;r++){let d='';for(let i=0;i<=48;i++){const a=i/48*Math.PI*2;const k=r*26*(1+.18*Math.sin(3*a+r*.7+cx)+.1*Math.cos(5*a+cy));d+=(i?'L':'M')+(cx+k*Math.cos(a)*1.4).toFixed(1)+' '+(cy+k*Math.sin(a)).toFixed(1)}g+=`<path d="${d}Z"/>`}}$('#topo').innerHTML=g}
+const PAGES=[...document.querySelectorAll('.page')].map(x=>x.dataset.page);let pendingScroll=null;
+const curPage=()=>{const k=location.hash.slice(1);return PAGES.includes(k)?k:'home'};
+function route(){const k=curPage();for(const pg of document.querySelectorAll('.page'))pg.classList.toggle('on',pg.dataset.page===k);
+ for(const a of document.querySelectorAll('nav.top .links a'))a.getAttribute('href')==='#'+k?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');
+ const t=document.querySelector(`.page[data-page="${k}"]`).dataset.title;document.title=(k==='home'?'':t.replace('&amp;','&')+' · ')+'Pueblo Mechanical Archery Team';
+ close();if(pendingScroll){const el=document.getElementById(pendingScroll);pendingScroll=null;if(el){el.scrollIntoView();return}}window.scrollTo(0,0)}
+window.addEventListener('hashchange',route);
+$('#homelink').onclick=()=>{cur=new Date(today.getFullYear(),today.getMonth(),1);render();if(curPage()==='home')window.scrollTo({top:0,behavior:'smooth'})};
+function up3(){const n=EV.filter(e=>!e.weekly&&endOf(e)>=today).sort((a,b)=>a.s.localeCompare(b.s)).slice(0,3);
+ $('#up3').innerHTML=n.map(e=>{const a=pd(e.s);return `<button class="uc" data-id="${esc(e.id)}" style="--c:${CATS[e.cat].c}"><div class="d">${MON[a.getMonth()]} ${a.getDate()}${e.e?'–'+pd(e.e).getDate():''}<small>${DOW[a.getDay()]}</small></div><div class="nm">${esc(e.t)}</div><div class="meta">${esc(e.where)}</div>${isBk(e)?`<span class="tag">${BK} Buckle leg</span>`:''}</button>`}).join('')||'<div class="empty">No upcoming events posted.</div>'}
+$('#up3').onclick=ev=>{const b=ev.target.closest('[data-id]');if(b)openEv(b.dataset.id)};
+/* ---- Total Archery Challenge page ---- */
+const TACBASE=[];
+let TAC=TACBASE.slice();let TACDB={};
+const reg=t=>t.st==='AZ'?'az':(t.st==='UT'||t.st==='CO'||t.st==='NM'||t.st==='NV')?'near':'';
+const tacDates=t=>{const a=pd(t.s),b=pd(t.e||t.s);return MON[a.getMonth()]+' '+a.getDate()+'–'+(a.getMonth()!==b.getMonth()?MON[b.getMonth()]+' ':'')+b.getDate()};
+function tacRebuild(){const m=new Map(TACBASE.map(t=>[t.id,t]));for(const [id,d] of Object.entries(TACDB)){if(d.removed){m.delete(id);continue}if(!isDate(d.s)||!d.loc)continue;const u=okLink(d.url);m.set(id,{id,loc:String(d.loc).slice(0,80),st:String(d.st||'').slice(0,8),s:d.s,e:isDate(d.e)&&d.e>=d.s?d.e:d.s,url:u||'https://totalarcherychallenge.com/pages/events',note:d.note?String(d.note).slice(0,200):''})}
+ TAC=[...m.values()].sort((a,b)=>a.s.localeCompare(b.s));tacRender()}
+function tacRender(){const up=TAC.filter(t=>pd(t.e||t.s)>=today);const nx=up[0];const az=TAC.find(t=>t.st==='AZ');
+ const days=nx?Math.max(0,Math.round((pd(nx.s)-today)/864e5)):0;
+ $('#tacsum').innerHTML=`<div><b>${TAC.length}</b><span>tour stops in ${TAC.length?pd(TAC[0].s).getFullYear():''}</span></div>`+(nx?`<div><b>${days} days</b><span>until ${esc(nx.loc)}, ${esc(nx.st)}</span></div>`:'')+(az?`<div><b>${esc(tacDates(az))}</b><span>Arizona stop — ${esc(az.loc)}</span></div>`:'');
+ const first=TAC.length?pd(TAC[0].s):today,last=TAC.length?pd(TAC[TAC.length-1].e||TAC[TAC.length-1].s):today;let mh='';
+ for(let d=new Date(first.getFullYear(),first.getMonth(),1);d<=last;d=new Date(d.getFullYear(),d.getMonth()+1,1)){const y=d.getFullYear(),mo=d.getMonth();let g=DOW.map(x=>`<span class="h">${x[0]}</span>`).join('');
+  for(let i=0;i<d.getDay();i++)g+='<span></span>';const n=new Date(y,mo+1,0).getDate();
+  for(let dd=1;dd<=n;dd++){const di=iso(new Date(y,mo,dd));const t=TAC.find(x=>x.s<=di&&(x.e||x.s)>=di);g+=t?`<a class="c ${reg(t)}" href="#tac" data-tac="${esc(t.id)}" title="${esc(t.loc+', '+t.st)}">${dd}</a>`:`<span class="c">${dd}</span>`}
+  mh+=`<div class="mm"><h3>${MONL[mo]} ${y}</h3><div class="mmg">${g}</div></div>`}
+ $('#tacmonths').innerHTML=mh;
+ $('#taclist').innerHTML=TAC.map(t=>{const a=pd(t.s),b=pd(t.e||t.s);const past=b<today;return `<article class="tc ${reg(t)}${past?' past':''}" id="tac-${esc(t.id)}"><div class="dt">${esc(tacDates(t))}<small>${DOW[a.getDay()]}–${DOW[b.getDay()]}, ${a.getFullYear()}</small></div><div><div class="nm">${esc(t.loc)}, ${esc(t.st)}</div><div class="meta">${reg(t)==='az'?'Arizona stop. ':reg(t)==='near'?'Closest out-of-state stops to the Valley. ':''}${esc(t.note||'')}${past?' Completed.':''}</div></div><a class="btn pri" href="${esc(t.url)}" target="_blank" rel="noopener">Learn more ↗</a></article>`}).join('')||'<div class="empty">No TAC stops posted yet.</div>'}
+$('#tacmonths').onclick=ev=>{const a=ev.target.closest('[data-tac]');if(!a)return;ev.preventDefault();const el=document.getElementById('tac-'+a.dataset.tac);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600)}};
+tacRender();
+
+/* ---- shared events: members add / edit / remove, everyone sees it live ---- */
+const BASE=EV.slice();let DBEV={};let db=null,usr=null,canWrite=false;
+const okLink=u=>/^https:\/\//i.test(u||'')?u:'';const isDate=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'');
+function clean(id,d){if(!d||!isDate(d.s)||!d.t||!CATS[d.cat])return null;const e={id,t:String(d.t).slice(0,120),s:d.s,cat:d.cat,host:String(d.host||'').slice(0,100),where:String(d.where||'').slice(0,160),by:d.by||'',at:d.at||0,live:true};
+ if(isDate(d.e)&&d.e>d.s)e.e=d.e;if(d.src==='web'&&d.verified!==true)e.unv=true;if(d.ser&&SERIES[d.ser])e.ser=d.ser;for(const k of['reg','notes'])if(d[k])e[k]=String(d[k]).slice(0,600);const l=okLink(d.link);if(l)e.link=l;return e}
+function rebuild(){const out=[];const seen=new Set();for(const b of BASE){const o=DBEV[b.id];seen.add(b.id);if(o){if(o.removed)continue;const c=clean(b.id,o);out.push(c||b)}else out.push(b)}
+ for(const [id,o] of Object.entries(DBEV)){if(seen.has(id)||o.removed)continue;const c=clean(id,o);if(c)out.push(c)}
+ EV.length=0;EV.push(...out);render();nextUp();seriesCards();nationals();up3()}
+async function byline(e){const n=$('#byl');if(!e.by){n.textContent='';return}try{const ps=await usr.profiles([e.by]);n.textContent=`Updated by ${ps[e.by]?.name||'a team member'}${e.at?' on '+new Date(e.at).toLocaleDateString():''}`}catch(_){n.textContent='Updated by a team member'}}
+function openForm(e){const x=e||{};const sel=(o,v)=>o.map(([k,n])=>`<option value="${esc(k)}"${k===(v||'')?' selected':''}>${esc(n)}</option>`).join('');
+ $('#dlg').style.setProperty('--c','var(--jblue)');
+ $('#dlg').innerHTML=`<h3 id="mt">${e?'Edit event':'Add an event'}</h3><p class="note" style="margin:0">Saved changes show up for every team member right away.</p>
+ <form class="frm" id="evf" novalidate>
+  <label class="full">Event name<input name="t" required maxlength="120" value="${esc(x.t)}" placeholder="e.g. Full Draw 3D80 Money & Fun Shoot"></label>
+  <label>Start date<input type="date" name="s" required value="${esc(x.s)}"></label>
+  <label>End date (if multi-day)<input type="date" name="e" value="${esc(x.e)}"></label>
+  <label>Type<select name="cat">${sel(Object.entries(CATS).filter(([k])=>k!=='weekly').map(([k,v])=>[k,v.n]),x.cat||'3d')}</select></label>
+  <label>Counts toward series<select name="ser">${sel([['','None']].concat(Object.entries(SERIES).map(([k,v])=>[k,v.n])),x.ser)}</select></label>
+  <label>Host<input name="host" maxlength="100" value="${esc(x.host)}"></label>
+  <label>Location<input name="where" maxlength="160" value="${esc(x.where)}"></label>
+  <label class="full">Registration / fees<input name="reg" maxlength="600" value="${esc(x.reg)}"></label>
+  <label class="full">Notes<textarea name="notes" maxlength="600">${esc(x.notes)}</textarea></label>
+  <label class="full">Host link (https://…)<input name="link" type="url" value="${esc(x.link)}"></label>
+  <p class="err" id="ferr" role="alert"></p>
+  <div class="acts full"><button type="submit" class="pri" id="sv">Save event</button><button type="button" id="cn">Cancel</button></div>
+ </form>`;
+ $('#modal').classList.add('on');$('#evf').t.focus();$('#cn').onclick=close;
+ $('#evf').onsubmit=async ev=>{ev.preventDefault();const f=ev.target;const d={};for(const k of['t','s','e','cat','ser','host','where','reg','notes','link'])d[k]=f[k].value.trim();
+  const err=m=>{$('#ferr').textContent=m};if(!d.t)return err('Add an event name.');if(!isDate(d.s))return err('Pick a start date.');if(d.e&&d.e<d.s)return err('End date is before the start date.');if(d.link&&!okLink(d.link))return err('The link must start with https://');
+  if(!d.e||d.e===d.s)d.e='';const id=e?e.id:'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  $('#sv').disabled=true;$('#sv').textContent='Saving…';
+  try{d.by=usr?await usr.id():'';d.at=Date.now();d.removed=false;d.verified=true;d.src=(e&&DBEV[e.id]&&DBEV[e.id].src)||'member';await db.collection('events').doc(id).set(d);close();const a=pd(d.s);cur=new Date(a.getFullYear(),a.getMonth(),1);render();$('#livest').textContent=`Saved "${d.t}". Everyone will see it on the calendar.`}
+  catch(x){$('#sv').disabled=false;$('#sv').textContent='Save event';err('Could not save — you may not have edit access to the site. Ask the site owner to add you as a Contributor.')}}}
+async function removeEv(e){if($('#rm').dataset.sure!=='1'){$('#rm').dataset.sure='1';$('#rm').textContent='Tap again to remove';return}
+ try{await db.collection('events').doc(e.id).set({removed:true,by:usr?await usr.id():'',at:Date.now()});close();$('#livest').textContent=`Removed "${e.t}".`}catch(_){$('#cpm').textContent='Could not remove — you may not have edit access.'}}
+$('#addev').onclick=()=>openForm(null);
+(async()=>{try{if(!window.claude||!claude.use)return;const [d,u]=await Promise.all([claude.use('db'),claude.use('user')]);db=d;usr=u;if(!db)return;
+ let w=null;try{w=u?await u.can('data.write'):null}catch(_){}canWrite=false;$('#addev').hidden=true;memInit(w);
+ const t=setTimeout(()=>{$('#livest').textContent='Live event updates are taking a while to load — showing the built-in schedule.'},10000);
+ db.doc('meta/webcheck').onSnapshot(s=>{const d=s.exists?s.data():null;if(d&&d.at){const w=new Date(Number(d.at));$('#webst').textContent=`Last automatic web check: ${MON[w.getMonth()]} ${w.getDate()}, ${w.getFullYear()} — ${String(d.summary||'').slice(0,200)} The calendar is checked against club and association websites every Sunday evening.`}else $('#webst').textContent='Club and association websites are checked for new events every Sunday evening.'},()=>{});
+ db.collection('tac').onSnapshot(s=>{const m={};(s.docs||[]).forEach(doc=>{m[doc.id]=doc.data()});TACDB=m;tacRebuild()},()=>{});
+ db.collection('events').onSnapshot(snap=>{clearTimeout(t);const m={};(snap.docs||snap).forEach(doc=>{m[doc.id]=typeof doc.data==='function'?doc.data():doc.data});DBEV=m;rebuild();
+  const n=Object.keys(m).length;if(!$('#livest').textContent||$('#livest').dataset.auto)$('#livest').textContent=canWrite?`Live — ${n} team update${n===1?'':'s'} applied. Use "+ Add event" when a host announces a new shoot.`:'';$('#livest').dataset.auto='1'},
+  ()=>{clearTimeout(t);$('#livest').textContent='Could not load team updates — showing the built-in schedule.'})}catch(_){}})();
+/* ---- Static hosting (Cloudflare Pages): content comes from data/site.json, built from the content/ folder ---- */
+const STATIC=!(window.claude&&claude.use);
+if(STATIC)(async()=>{try{const r=await fetch('data/site.json',{cache:'no-cache'});if(!r.ok)throw 0;const d=await r.json();
+ const m={};for(const e of d.events||[])if(e&&e.id)m[e.id]=e;DBEV=m;rebuild();
+ const t={};for(const x of d.tac||[])if(x&&x.id)t[x.id]=x;TACDB=t;tacRebuild();
+ GAL=[];for(const g of d.gallery||[]){(g.photos||[]).forEach((p,i)=>{if(typeof p==='string'&&p)GAL.push({id:g.id+'-'+i,src:p,album:ALBUMS.includes(g.album)?g.album:ALBUMS[0],caption:g.caption||g.title||'',at:g.date?pd(g.date).getTime():0})})}
+ GAL.sort((a,b)=>(b.at||0)-(a.at||0));renderGallery();
+ const w=d.webcheck;if(w&&w.at){const dt=pd(w.at);$('#webst').textContent=`Last automatic web check: ${MON[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()} — ${String(w.summary||'').slice(0,200)} The calendar is checked against club and association websites every Sunday evening.`}
+ else $('#webst').textContent='Club and association websites are checked for new events every Sunday evening.';
+ me.ready=true;renderMembers()}catch(_){$('#livest').textContent='Could not load the event list — please refresh the page.'}})();
+/* ---- Members area, gallery uploads, RSVPs ---- */
+const ALBUMS=['Thursday Night 3D','AZ 3D Championship Series','Mountain shoots','Podiums & buckles','Team gear','Road trips'];
+const DISC=['3D','Indoor 5-spot','Vegas 3-spot','Field','Outdoor target','Other'];
+const me={uid:null,owner:false,admin:false,member:false,ready:false};
+let ROLES=[],ROSTER={},RSVP={},RESULTS={},TGEAR={},TEAM={},GAL=[],PROF={},assets=null,memTab='overview',memEdit=null,adminHits=[];
+const MY={bows:{items:[]},arrows:{items:[]},rounds:{items:[]},prefs:{},family:{kids:[]}};
+const kidKey=(u,k)=>u+'__'+k;
+const kidOk=(u,k)=>!!(TEAM.youth&&TEAM.youth.approved&&TEAM.youth.approved[kidKey(u,k)]);
+const kidName=k=>k&&(k.consent&&k.consent.name==='full'&&k.last?k.first+' '+k.last:(k.first||'Youth archer')+((k.lastInit||(k.last||'').charAt(0).toUpperCase())?' '+(k.lastInit||(k.last||'').charAt(0).toUpperCase())+'.':''));
+const myKids=()=>(MY.family&&MY.family.kids)||[];
+const pubKid=(u,id)=>((ROSTER[u]&&ROSTER[u].kids)||[]).find(k=>k.id===id);
+function teamKids(){const out=[];for(const [u,p] of Object.entries(ROSTER))for(const k of (p.kids||[]))if(kidOk(u,k.id))out.push({u,k});return out}
+const whoName=w=>!w||w==='me'?'':kidName(myKids().find(k=>k.id===w)||{});
+const clone=o=>JSON.parse(JSON.stringify(o||{}));
+const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const nm=id=>(ROSTER[id]&&ROSTER[id].name)||PROF[id]||'A teammate';
+const num=v=>{const n=parseFloat(v);return isFinite(n)?n:null};
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),3200)}
+async function resolveNames(ids){if(!usr)return;const need=[...new Set(ids)].filter(i=>i&&!(i in PROF));if(!need.length)return;need.forEach(i=>PROF[i]='');
+ try{const ps=await usr.profiles(need);for(const i of need)PROF[i]=(ps[i]&&ps[i].name)||'';renderMembers();renderGallery()}catch(_){}}
+const uidDoc=k=>db.doc('data/users/'+me.uid+'/'+k);
+async function saveMy(k){try{await uidDoc(k).set(clone(MY[k]))}catch(_){toast('Could not save — ask Monty to check your member access.')}}
+function subDoc(p,cb){try{db.doc(p).onSnapshot(s=>cb(s.exists?clone(s.data()):null),()=>{})}catch(_){}}
+function subCol(p,cb){try{db.collection(p).onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=clone(d.data())});cb(m)},()=>{})}catch(_){}}
+function setAdmin(){me.admin=me.member&&(me.owner||ROLES.includes(me.uid));canWrite=me.admin;$('#addev').hidden=!me.admin;renderGalAdmin();renderMembers()}
+
+async function memInit(w){
+ try{me.uid=usr?await usr.id():null;me.owner=usr?!!(await usr.isOwner()):false}catch(_){}
+ me.member=!!(me.uid&&w!==false);me.ready=true;
+ try{assets=await claude.use('assets')}catch(_){assets=null}
+ subCol('gallery',m=>{GAL=Object.entries(m).map(([id,d])=>({id,...d})).filter(g=>g.asset).sort((a,b)=>(b.at||0)-(a.at||0));renderGallery();resolveNames(GAL.map(g=>g.by))});
+ subDoc('config/roles',d=>{ROLES=Array.isArray(d&&d.admins)?d.admins.map(String):[];setAdmin();resolveNames(ROLES)});
+ if(me.member){
+  subDoc('data/users/'+me.uid+'/family',d=>{MY.family=d&&Array.isArray(d.kids)?d:{kids:[]};renderMembers()});
+  for(const k of['bows','arrows','rounds'])subDoc('data/users/'+me.uid+'/'+k,d=>{MY[k]=d&&Array.isArray(d.items)?d:{items:[]};renderMembers()});
+  let first=true;subDoc('data/users/'+me.uid+'/prefs',d=>{MY.prefs=d||{};if(first&&d&&d.legs){Object.assign(store.legs,d.legs);save();seriesCards()}first=false});
+  subCol('roster',m=>{ROSTER=m;renderMembers();resolveNames(Object.keys(m))});
+  subCol('rsvp',m=>{RSVP=m;renderMembers();resolveNames(Object.keys(m))});
+  subCol('results',m=>{RESULTS=m;renderMembers()});
+  subCol('teamgear',m=>{TGEAR=m;renderMembers()});
+  subCol('team',m=>{TEAM=m;renderMembers();galAdminOn=null;renderGalAdmin()});
+  resolveNames([me.uid]);
+ }
+ setAdmin();
+}
+function syncLegs(){if(!me.member)return;MY.prefs=clone(MY.prefs);MY.prefs.legs=clone(store.legs);saveMy('prefs')}
+
+/* ---------- RSVP on calendar events ---------- */
+function myRsvp(){return clone((RSVP[me.uid]&&RSVP[me.uid].ev)||{})}
+function goingFor(eid){const out=Object.entries(RSVP).filter(([u,d])=>d&&d.ev&&d.ev[eid]&&d.ev[eid].s).map(([u,d])=>({u,...d.ev[eid]}));
+ for(const [u,d] of Object.entries(RSVP)){const kev=(d&&d.kev)||{};for(const [kid,m] of Object.entries(kev)){if(m&&m[eid]&&m[eid].s&&kidOk(u,kid)){const k=pubKid(u,kid);if(k)out.push({u,kid,label:kidName(k)+' (youth)',...m[eid]})}}}
+ return out}
+const goName=x=>x.label||nm(x.u);
+function myKev(){return clone((RSVP[me.uid]&&RSVP[me.uid].kev)||{})}
+function rideTxt(r){return r.ride==='driving'?`driving${r.seats?', '+r.seats+' seat'+(r.seats>1?'s':''):''}`:r.ride==='need'?'needs a ride':''}
+function rsvpBox(e){const box=$('#rsvpbox');if(!box)return;if(!me.member||e.weekly){box.innerHTML='';return}
+ const r=myRsvp()[e.id]||{};const past=endOf(e)<today;const who=goingFor(e.id).filter(x=>x.u!==me.uid);const kev=myKev();
+ box.innerHTML=`<div class="rsvp"><b>Team members</b><div class="rbtns"><button data-r="going" aria-pressed="${r.s==='going'}">${past?'I was registered':'I’m going'}</button><button data-r="attended" aria-pressed="${r.s==='attended'}">I attended</button>${r.s?'<button data-r="">Clear</button>':''}</div>
+ ${r.s==='going'&&!past?`<div class="rride"><label>Ride <select id="rride"><option value="">—</option><option value="driving"${r.ride==='driving'?' selected':''}>I’m driving</option><option value="need"${r.ride==='need'?' selected':''}>I need a ride</option></select></label><label>Seats <input id="rseats" type="number" min="0" max="8" value="${esc(r.seats||'')}"></label></div>`:''}
+ ${r.s==='attended'?'<p class="note">The weekly check will look for posted results and ask you to confirm any match on Members › My events.</p>':''}
+ ${myKids().map(k=>{const s=(kev[k.id]&&kev[k.id][e.id]&&kev[k.id][e.id].s)||'';return `<div class="kidr"><span><b>${esc(kidName(k))}</b>${kidOk(me.uid,k.id)?'':' <span class="note">(not shown to the team until approved)</span>'}</span><div class="rbtns"><button data-kr="going" data-kid="${esc(k.id)}" aria-pressed="${s==='going'}">Going</button><button data-kr="attended" data-kid="${esc(k.id)}" aria-pressed="${s==='attended'}">Attended</button>${s?`<button data-kr="" data-kid="${esc(k.id)}">Clear</button>`:''}</div></div>`}).join('')}
+ <p class="note">${who.length?'Also going: '+who.map(x=>esc(goName(x))+(rideTxt(x)?' ('+esc(rideTxt(x))+')':'')).join(', '):'No teammates marked yet.'}</p></div>`;
+ box.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>setRsvp(e,b.dataset.r));box.querySelectorAll('[data-kr]').forEach(b=>b.onclick=()=>setKidRsvp(e,b.dataset.kid,b.dataset.kr));
+ const rr=$('#rride'),rs=$('#rseats');if(rr){rr.onchange=()=>setRsvp(e,'going',{ride:rr.value});rs.onchange=()=>setRsvp(e,'going',{seats:Math.max(0,Math.min(8,parseInt(rs.value)||0))})}}
+async function setKidRsvp(e,kid,s){const kev=myKev();kev[kid]=kev[kid]||{};if(!s)delete kev[kid][e.id];else kev[kid][e.id]={s,t:Date.now()};const ev=myRsvp();
+ try{await db.doc('rsvp/'+me.uid).set({ev,kev});RSVP=clone(RSVP);RSVP[me.uid]={ev,kev};rsvpBox(e);toast(s?'Saved for '+kidName(myKids().find(k=>k.id===kid)||{})+'.':'Cleared.')}catch(_){toast('Could not save — ask Monty to check your member access.')}}
+async function setRsvp(e,s,extra){const ev=myRsvp();if(!s)delete ev[e.id];else ev[e.id]={...(ev[e.id]||{}),s,t:Date.now(),...(extra||{})};const kev=myKev();
+ try{await db.doc('rsvp/'+me.uid).set({ev,kev});RSVP=clone(RSVP);RSVP[me.uid]={ev,kev};rsvpBox(e);toast(s==='attended'?'Marked as attended.':s==='going'?'Marked as going.':'Cleared.')}catch(_){toast('Could not save — ask Monty to check your member access.')}}
+
+/* ---------- Gallery ---------- */
+function renderGallery(){const v=$('#galview');if(!v)return;$('#galempty').hidden=GAL.length>0;
+ if(!GAL.length){v.innerHTML='';return}
+ v.innerHTML=ALBUMS.map(a=>{const ps=GAL.filter(g=>g.album===a);if(!ps.length)return'';return `<h2 class="albh">${esc(a)}</h2><div class="gal">${ps.map(g=>`<button class="gph" data-ph="${esc(g.id)}"><img src="${esc(g.src||'/_blob/'+g.asset)}" alt="${esc(g.caption||a)}" loading="lazy"></button>`).join('')}</div>`}).join('')}
+function noPhotoKids(){const n=[];for(const [u,p] of Object.entries(ROSTER))for(const k of (p.kids||[]))if(!(k.consent&&k.consent.photos)||!kidOk(u,k.id))n.push(kidName(k));return n.length?' <b>No photos of:</b> '+esc(n.join(', '))+' (no parent photo consent or not yet approved).':''}
+let galAdminOn=null;function renderGalAdmin(){const b=$('#galadmin');if(!b)return;const on=!!(me.admin&&assets);if(on===galAdminOn)return;galAdminOn=on;if(!on){b.innerHTML='';return}
+ b.innerHTML=`<form class="upl" id="uplf"><b>Add photos</b><label>Album <select name="album">${ALBUMS.map(a=>`<option>${esc(a)}</option>`).join('')}</select></label><label>Caption (optional) <input name="cap" maxlength="140"></label><label>Photos <input name="files" type="file" accept="image/jpeg,image/png,image/webp" multiple></label><button class="pri" type="submit">Upload</button><p class="note" id="uplst">Photos are resized for the web before upload. Get the OK from people in a photo first, and a parent's OK for youth archers.${noPhotoKids()}</p></form>`;
+ $('#uplf').onsubmit=async ev=>{ev.preventDefault();const f=ev.target;const files=[...f.files.files];if(!files.length){$('#uplst').textContent='Choose one or more photos.';return}
+  let n=0;for(const file of files){$('#uplst').textContent=`Uploading ${n+1} of ${files.length}…`;try{const blob=await shrink(file);const r=await assets.upload(blob);await db.collection('gallery').doc(r.id).set({asset:r.id,album:f.album.value,caption:f.cap.value.trim().slice(0,140),by:me.uid,at:Date.now()});n++}catch(x){$('#uplst').textContent='One photo could not be uploaded: '+(x&&x.message?x.message:'try a smaller file')+'.';return}}
+  $('#uplst').textContent=`Added ${n} photo${n===1?'':'s'}.`;f.reset()}}
+async function shrink(file){let img;try{img=await createImageBitmap(file,{imageOrientation:'from-image'})}catch(_){return file}
+ const s=Math.min(1,2000/Math.max(img.width,img.height));if(s===1&&file.size<2500000)return file;
+ const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+ return await new Promise(r=>c.toBlob(b=>r(b||file),'image/jpeg',.85))}
+function openPhoto(id){const g=GAL.find(x=>x.id===id);if(!g)return;
+ $('#dlg').style.setProperty('--c','var(--jblue)');
+ $('#dlg').innerHTML=`<img class="big" src="${esc(g.src||'/_blob/'+g.asset)}" alt="${esc(g.caption||g.album)}"><p style="margin:10px 0 0"><b>${esc(g.caption||g.album)}</b></p><p class="note" style="margin:2px 0 0">${esc(g.album)}${g.by?' · added by '+esc(nm(g.by)):''}${g.at?' · '+new Date(g.at).toLocaleDateString():''}</p><div class="acts">${me.admin?'<button id="phdel" class="danger">Delete photo</button>':''}<button id="cl">Close</button></div><p class="note" id="cpm"></p>`;
+ $('#modal').classList.add('on');$('#cl').onclick=close;
+ if($('#phdel'))$('#phdel').onclick=async()=>{const b=$('#phdel');if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again to delete';return}
+  try{try{await assets.delete(g.asset)}catch(_){}await db.collection('gallery').doc(g.id).delete();close();toast('Photo deleted.')}catch(_){$('#cpm').textContent='Could not delete — you can delete photos you uploaded; Monty can delete any.'}}}
+$('#galview').onclick=ev=>{const b=ev.target.closest('[data-ph]');if(b)openPhoto(b.dataset.ph)};
+
+/* ---------- Members page ---------- */
+const MYARCH=`<div class="box"><h3>My Archery — the team's scoring app</h3>
+ <p>Score practice and competition rounds on your phone, offline, with tap-to-score 3D targets and two-scorer checkpoints. Every round stays on your phone.</p>
+ <p><a class="btn pri" href="https://blackyeti-shoots.netlify.app/my-archery.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex">Open My Archery ↗</a></p>
+ <ul><li><b>Install it:</b> iPhone — open the link in Safari, tap Share, then Add to Home Screen. Android — Chrome offers to install it on its own.</li>
+ <li><b>Two scorers:</b> share your card as text from the app; the other scorer pastes it and only the disagreements come up.</li>
+ <li><b>Version:</b> it prints at the bottom of the Rounds screen (2026.09.21 as of the latest notes).</li>
+ <li><b>Log a round here:</b> after a shoot, add it under Members › My rounds and paste the shared card text if you like.</li></ul></div>`;
+function visitorView(){return `<div class="lock"><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><rect x="12" y="28" width="40" height="30" rx="6" fill="var(--jblue)"/><path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="var(--ink)" stroke-width="6"/><circle cx="32" cy="42" r="5" fill="#0c0e11"/></svg>
+ <h2>For team members</h2><p>The members area holds each archer's gear, rounds, events and results, plus team codes and carpools. ${STATIC?'Member sign-in is being set up and will open here soon.':me.ready?'You aren’t signed in as a team member.':'Checking your access…'}</p><p class="note">On the team? Ask Monty, Travis or Darvie to add you.</p></div><div style="margin-top:18px">${MYARCH}</div>`}
+function fld(n,l,v,t='text',extra=''){return `<label>${l}<input name="${n}" type="${t}" value="${esc(v??'')}" ${extra}></label>`}
+function ago(d){if(!d)return'';const m=Math.floor((today-pd(d))/(30.44*864e5));return m<1?'this month':m<12?m+' month'+(m>1?'s':'')+' ago':(m/12).toFixed(1).replace('.0','')+' years ago'}
+function foc(a){const L=num(a.length),B=num(a.balance);if(!L||!B)return null;return ((B-L/2)/L*100).toFixed(1)}
+/* ---------- My Archery card import ---------- */
+let IMPORTS=[];
+const reEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function parseMA(text){const out=[];const re=/MA1\.([A-Za-z0-9+\/_-]+={0,2})/g;let m;
+ while((m=re.exec(text))){try{let b=m[1].replace(/-/g,'+').replace(/_/g,'/');b+='='.repeat((4-b.length%4)%4);
+  const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(b),c=>c.charCodeAt(0))));
+  if(d&&d.v===1&&Array.isArray(d.s)&&d.s.length){const st=text.lastIndexOf('MY ARCHERY',m.index);out.push({d,seg:text.slice(st<0?0:st,m.index)})}}catch(_){}}
+ return out}
+function maDisc(d){const rn=String(d.ruleName||'')+' '+String(d.rule||'');if(/vegas|3-spot/i.test(rn))return 'Vegas 3-spot';if(/5-spot|nfaa 300|600/i.test(rn))return 'Indoor 5-spot';if(/field/i.test(rn))return 'Field';if(d.unit==='targets')return '3D';return 'Other'}
+function maGuess(d){const names=[ROSTER[me.uid]&&ROSTER[me.uid].name,PROF[me.uid]].filter(Boolean).map(s=>s.toLowerCase().trim());const first=names.map(s=>s.split(/\s+/)[0]);
+ const i=d.s.findIndex(x=>{const n=String(x.n||'').toLowerCase().trim();return names.includes(n)||first.includes(n)||first.includes(n.split(/\s+/)[0])});return i>=0?i:(d.s.length===1?0:-1)}
+function maRound(c,i,who){const d=c.d,s=d.s[i];const t=(s.t||[]).map(x=>typeof x==='number'?x:null);const shot=t.filter(x=>x!==null);
+ const top=Math.max(...(d.rings||[]).map(r=>Number(r.p)||0),0);const arrows=Number(d.arrows)||1;const n=Number(d.targets)||t.length;
+ let xs='';if(arrows===1&&top)xs=String(shot.filter(x=>x===top).length);else{const mm=c.seg.match(new RegExp(reEsc(String(s.n))+'\\s*—\\s*\\d+[\\s\\S]*?(\\d+)×(\\d+)'));if(mm)xs=mm[2]}
+ const dt=new Date(d.date);const notes=[d.ruleName,Number(d.start)>1?'started on target '+d.start:'',shot.length<n?'partial: '+shot.length+' of '+n+' '+(d.unit||'targets')+' shot':''].filter(Boolean).join(' · ');
+ return {id:rid(),who:who||'me',date:isFinite(dt)?iso(dt):iso(today),kind:d.mode==='competition'?'Competition':'Practice',disc:maDisc(d),event:String(d.venue||'').slice(0,120),score:String(shot.reduce((a,b)=>a+b,0)),max:top?String(n*arrows*top):'',xs,targets:String(n),notes:notes.slice(0,400),maId:String(d.id||'')+':'+String(s.n||''),pt:t.slice(0,120),unit:d.unit==='ends'?'ends':'targets',topL:top?String(top):'',app:String(d.app||'')}}
+function maPreview(){const box=$('#maprev');if(!box)return;if(!IMPORTS.length){box.innerHTML='';return}
+ const have=new Set(MY.rounds.items.map(r=>r.maId).filter(Boolean));
+ box.innerHTML=IMPORTS.map((c,ci)=>{const d=c.d;const dt=new Date(d.date);return `<div class="rrow" style="grid-template-columns:minmax(0,1fr)"><div><b>${esc(d.venue||'Round')}</b> <span class="note">${isFinite(dt)?esc(dt.toLocaleDateString()):''} · ${d.mode==='competition'?'Competition':'Practice'} · ${esc(d.targets)} ${esc(d.unit||'targets')} · ${esc(d.ruleName||'')}</span></div>
+  <div class="rride"><label>Which archer is you?<select data-ci="${ci}" data-f="pick"><option value="-1">Skip this card</option>${d.s.map((s,i)=>`<option value="${i}"${c.pick===i?' selected':''}>${esc(s.n)} — ${esc((s.t||[]).filter(x=>typeof x==='number').reduce((a,b)=>a+b,0))}${have.has(String(d.id)+':'+String(s.n))?' (already imported)':''}</option>`).join('')}</select></label>
+  ${myKids().length?`<label>For<select data-ci="${ci}" data-f="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${c.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}</div></div>`}).join('')+`<div class="acts"><button class="pri" data-act="maimport">Import selected</button><button data-act="maclear">Cancel</button></div>`;
+ box.querySelectorAll('select[data-ci]').forEach(s=>s.onchange=()=>{const c=IMPORTS[+s.dataset.ci];if(s.dataset.f==='pick')c.pick=+s.value;else c.who=s.value})}
+const V={
+overview(){const r=myRsvp();const up=Object.entries(r).map(([id,x])=>({e:EV.find(e=>e.id===id),x})).filter(o=>o.e&&endOf(o.e)>=today&&o.x.s==='going').sort((a,b)=>a.e.s.localeCompare(b.e.s));
+ const res=Object.entries((RESULTS[me.uid]&&RESULTS[me.uid].r)||{}).filter(([k,v])=>v.status==='possible');
+ const old=MY.bows.items.filter(b=>b.stringDate&&(today-pd(b.stringDate))>365*864e5);
+ const ann=((TEAM.ann&&TEAM.ann.items)||[]).slice(0,5);const p=ROSTER[me.uid]||{};const c=p.cls||{};
+ return `<div class="mgrid"><div class="box"><h3>Your next shoots</h3>${up.length?'<ul>'+up.slice(0,4).map(o=>`<li><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a> — ${esc(fmt(o.e))}</li>`).join('')+'</ul>':'<p class="note">Open an event on the calendar and tap “I’m going”.</p>'}
+ ${res.length?`<p class="tag" style="margin-top:8px">${res.length} possible result${res.length>1?'s':''} to confirm — see My events</p>`:''}${old.length?`<p class="note">String check: ${old.map(b=>esc(b.name||b.model)+' strings went on '+esc(ago(b.stringDate))).join('; ')}.</p>`:''}</div>
+ <div class="box"><h3>Team announcements</h3>${ann.length?ann.map(a=>`<p style="margin:0 0 10px">${esc(a.text)}<br><span class="note">${esc(nm(a.by))} · ${new Date(a.at).toLocaleDateString()}</span></p>`).join(''):'<p class="note">Nothing posted yet.</p>'}</div></div>
+ <form class="box frm" data-form="profile" style="margin-top:16px"><h3 class="full" style="margin:0">Your team profile</h3><p class="note full" style="margin:0">Teammates can see your name and classes. The results check uses them to find you in posted results.</p>
+ ${fld('name','Name as it appears on results',p.name)}${fld('jersey','Jersey size',p.jersey)}${fld('asa','ASA class',c.asa,'text','placeholder="e.g. Known 50"')}${fld('ibo','IBO class',c.ibo)}${fld('nfaa','NFAA division',c.nfaa,'text','placeholder="e.g. Freestyle"')}${fld('usaa','USA Archery division',c.usaa)}
+ <div class="acts full"><button class="pri" type="submit">Save profile</button></div></form>`},
+gear(){const e=memEdit;
+ const bowCard=b=>`<article class="gcard"><div class="gh"><b>${esc(b.name||'Bow')}${whoName(b.who)?' · '+esc(whoName(b.who)):''}</b>${b.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc([b.model,b.year].filter(Boolean).join(' · '))}</p>
+  <dl class="spec">${[['Draw length',b.drawLen&&b.drawLen+'"'],['Draw weight',b.drawWt&&b.drawWt+' lb'],['Let-off',b.letoff&&b.letoff+'%'],['Peep height',b.peep&&b.peep+'"'],['Sight radius',b.radius&&b.radius+'"'],['Arrow speed',b.speed&&b.speed+' fps'],['Sight',b.sight],['Scope / lens',b.scope],['Rest',b.rest],['Release',b.release],['Stabilizers',b.stabs],['Strings',b.stringDate&&'installed '+ago(b.stringDate)]].filter(x=>x[1]).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>
+  ${b.marks&&b.marks.length?`<p class="note" style="margin:6px 0 2px"><b>Sight marks</b></p><div class="marks">${b.marks.map(m=>`<span>${esc(m.y)} yd <b>${esc(m.m)}</b></span>`).join('')}</div>`:''}
+  <div class="acts"><button data-act="edit" data-k="bows" data-id="${esc(b.id)}">Edit</button><button data-act="del" data-k="bows" data-id="${esc(b.id)}" class="danger">Delete</button></div></article>`;
+ const arrCard=a=>`<article class="gcard"><div class="gh"><b>${esc(a.name||'Arrows')}${whoName(a.who)?' · '+esc(whoName(a.who)):''}</b>${a.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc(a.model||'')}</p>
+  <dl class="spec">${[['Spine',a.spine],['Length',a.length&&a.length+'"'],['Total weight',a.totalWt&&a.totalWt+' gr'],['Point',a.pointWt&&a.pointWt+' gr'],['Insert',a.insert],['Nock',a.nock],['Fletching',[a.fletchCount&&a.fletchCount+'×',a.fletchType,a.fletchSize,a.fletchCfg].filter(Boolean).join(' ')],['FOC',foc(a)&&foc(a)+'%']].filter(x=>x[1]).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>
+  <div class="acts"><button data-act="edit" data-k="arrows" data-id="${esc(a.id)}">Edit</button><button data-act="del" data-k="arrows" data-id="${esc(a.id)}" class="danger">Delete</button></div></article>`;
+ if(e){const x=e.id?(MY[e.k].items.find(i=>i.id===e.id)||{}):{};
+  if(e.k==='bows')return `<form class="box frm" data-form="bows"><h3 class="full" style="margin:0">${e.id?'Edit bow':'Add a bow'}</h3>${myKids().length?`<label>For<select name="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${x.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}
+   ${fld('name','Label',x.name,'text','placeholder="e.g. Target rig" required')}${fld('model','Bow model',x.model,'text','placeholder="e.g. Mathews Title 38"')}${fld('year','Year',x.year)}${fld('drawLen','Draw length (in)',x.drawLen,'number','step="0.25"')}${fld('drawWt','Draw weight (lb)',x.drawWt,'number','step="0.5"')}${fld('letoff','Let-off (%)',x.letoff,'number')}
+   ${fld('peep','Peep height (in)',x.peep,'number','step="0.01"')}${fld('radius','Sight radius (in)',x.radius,'number','step="0.01"')}${fld('speed','Arrow speed (fps)',x.speed,'number')}${fld('sight','Sight',x.sight)}${fld('scope','Scope / lens power',x.scope)}${fld('rest','Rest',x.rest)}${fld('release','Release',x.release)}${fld('stabs','Stabilizers',x.stabs)}${fld('stringDate','Strings installed',x.stringDate,'date')}
+   <label class="full">Sight marks — one per line, yards = mark<textarea name="marks" placeholder="20 = 1.25&#10;30 = 2.10">${esc((x.marks||[]).map(m=>m.y+' = '+m.m).join('\n'))}</textarea></label>
+   <label class="full">Notes<textarea name="notes">${esc(x.notes)}</textarea></label>
+   <label class="full chk"><input type="checkbox" name="share" ${x.share?'checked':''}> Share this setup with the team (notes stay private)</label>
+   <div class="acts full"><button class="pri" type="submit">Save bow</button><button type="button" data-act="cancel">Cancel</button></div></form>`;
+  return `<form class="box frm" data-form="arrows"><h3 class="full" style="margin:0">${e.id?'Edit arrows':'Add arrows'}</h3>${myKids().length?`<label>For<select name="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${x.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}
+   ${fld('name','Label',x.name,'text','placeholder="e.g. Indoor fat shafts" required')}${fld('model','Brand / model',x.model,'text','placeholder="e.g. Easton X23"')}${fld('spine','Spine',x.spine)}${fld('length','Length (in)',x.length,'number','step="0.125"')}${fld('totalWt','Total weight (gr)',x.totalWt,'number')}${fld('pointWt','Point weight (gr)',x.pointWt,'number')}
+   ${fld('insert','Insert',x.insert)}${fld('nock','Nock',x.nock)}${fld('fletchCount','Fletching count',x.fletchCount,'number','min="2" max="6"')}${fld('fletchType','Fletching type',x.fletchType,'text','placeholder="vanes, feathers…"')}${fld('fletchSize','Fletching size',x.fletchSize,'text','placeholder="e.g. 2.1&quot;"')}
+   <label>Configuration<select name="fletchCfg">${['','Straight','Offset','Helical'].map(o=>`<option${o===(x.fletchCfg||'')?' selected':''}>${o}</option>`).join('')}</select></label>
+   ${fld('balance','Balance point (in from nock throat) — for FOC',x.balance,'number','step="0.125"')}
+   <label class="full">Notes<textarea name="notes">${esc(x.notes)}</textarea></label>
+   <label class="full chk"><input type="checkbox" name="share" ${x.share?'checked':''}> Share these arrows with the team (notes stay private)</label>
+   <div class="acts full"><button class="pri" type="submit">Save arrows</button><button type="button" data-act="cancel">Cancel</button></div></form>`}
+ return `<p class="note">Your gear is private unless you switch on “Share with the team” for a setup. Peep height, sight radius and arrow speed are the numbers custom sight-tape makers ask for.</p>
+ <div class="sechead"><h3 style="margin:0">Bows</h3><button class="pri" data-act="add" data-k="bows">+ Add bow</button></div><div class="gcards">${MY.bows.items.map(bowCard).join('')||'<div class="empty">No bows yet.</div>'}</div>
+ <div class="sechead" style="margin-top:20px"><h3 style="margin:0">Arrows</h3><button class="pri" data-act="add" data-k="arrows">+ Add arrows</button></div><div class="gcards">${MY.arrows.items.map(arrCard).join('')||'<div class="empty">No arrow setups yet.</div>'}</div>`},
+rounds(){const rs=MY.rounds.items.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ const groups={};for(const r of rs){const k=(whoName(r.who)?whoName(r.who)+' — ':'')+r.disc+(r.max?' / '+r.max:'');(groups[k]=groups[k]||[]).push(r)}
+ const best=Object.entries(groups).map(([k,a])=>{const sc=a.map(r=>num(r.score)).filter(v=>v!==null);if(!sc.length)return'';const avg=sc.reduce((s,v)=>s+v,0)/sc.length;return `<div><b>${esc(k)}</b><span>Best ${Math.max(...sc)} · Avg ${avg.toFixed(1)} · ${sc.length} round${sc.length>1?'s':''}</span></div>`}).join('');
+ const pastEv=EV.filter(e=>!e.weekly&&pd(e.s)<=today).map(e=>e.t);
+ return `<div class="box"><h3>Import from My Archery</h3><p class="note" style="margin-top:0">In My Archery, share your scorecard, then paste the whole text here, including the long code at the end. You can paste several cards at once. Only your own scores are saved; teammates on the card are left out.</p>
+  <textarea id="maimp" class="imp" placeholder="MY ARCHERY …  MA1.eyJ2…"></textarea><div class="acts"><button class="pri" data-act="maparse">Read cards</button></div><div id="maprev" class="list" style="margin-top:10px"></div></div>
+  <details class="box" style="margin-top:16px"${MY.rounds.items.length?'':' open'}><summary><b>Log a round by hand</b></summary>
+  <form class="frm" data-form="round" style="margin-top:12px"><h3 class="full" style="margin:0">Log a round</h3>${myKids().length?`<label>For<select name="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}">${esc(kidName(k))}</option>`).join('')}</select></label>`:''}
+  ${fld('date','Date',iso(today),'date','required')}<label>Type<select name="kind"><option>Practice</option><option>Competition</option></select></label>
+  <label>Discipline<select name="disc">${DISC.map(d=>`<option>${d}</option>`).join('')}</select></label>${fld('event','Event or place',"",'text','list="evlist" placeholder="e.g. Thursday Night 3D"')}<datalist id="evlist">${[...new Set(pastEv)].slice(-60).map(t=>`<option value="${esc(t)}">`).join('')}</datalist>
+  ${fld('score','Score',"",'number','required')}${fld('max','Possible (optional)',"",'number')}${fld('xs','12s / Xs',"",'number')}${fld('targets','Targets or ends',"",'number')}
+  <label class="full">Notes<textarea name="notes"></textarea></label>
+    <div class="acts full"><button class="pri" type="submit">Save round</button></div></form></details>
+  ${best?`<div class="pbs">${best}</div>`:''}
+  <div class="list" style="margin-top:12px">${rs.map(r=>`<div class="rrow"><div><b>${esc(r.score)}${r.max?' / '+esc(r.max):''}</b>${r.xs?` <span class="note">${esc(r.xs)}×12/X</span>`:''}</div><div><div>${whoName(r.who)?'<b>'+esc(whoName(r.who))+'</b> · ':''}${esc(r.disc)} · ${esc(r.kind)}${r.event?' · '+esc(r.event):''}</div><div class="note">${esc(r.date)}${r.notes?' — '+esc(r.notes):''}${r.card?' · card saved':''}${r.maId?' · from My Archery':''}</div>${ptView(r)}</div><button class="danger" data-act="del" data-k="rounds" data-id="${esc(r.id)}">Delete</button></div>`).join('')||'<div class="empty">No rounds logged yet.</div>'}</div>
+  <p class="note">Rounds you log or import are private to you. When My Archery adds accounts, rounds can flow in automatically.</p>`},
+events(){const r=myRsvp();const res=(RESULTS[me.uid]&&RESULTS[me.uid].r)||{};
+ const rows=Object.entries(r).map(([id,x])=>({e:EV.find(e=>e.id===id),x,res:res[id]})).filter(o=>o.e).sort((a,b)=>b.e.s.localeCompare(a.e.s));
+ const up=rows.filter(o=>endOf(o.e)>=today).reverse(),past=rows.filter(o=>endOf(o.e)<today);
+ const resTxt=v=>[v.place&&'Place: '+v.place,v.score&&'Score: '+v.score,v.cls&&'Class: '+v.cls].filter(Boolean).join(' · ');
+ return `<h3>Coming up</h3>${up.length?'<div class="list">'+up.map(o=>`<div class="rrow"><div><b>${esc(fmt(o.e))}</b></div><div><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a><div class="note">${o.x.s==='attended'?'Attended':'Going'}${rideTxt(o.x)?' · '+esc(rideTxt(o.x)):''}</div></div></div>`).join('')+'</div>':'<p class="note">Nothing marked. Open an event on the calendar and tap “I’m going”.</p>'}
+ <h3 style="margin-top:20px">Past events &amp; results</h3>${past.length?'<div class="list">'+past.map(o=>{const v=o.res;return `<div class="rrow"><div><b>${esc(fmt(o.e))}</b></div><div><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a><div class="note">${o.x.s==='attended'?'Attended':'Marked going — tap “I attended” on the event to have results looked up'}</div>
+  ${v&&v.status==='possible'?`<div class="resbox"><b>Possible result found:</b> ${esc(resTxt(v))}${okLink(v.link)?` · <a href="${esc(v.link)}" target="_blank" rel="noopener">source ↗</a>`:''}<div class="acts"><button class="pri" data-act="res" data-id="${esc(o.e.id)}" data-s="confirmed">That’s me</button><button data-act="res" data-id="${esc(o.e.id)}" data-s="dismissed">Not me</button></div></div>`:''}
+  ${v&&v.status==='confirmed'?`<div class="note"><b>Result:</b> ${esc(resTxt(v))}${okLink(v.link)?` · <a href="${esc(v.link)}" target="_blank" rel="noopener">source ↗</a>`:''}</div>`:''}
+  ${o.x.s==='attended'&&!v?'<div class="note">Waiting for the host to post results — checked every Sunday.</div>':''}</div></div>`}).join('')+'</div>':'<p class="note">No past events marked yet.</p>'}
+ ${kidEvents(resTxt)}
+ <p class="note">Results are looked up from the host’s posted results using the name and classes in your profile. Nothing is added to your record until you confirm it.</p>`},
+team(){const soon=EV.filter(e=>!e.weekly&&endOf(e)>=today&&pd(e.s)-today<90*864e5).map(e=>({e,g:goingFor(e.id)})).filter(o=>o.g.length);
+ const shared=Object.entries(TGEAR).filter(([u,d])=>d&&((d.bows||[]).length||(d.arrows||[]).length));
+ return `<h3>Who’s going</h3>${soon.length?'<div class="list">'+soon.map(o=>`<div class="rrow"><div><b>${esc(fmt(o.e))}</b></div><div><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a><div class="note">${o.g.map(x=>esc(goName(x))+(rideTxt(x)?' ('+esc(rideTxt(x))+')':'')).join(', ')}</div></div></div>`).join('')+'</div>':'<p class="note">No one has marked an upcoming event yet.</p>'}
+ <h3 style="margin-top:20px">Roster</h3><div class="scroll"><table class="stack"><thead><tr><th>Name</th><th>ASA</th><th>IBO</th><th>NFAA</th><th>USA Archery</th></tr></thead><tbody>${Object.entries(ROSTER).sort((a,b)=>(a[1].name||'').localeCompare(b[1].name||'')).map(([u,p])=>`<tr><td>${esc(p.name||nm(u))}</td><td>${esc((p.cls||{}).asa||'')}</td><td>${esc((p.cls||{}).ibo||'')}</td><td>${esc((p.cls||{}).nfaa||'')}</td><td>${esc((p.cls||{}).usaa||'')}</td></tr>`).join('')||'<tr><td colspan="5">Members appear here once they save their profile.</td></tr>'}${teamKids().map(({u,k})=>`<tr><td>${esc(kidName(k))} <span class="tag">Youth</span> <span class="note">with ${esc(nm(u))}</span></td><td>${esc((k.cls||{}).asa||'')}</td><td>${esc((k.cls||{}).ibo||'')}</td><td>${esc((k.cls||{}).nfaa||'')}</td><td>${esc((k.cls||{}).usaa||'')}</td></tr>`).join('')}</tbody></table></div>
+ <h3 style="margin-top:20px">Shared setups</h3>${shared.length?'<div class="gcards">'+shared.map(([u,d])=>`<article class="gcard"><b>${esc(nm(u))}</b>${(d.bows||[]).map(b=>`<p class="note" style="margin:6px 0 0"><b>${esc(b.name||'Bow')}:</b> ${esc([b.model,b.drawLen&&b.drawLen+'"',b.drawWt&&b.drawWt+' lb',b.sight,b.scope,b.rest,b.release].filter(Boolean).join(' · '))}</p>`).join('')}${(d.arrows||[]).map(a=>`<p class="note" style="margin:6px 0 0"><b>${esc(a.name||'Arrows')}:</b> ${esc([a.model,a.spine,a.length&&a.length+'"',a.totalWt&&a.totalWt+' gr',a.fletchCfg].filter(Boolean).join(' · '))}</p>`).join('')}</article>`).join('')+'</div>':'<p class="note">No one has shared a setup yet.</p>'}`},
+sponsors(){const it=(TEAM.sponsors&&TEAM.sponsors.items)||[];
+ return `<p class="note">Team discounts from our jersey sponsors. Please keep these codes within the team.</p><div class="gcards">${it.map(s=>`<article class="gcard"><b>${esc(s.sponsor)}</b>${s.code?`<p class="code">${esc(s.code)}</p>`:''}<p class="note">${esc(s.details||'')}</p>${me.admin?`<div class="acts"><button class="danger" data-act="delsp" data-id="${esc(s.id)}">Remove</button></div>`:''}</article>`).join('')||'<div class="empty">No codes posted yet. Ask Travis or Darvie about team discounts.</div>'}</div>
+ ${me.admin?`<form class="box frm" data-form="sponsor" style="margin-top:16px"><h3 class="full" style="margin:0">Add a sponsor code</h3><label>Sponsor<select name="sponsor">${['Easton Archery','Threadz','Muley Freak','Annihilator Broadheads','Q2i Archery','Rinehart','BHE','Leupold','Pueblo Mechanical','Other'].map(s=>`<option>${s}</option>`).join('')}</select></label>${fld('code','Code',"")}<label class="full">How to use it<input name="details" maxlength="200"></label><div class="acts full"><button class="pri" type="submit">Add code</button></div></form>`:''}`},
+myarchery(){return MYARCH},
+family(){const e=memEdit&&memEdit.k==='kid'?memEdit:null;
+ if(e){const x=e.id?(myKids().find(k=>k.id===e.id)||{}):{};const c=x.consent||{};const cl=x.cls||{};
+  return `<form class="box frm" data-form="kid"><h3 class="full" style="margin:0">${e.id?'Edit youth archer':'Add a youth archer'}</h3>
+   ${fld('first','First name',x.first,'text','required maxlength="40"')}${fld('last','Last name',x.last,'text','required maxlength="40"')}
+   ${fld('asa','ASA class',cl.asa)}${fld('ibo','IBO class',cl.ibo)}${fld('nfaa','NFAA division',cl.nfaa)}${fld('usaa','USA Archery division',cl.usaa)}
+   <h3 class="full" style="margin:8px 0 0">Your choices as parent or guardian</h3>
+   <label>Name shown to the team<select name="nameShow"><option value="initial"${c.name!=='full'?' selected':''}>First name and last initial</option><option value="full"${c.name==='full'?' selected':''}>Full name</option></select></label>
+   <label>Photos in the team gallery<select name="photos"><option value="no"${!c.photos?' selected':''}>No photos</option><option value="yes"${c.photos?' selected':''}>Photos are OK</option></select></label>
+   <label>Look up and show posted results<select name="results"><option value="no"${!c.results?' selected':''}>No</option><option value="yes"${c.results?' selected':''}>Yes — I'll confirm each one</option></select></label>
+   ${fld('signed','Date you signed the team consent form',c.signed,'date')}
+   <p class="note full" style="margin:0">Results lookups use the name shown to the team, so they work best with the full name. Your youth archer stays hidden from the team until an organizer confirms the signed form.</p>
+   <label class="full chk"><input type="checkbox" name="guardian" required ${x.first?'checked':''}> I am this archer's parent or legal guardian.</label>
+   <div class="acts full"><button class="pri" type="submit">Save</button><button type="button" data-act="cancel">Cancel</button>${e.id?`<button type="button" class="danger" data-act="delkid" data-id="${esc(e.id)}">Remove archer</button>`:''}</div></form>`}
+ const ks=myKids();
+ return `<p class="note">Add the youth archers in your family. You manage their profile, gear, rounds and event check-ins from your login; youth archers don't need their own account.</p>
+ <div class="sechead"><h3 style="margin:0">Youth archers</h3><button class="pri" data-act="addkid">+ Add youth archer</button></div>
+ <div class="gcards">${ks.map(k=>{const c=k.consent||{};const ok=kidOk(me.uid,k.id);return `<article class="gcard"><div class="gh"><b>${esc(k.first+' '+(k.last||''))}</b>${ok?'<span class="tag">Approved</span>':'<span class="tag past">Waiting for organizer</span>'}</div>
+  <dl class="spec"><dt>Team sees</dt><dd>${esc(kidName(k))}</dd><dt>Photos</dt><dd>${c.photos?'OK':'No photos'}</dd><dt>Results</dt><dd>${c.results?'Look up; you confirm':'Not looked up'}</dd><dt>Form signed</dt><dd>${esc(c.signed||'Not yet')}</dd></dl>
+  ${ok?'':'<p class="note">Give the signed consent form to Monty, Travis or Darvie. They\'ll approve here once they have it.</p>'}
+  <div class="acts"><button data-act="editkid" data-id="${esc(k.id)}">Edit</button></div></article>`}).join('')||'<div class="empty">No youth archers added.</div>'}</div>
+ <div class="box" style="margin-top:16px"><h3>How youth members work</h3><ul><li>Until approved, your youth archer is hidden from the team, the gallery and the results check.</li><li>Rides for youth archers are arranged between parents, so they don't get carpool options.</li><li>Any possible result found for your archer comes to you to confirm.</li></ul></div>`},
+admin(){const ann=(TEAM.ann&&TEAM.ann.items)||[];
+ return `<div class="box"><h3>Calendar &amp; gallery admins</h3><p class="note">Admins can add, edit and verify calendar events, post announcements and sponsor codes, and upload or delete gallery photos. They can’t change the website itself. Everyone else on the team is a member.</p>
+  <ul>${['<li><b>'+esc(me.owner?nm(me.uid)+' (you, site owner)':'Site owner')+'</b></li>'].concat(ROLES.map(u=>`<li>${esc(nm(u))}${me.owner?` <button class="danger" data-act="unadmin" data-id="${esc(u)}">Remove</button>`:''}</li>`)).join('')}</ul>
+  ${me.owner?`<div class="frm" style="grid-template-columns:1fr auto;margin-top:6px"><label>Find a team member<input id="asearch" placeholder="Type a name or email"></label><button data-act="asearch" style="align-self:end">Search</button></div><div id="ahits">${adminHits.map(h=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div>${esc(h.name||'Someone')}${h.email?` <span class="note">${esc(h.email)}</span>`:''}</div>${ROLES.includes(h.id)?'<span class="tag">Admin</span>':`<button class="pri" data-act="mkadmin" data-id="${esc(h.id)}">Make admin</button>`}</div>`).join('')}</div>
+  <p class="note">People appear here once you’ve shared the site with them on claude.ai as Contributors.</p>`:''}</div>
+ ${youthAdmin()}
+ <form class="box frm" data-form="ann" style="margin-top:16px"><h3 class="full" style="margin:0">Post an announcement</h3><label class="full">Message<textarea name="text" maxlength="500" required></textarea></label><div class="acts full"><button class="pri" type="submit">Post</button></div>
+  ${ann.length?'<div class="full">'+ann.map(a=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div>${esc(a.text)}<div class="note">${esc(nm(a.by))} · ${new Date(a.at).toLocaleDateString()}</div></div><button class="danger" type="button" data-act="delann" data-id="${esc(a.id)}">Delete</button></div>`).join('')+'</div>':''}</form>`}
+};
+function youthAdmin(){const all=[];for(const [u,p] of Object.entries(ROSTER))for(const k of (p.kids||[]))all.push({u,k,ok:kidOk(u,k.id)});
+ const row=({u,k,ok})=>{const c=k.consent||{};return `<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>${esc(kidName(k))}</b> <span class="note">parent: ${esc(nm(u))}</span><div class="note">Photos: ${c.photos?'OK':'no'} · Results: ${c.results?'yes':'no'} · Form signed: ${esc(c.signed||'not entered')}</div></div>${ok?`<button class="danger" data-act="unkid" data-id="${esc(kidKey(u,k.id))}">Revoke</button>`:`<button class="pri" data-act="okkid" data-id="${esc(kidKey(u,k.id))}">Form received — approve</button>`}</div>`};
+ return `<div class="box" style="margin-top:16px"><h3>Youth archers</h3><p class="note">Approve a youth archer only after you have the parent's signed consent form. Approval makes them visible to the team with the name and choices their parent picked.</p>${all.length?'<div class="list">'+all.filter(x=>!x.ok).concat(all.filter(x=>x.ok)).map(row).join('')+'</div>':'<p class="note">No youth archers added yet.</p>'}</div>`}
+function kidEvents(resTxt){const kev=myKev();const kr=(RESULTS[me.uid]&&RESULTS[me.uid].kr)||{};const ks=myKids();if(!ks.length)return'';
+ return ks.map(k=>{const m=kev[k.id]||{};const rows=Object.entries(m).map(([id,x])=>({e:EV.find(e=>e.id===id),x,v:(kr[k.id]||{})[id]})).filter(o=>o.e).sort((a,b)=>b.e.s.localeCompare(a.e.s));
+  return `<h3 style="margin-top:20px">${esc(kidName(k))}</h3>${rows.length?'<div class="list">'+rows.map(o=>`<div class="rrow"><div><b>${esc(fmt(o.e))}</b></div><div><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a><div class="note">${o.x.s==='attended'?'Attended':'Going'}</div>
+   ${o.v&&o.v.status==='possible'?`<div class="resbox"><b>Possible result found:</b> ${esc(resTxt(o.v))}${okLink(o.v.link)?` · <a href="${esc(o.v.link)}" target="_blank" rel="noopener">source ↗</a>`:''}<div class="acts"><button class="pri" data-act="kres" data-k="${esc(k.id)}" data-id="${esc(o.e.id)}" data-s="confirmed">That’s my archer</button><button data-act="kres" data-k="${esc(k.id)}" data-id="${esc(o.e.id)}" data-s="dismissed">Not them</button></div></div>`:''}
+   ${o.v&&o.v.status==='confirmed'?`<div class="note"><b>Result:</b> ${esc(resTxt(o.v))}</div>`:''}</div></div>`).join('')+'</div>':'<p class="note">No events marked. Open an event on the calendar to check them in.</p>'}`}).join('')}
+function ptView(r){if(!Array.isArray(r.pt)||!r.pt.length)return'';const ch=[];for(let i=0;i<r.pt.length;i+=5)ch.push(r.pt.slice(i,i+5));
+ return `<details class="ptd"><summary>Per ${r.unit==='ends'?'end':'target'}</summary><div class="pt">${ch.map((c,ci)=>`<span>${c.map((x,j)=>`<i class="${x===null?'miss':String(x)===r.topL&&r.unit!=='ends'?'top':''}" title="${r.unit==='ends'?'End':'Target'} ${ci*5+j+1}">${x===null?'–':esc(x)}</i>`).join('')}</span>`).join('')}</div></details>`}
+function renderMembers(){const R=$('#memroot');if(!R)return;if(!me.member){R.innerHTML=visitorView();return}
+ if(memTab==='admin'&&!me.admin)memTab='overview';
+ const tabs=[['overview','Overview'],['gear','My gear'],['rounds','My rounds'],['events','My events'],['family','My family'],['team','Team'],['sponsors','Sponsor codes'],['myarchery','My Archery']].concat(me.admin?[['admin','Admin']]:[]);
+ const keep=document.activeElement&&R.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(keep)return;
+ R.innerHTML=`<p class="hello">Signed in as <b>${esc(nm(me.uid))}</b>${me.admin?' · admin':''}</p><div class="mtabs">${tabs.map(([k,n])=>`<button data-act="tab" data-k="${k}" aria-pressed="${memTab===k}">${n}</button>`).join('')}</div><div class="mbody">${V[memTab]()}</div>`}
+async function pubKids(){const kids=myKids().map(k=>{const c=k.consent||{};const o={id:k.id,first:k.first,lastInit:(k.last||'').charAt(0).toUpperCase(),cls:k.cls||{},consent:{name:c.name||'initial',photos:!!c.photos,results:!!c.results,signed:c.signed||''}};if(c.name==='full')o.last=k.last;return o});
+ const d={...clone(ROSTER[me.uid]||{}),kids,at:Date.now()};try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d}catch(_){toast('Could not save — ask Monty to check your member access.')}}
+async function syncShared(){const pick=(o,ks)=>Object.fromEntries(ks.filter(k=>o[k]).map(k=>[k,o[k]]));
+ const bows=MY.bows.items.filter(b=>b.share&&(!b.who||b.who==='me')).map(b=>pick(b,['name','model','year','drawLen','drawWt','letoff','peep','radius','speed','sight','scope','rest','release','stabs']));
+ const arrows=MY.arrows.items.filter(a=>a.share&&(!a.who||a.who==='me')).map(a=>pick(a,['name','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg']));
+ try{await db.doc('teamgear/'+me.uid).set({bows,arrows,at:Date.now()})}catch(_){}}
+$('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,k=b.dataset.k,id=b.dataset.id;
+ if(a==='tab'){memTab=k;memEdit=null;renderMembers();return}
+ if(a==='ev'){ev.preventDefault();location.hash='#calendar';setTimeout(()=>openEv(id),50);return}
+ if(a==='add'){memEdit={k};renderMembers();return}
+ if(a==='edit'){memEdit={k,id};renderMembers();return}
+ if(a==='cancel'){memEdit=null;renderMembers();return}
+ if(a==='del'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}MY[k]=clone(MY[k]);MY[k].items=MY[k].items.filter(i=>i.id!==id);await saveMy(k);if(k!=='rounds')syncShared();renderMembers();return}
+ if(a==='res'){const cur=clone(RESULTS[me.uid]||{r:{}});cur.r=cur.r||{};if(cur.r[id]){cur.r[id].status=b.dataset.s;cur.r[id].decided=Date.now()}try{await db.doc('results/'+me.uid).set(cur);toast(b.dataset.s==='confirmed'?'Result added to your record.':'Dismissed.')}catch(_){toast('Could not save.')}return}
+ if(a==='maparse'){const txt=$('#maimp').value;const cards=parseMA(txt);if(!cards.length){toast('No My Archery card found. Paste the whole shared text, including the code that starts with MA1.');return}
+  IMPORTS=cards.map(c=>({...c,pick:maGuess(c.d),who:'me'}));maPreview();return}
+ if(a==='maclear'){IMPORTS=[];$('#maimp').value='';maPreview();return}
+ if(a==='maimport'){const have=new Set(MY.rounds.items.map(r=>r.maId).filter(Boolean));const add=[];let dup=0;
+  for(const c of IMPORTS){if(c.pick<0)continue;const r=maRound(c,c.pick,c.who);if(have.has(r.maId)){dup++;continue}have.add(r.maId);add.push(r)}
+  if(!add.length){toast(dup?'Those rounds are already imported.':'Pick which archer is you on at least one card.');return}
+  MY.rounds=clone(MY.rounds);MY.rounds.items=MY.rounds.items.concat(add).slice(-500);IMPORTS=[];await saveMy('rounds');toast(`Imported ${add.length} round${add.length>1?'s':''}${dup?` (${dup} already there)`:''}.`);renderMembers();return}
+ if(a==='addkid'){memEdit={k:'kid'};renderMembers();return}
+ if(a==='editkid'){memEdit={k:'kid',id};renderMembers();return}
+ if(a==='delkid'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again to remove';return}MY.family=clone(MY.family);MY.family.kids=myKids().filter(k=>k.id!==id);memEdit=null;await saveMy('family');await pubKids();renderMembers();return}
+ if(a==='okkid'||a==='unkid'){const d=clone(TEAM.youth||{approved:{}});d.approved=d.approved||{};if(a==='okkid')d.approved[id]={at:Date.now(),by:me.uid};else delete d.approved[id];try{await db.doc('team/youth').set(d);toast(a==='okkid'?'Youth archer approved.':'Approval revoked.')}catch(_){toast('Could not save.')}return}
+ if(a==='kres'){const cur=clone(RESULTS[me.uid]||{});cur.kr=cur.kr||{};if(cur.kr[k]&&cur.kr[k][id]){cur.kr[k][id].status=b.dataset.s;cur.kr[k][id].decided=Date.now()}try{await db.doc('results/'+me.uid).set(cur);toast('Saved.')}catch(_){toast('Could not save.')}return}
+ if(a==='delsp'){const d=clone(TEAM.sponsors||{items:[]});d.items=(d.items||[]).filter(s=>s.id!==id);try{await db.doc('team/sponsors').set(d)}catch(_){toast('Could not save.')}return}
+ if(a==='delann'){const d=clone(TEAM.ann||{items:[]});d.items=(d.items||[]).filter(s=>s.id!==id);try{await db.doc('team/ann').set(d)}catch(_){toast('Could not save.')}return}
+ if(a==='asearch'){const q=$('#asearch').value.trim();try{const r=await usr.search(q);adminHits=(r||[]).slice(0,8).map(h=>({id:String(h.id),name:h.name||'',email:h.email||''}))}catch(_){adminHits=[]}if(!adminHits.length)toast('No matches. Share the site with them first.');document.activeElement.blur();renderMembers();return}
+ if(a==='mkadmin'||a==='unadmin'){const next=a==='mkadmin'?[...new Set(ROLES.concat(id))]:ROLES.filter(u=>u!==id);try{await db.doc('config/roles').set({admins:next,at:Date.now()});toast(a==='mkadmin'?'Admin added.':'Admin removed.')}catch(_){toast('Only the site owner can change admins.')}return}
+});
+$('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('form[data-form]');if(!f)return;ev.preventDefault();const t=f.dataset.form;const v=n=>f[n]?String(f[n].value).trim():'';
+ if(t==='profile'){const d={kids:(ROSTER[me.uid]&&ROSTER[me.uid].kids)||[],name:v('name').slice(0,80),jersey:v('jersey').slice(0,12),cls:{asa:v('asa').slice(0,40),ibo:v('ibo').slice(0,40),nfaa:v('nfaa').slice(0,40),usaa:v('usaa').slice(0,40)},at:Date.now()};
+  try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d;f.querySelector('button').blur();toast('Profile saved.');renderMembers()}catch(_){toast('Could not save — ask Monty to check your member access.')}return}
+ if(t==='bows'||t==='arrows'){const ks=t==='bows'?['name','model','year','drawLen','drawWt','letoff','peep','radius','speed','sight','scope','rest','release','stabs','stringDate','notes']:['name','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
+  const wv=f.who?f.who.value:'me';const o={id:(memEdit&&memEdit.id)||rid(),share:wv==='me'&&f.share.checked,who:wv};for(const k of ks){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?600:80)}
+  if(t==='bows')o.marks=v('marks').split('\n').map(l=>l.split(/[=:]/)).filter(p=>p.length>1&&p[0].trim()).slice(0,30).map(p=>({y:p[0].trim().slice(0,8),m:p.slice(1).join('=').trim().slice(0,12)}));
+  MY[t]=clone(MY[t]);const i=MY[t].items.findIndex(x=>x.id===o.id);if(i>=0)MY[t].items[i]=o;else MY[t].items.push(o);
+  document.activeElement.blur();memEdit=null;await saveMy(t);syncShared();toast('Saved.');renderMembers();return}
+ if(t==='round'){const o={id:rid(),who:f.who?f.who.value:'me',date:v('date'),kind:v('kind'),disc:v('disc'),event:v('event').slice(0,120),score:v('score'),max:v('max'),xs:v('xs'),targets:v('targets'),notes:v('notes').slice(0,400)};const c=v('card');if(c)o.card=c.slice(0,6000);
+  if(!isDate(o.date)||num(o.score)===null){toast('Add a date and a score.');return}
+  MY.rounds=clone(MY.rounds);MY.rounds.items.push(o);if(MY.rounds.items.length>500)MY.rounds.items=MY.rounds.items.slice(-500);document.activeElement.blur();await saveMy('rounds');toast('Round saved.');renderMembers();return}
+ if(t==='kid'){if(!f.guardian.checked){toast('Please confirm you are the parent or guardian.');return}
+  const o={id:(memEdit&&memEdit.id)||rid(),first:v('first').slice(0,40),last:v('last').slice(0,40),cls:{asa:v('asa').slice(0,40),ibo:v('ibo').slice(0,40),nfaa:v('nfaa').slice(0,40),usaa:v('usaa').slice(0,40)},consent:{name:v('nameShow')==='full'?'full':'initial',photos:v('photos')==='yes',results:v('results')==='yes',signed:isDate(v('signed'))?v('signed'):''}};
+  if(!o.first||!o.last){toast('Add a first and last name.');return}
+  MY.family=clone(MY.family);MY.family.kids=MY.family.kids||[];const i=MY.family.kids.findIndex(k=>k.id===o.id);if(i>=0)MY.family.kids[i]=o;else MY.family.kids.push(o);
+  document.activeElement.blur();memEdit=null;await saveMy('family');await pubKids();toast('Saved. An organizer will approve once they have your signed form.');renderMembers();return}
+ if(t==='sponsor'){const d=clone(TEAM.sponsors||{items:[]});d.items=(d.items||[]).concat({id:rid(),sponsor:v('sponsor'),code:v('code').slice(0,60),details:v('details').slice(0,200)});try{await db.doc('team/sponsors').set(d);document.activeElement.blur();toast('Code added.')}catch(_){toast('Could not save.')}return}
+ if(t==='ann'){const d=clone(TEAM.ann||{items:[]});d.items=[{id:rid(),text:v('text').slice(0,500),by:me.uid,at:Date.now()}].concat(d.items||[]).slice(0,20);try{await db.doc('team/ann').set(d);document.activeElement.blur();toast('Posted.')}catch(_){toast('Could not save.')}return}
+});
+renderMembers();
+
+render();nextUp();seriesCards();nationals();tbas();up3();route();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "in-ky",
+    "loc": "Sporting Club at the Farm",
+    "st": "IN/KY",
+    "s": "2027-04-09",
+    "e": "2027-04-11",
+    "url": "https://totalarcherychallenge.com/pages/in-ky-sporting-club-at-the-farm-in"
+  },
+  {
+    "id": "beavers-bend",
+    "loc": "Beaver's Bend",
+    "st": "OK",
+    "s": "2027-04-16",
+    "e": "2027-04-18",
+    "url": "https://totalarcherychallenge.com/pages/beavers-bend-ok"
+  },
+  {
+    "id": "san-antonio",
+    "loc": "San Antonio",
+    "st": "TX",
+    "s": "2027-04-23",
+    "e": "2027-04-25",
+    "url": "https://totalarcherychallenge.com/pages/san-antonio-tx"
+  },
+  {
+    "id": "circle-e",
+    "loc": "Circle E Guest Ranch",
+    "st": "TN",
+    "s": "2027-04-30",
+    "e": "2027-05-02",
+    "url": "https://totalarcherychallenge.com/pages/circle-e-guest-ranch-tn"
+  },
+  {
+    "id": "7springs-1",
+    "loc": "Seven Springs — Week 1",
+    "st": "PA",
+    "s": "2027-05-20",
+    "e": "2027-05-23",
+    "url": "https://totalarcherychallenge.com/pages/7-springs-pa",
+    "note": "New \"Kinetic Impact\" format for 2027."
+  },
+  {
+    "id": "7springs-2",
+    "loc": "Seven Springs — Week 2",
+    "st": "PA",
+    "s": "2027-05-28",
+    "e": "2027-05-30",
+    "url": "https://totalarcherychallenge.com/pages/7-springs-pa-week-2"
+  },
+  {
+    "id": "boyne",
+    "loc": "Boyne Mountain",
+    "st": "MI",
+    "s": "2027-06-04",
+    "e": "2027-06-06",
+    "url": "https://totalarcherychallenge.com/pages/boyne-mountain-mi"
+  },
+  {
+    "id": "crystal",
+    "loc": "Crystal Mountain",
+    "st": "MI",
+    "s": "2027-06-11",
+    "e": "2027-06-13",
+    "url": "https://totalarcherychallenge.com/pages/crystal-mountain-mi"
+  },
+  {
+    "id": "terry-peak",
+    "loc": "Terry Peak",
+    "st": "SD",
+    "s": "2027-06-18",
+    "e": "2027-06-20",
+    "url": "https://totalarcherychallenge.com/pages/terry-peak-sd"
+  },
+  {
+    "id": "red-lodge",
+    "loc": "Red Lodge",
+    "st": "MT",
+    "s": "2027-06-25",
+    "e": "2027-06-27",
+    "url": "https://totalarcherychallenge.com/pages/red-lodge-mt"
+  },
+  {
+    "id": "colorado",
+    "loc": "Colorado",
+    "st": "CO",
+    "s": "2027-07-09",
+    "e": "2027-07-11",
+    "url": "https://totalarcherychallenge.com/pages/sunlight-mtn-resort-colorado"
+  },
+  {
+    "id": "brian-head",
+    "loc": "Brian Head",
+    "st": "UT",
+    "s": "2027-07-15",
+    "e": "2027-07-18",
+    "url": "https://totalarcherychallenge.com/pages/brian-head-ut"
+  },
+  {
+    "id": "arizona",
+    "loc": "Sunrise Park Resort, Greer",
+    "st": "AZ",
+    "s": "2027-07-30",
+    "e": "2027-08-01",
+    "url": "https://totalarcherychallenge.com/pages/sunrise-park-resort-az"
+  }
+]
