@@ -571,7 +571,68 @@ if(STATIC)(async()=>{try{const r=await fetch('data/site.json',{cache:'no-cache'}
  GAL.sort((a,b)=>(b.at||0)-(a.at||0));renderGallery();
  const w=d.webcheck;if(w&&w.at){const dt=pd(w.at);$('#webst').textContent=`Last automatic web check: ${MON[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()} — ${String(w.summary||'').slice(0,200)} The calendar is checked against club and association websites every Sunday evening.`}
  else $('#webst').textContent='Club and association websites are checked for new events every Sunday evening.';
- me.ready=true;renderMembers()}catch(_){$('#livest').textContent='Could not load the event list — please refresh the page.'}})();
+ me.ready=true;renderMembers()}catch(_){$('#livest').textContent='Could not load the event list — please refresh the page.'}
+ memAuth()})();
+/* ---- Hosted members area: Cloudflare Access sign-in + members API ---- */
+const AUTH={state:'checking',email:'',member:null,err:''};
+async function api(path,opt={}){const r=await fetch('/api/'+path,{credentials:'same-origin',redirect:'manual',...opt,headers:{'content-type':'application/json'}});
+ if(r.type==='opaqueredirect'||r.status===401||r.status===0)throw Object.assign(new Error('Please sign in again.'),{code:401});
+ const d=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(d.error||'Something went wrong.'),{code:r.status});return d}
+const SUBS=[];const SHIM_COLS=['roster','teamgear','rsvp','results','team'];
+const snapD=d=>({exists:!!d.exists,data:()=>d.data});
+function subsFor(path){for(const s of SUBS)if(s.path===path||(s.col&&path.startsWith(s.path+'/')))s.load()}
+function shimDoc(path){const q='doc?path='+encodeURIComponent(path);return{
+ async get(){return snapD(await api(q))},
+ async set(data){await api(q,{method:'PUT',body:JSON.stringify({data})});subsFor(path)},
+ async update(data){await api(q,{method:'PUT',body:JSON.stringify({data,merge:true})});subsFor(path)},
+ async delete(){await api(q,{method:'DELETE'});subsFor(path)},
+ onSnapshot(cb,err){const s={path,load:async()=>{try{cb(snapD(await api(q)))}catch(e){err&&err(e)}}};SUBS.push(s);s.load();return()=>{}}}}
+function shimCol(path){return{doc:id=>shimDoc(path+'/'+id),
+ onSnapshot(cb,err){if(!SHIM_COLS.includes(path))return()=>{};const s={path,col:true,load:async()=>{try{const d=await api('col?path='+encodeURIComponent(path));cb({docs:d.docs.map(x=>({id:x.id,data:()=>x.data}))})}catch(e){err&&err(e)}}};SUBS.push(s);s.load();return()=>{}}}}
+setInterval(()=>{if(AUTH.state==='active'&&document.visibilityState==='visible')SUBS.forEach(s=>s.load())},90000);
+async function memAuth(){try{const d=await api('me');AUTH.email=d.email||'';AUTH.member=d.member;
+  AUTH.state=!d.member?'new':d.member.status==='active'?'active':d.member.status==='pending'?'pending':'removed';
+  if(AUTH.state==='active'){
+   db={doc:shimDoc,collection:shimCol};
+   usr={id:async()=>AUTH.member.id,isOwner:async()=>AUTH.member.role==='owner',can:async()=>true,search:async()=>[],
+    profiles:async ids=>api('profiles?ids='+encodeURIComponent(ids.join(',')))};
+   if(AUTH.member.name&&!PROF[AUTH.member.id])PROF[AUTH.member.id]=AUTH.member.name;
+   await memInit(true);return}
+ }catch(e){AUTH.state=e.code===401?'out':'error';AUTH.err=e.message}
+ renderMembers()}
+const LOCK='<svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><rect x="12" y="28" width="40" height="30" rx="6" fill="var(--jblue)"/><path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="var(--ink)" stroke-width="6"/><circle cx="32" cy="42" r="5" fill="#0c0e11"/></svg>';
+const BTN='style="padding:10px 18px;border-radius:10px;font-weight:700;margin-top:6px"';
+function authView(){const a=AUTH,mid=`<div style="margin-top:18px">${MYARCH}</div>`;
+ const box=(h,p,x='')=>`<div class="lock">${LOCK}<h2>${h}</h2><p>${p}</p>${x}</div>`;
+ const out=`<p class="note" style="margin-top:14px">Signed in as ${esc(a.email)} · <a href="/cdn-cgi/access/logout">Sign out</a></p>`;
+ if(a.state==='checking')return box('For team members','Checking your sign-in…');
+ if(a.state==='out')return box('For team members','The members area holds each archer’s gear, rounds, events and results, plus team codes and carpools. Team members sign in with a one-time code sent to their email — no password needed.',`<a class="btn pri" href="/signin" ${BTN}>Sign in</a><p class="note" style="margin-top:12px">New to the team? Sign in the same way and ask to join.</p>`)+mid;
+ if(a.state==='new')return box('Ask to join the team',`You’re signed in as <b>${esc(a.email)}</b>. Tell us who you are and Monty, Travis or Darvie will approve you.`,`<form id="mjoin" class="frm" style="text-align:left;margin-top:10px"><label class="full">Your name<input name="name" maxlength="80" required autocomplete="name"></label><label class="full">How you know the team (optional)<input name="note" maxlength="300"></label><div class="acts full"><button class="pri" type="submit">Send request</button></div><p class="note full" id="mjst"></p></form>${out}`);
+ if(a.state==='pending')return box('Request sent',`Thanks${a.member&&a.member.name?', '+esc(a.member.name):''}. Monty, Travis or Darvie will approve your request — check back soon.`,out)+mid;
+ if(a.state==='removed')return box('Membership not active','Your account isn’t active on the team site. Talk to Monty, Travis or Darvie if you think that’s a mistake.',out);
+ return box('Members area','The members area isn’t available right now. Please try again later.',a.err?`<p class="note">${esc(a.err)}</p>`:'')+mid}
+const MEMS={list:[],loaded:false,loading:false,err:''};
+async function loadMems(){MEMS.loading=true;try{MEMS.list=(await api('admin/members')).members||[];MEMS.err='';for(const x of MEMS.list)if(x.status==='active'&&x.name&&!PROF[x.id])PROF[x.id]=x.name}catch(e){MEMS.err=e.message}MEMS.loaded=true;MEMS.loading=false;renderMembers()}
+function memAdminBox(){if(!MEMS.loaded&&!MEMS.loading)loadMems();
+ const L=MEMS.list,pend=L.filter(x=>x.status==='pending'),inv=L.filter(x=>x.status==='invited'),act=L.filter(x=>x.status==='active');
+ const row=(x,btns)=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>${esc(x.name||'(no name)')}</b> <span class="note">${esc(x.email)}</span>${x.note?`<div class="note">${esc(x.note)}</div>`:''}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${btns}</div></div>`;
+ const b=(act,id,t,cls='')=>`<button ${cls?`class="${cls}"`:''} data-mact="${act}" data-id="${esc(id)}">${t}</button>`;
+ const roleTag=x=>x.role==='owner'?'<span class="tag">Site owner</span>':x.role==='admin'?'<span class="tag">Admin</span>':'';
+ return `<div class="box"><h3>Team members</h3><p class="note">Admins approve new members, post announcements and sponsor codes, and approve youth archers. Calendar events and gallery photos are edited in the <a href="https://app.pagescms.org" target="_blank" rel="noopener">phone editor</a>. ${me.owner?'Only you can make someone an admin.':''}</p>
+  ${MEMS.err?`<p class="note">${esc(MEMS.err)}</p>`:''}${!MEMS.loaded?'<p class="note">Loading members…</p>':''}
+  ${pend.length?`<h4>Waiting for approval (${pend.length})</h4>${pend.map(x=>row(x,b('approve',x.id,'Approve','pri')+b('decline',x.id,'Decline','danger'))).join('')}`:''}
+  <h4>Invite someone</h4><form id="minv" class="frm"><label>Name<input name="name" maxlength="80"></label><label>Email<input name="email" type="email" maxlength="200" required></label><div class="acts full"><button class="pri" type="submit">Invite</button></div></form>
+  <p class="note">Invited people are approved as soon as they sign in with that email. Let them know to go to the Members page and tap Sign in.</p>
+  ${inv.length?`<h4>Invited, not signed in yet</h4>${inv.map(x=>row(x,b('decline',x.id,'Cancel invite','danger'))).join('')}`:''}
+  <h4>Active members (${act.length})</h4>${act.map(x=>row(x,roleTag(x)+(x.role==='owner'?'':(me.owner?(x.role==='admin'?b('unadmin',x.id,'Remove admin'):b('admin',x.id,'Make admin')):'')+(x.id===me.uid?'':b('remove',x.id,'Remove','danger'))))).join('')}</div>`}
+document.addEventListener('click',async ev=>{const t=ev.target.closest('[data-mact]');if(!t)return;const a=t.dataset.mact,id=t.dataset.id;
+ if((a==='remove'||a==='decline')&&t.dataset.sure!=='1'){t.dataset.sure='1';t.textContent='Tap again to confirm';return}
+ t.disabled=true;try{await api('admin/members',{method:'POST',body:JSON.stringify({action:a,id})});toast({approve:'Approved — they can sign in now.',decline:'Request removed.',remove:'Member removed.',admin:'Admin added.',unadmin:'Admin removed.'}[a]||'Saved.');
+  await loadMems();subsFor('config/roles');if(a==='approve'||a==='remove')SUBS.forEach(s=>s.col&&s.load())}catch(e){t.disabled=false;toast(e.message)}});
+document.addEventListener('submit',async ev=>{const f=ev.target;if(f.id!=='minv'&&f.id!=='mjoin')return;ev.preventDefault();ev.stopPropagation();
+ const v=n=>(f.elements[n]&&f.elements[n].value||'').trim();
+ if(f.id==='minv'){try{await api('admin/members',{method:'POST',body:JSON.stringify({action:'invite',name:v('name'),email:v('email')})});f.reset();document.activeElement.blur();toast('Invite saved.');loadMems()}catch(e){toast(e.message)}return}
+ try{const d=await api('join',{method:'POST',body:JSON.stringify({name:v('name'),note:v('note')})});AUTH.member={...(AUTH.member||{}),name:v('name'),status:d.status};AUTH.state=d.status==='active'?'active':'pending';document.activeElement.blur();if(d.status==='active')memAuth();else renderMembers()}catch(e){$('#mjst').textContent=e.message}},true);
 /* ---- Members area, gallery uploads, RSVPs ---- */
 const ALBUMS=['Thursday Night 3D','AZ 3D Championship Series','Mountain shoots','Podiums & buckles','Team gear','Road trips'];
 const DISC=['3D','Indoor 5-spot','Vegas 3-spot','Field','Outdoor target','Other'];
@@ -596,7 +657,7 @@ const uidDoc=k=>db.doc('data/users/'+me.uid+'/'+k);
 async function saveMy(k){try{await uidDoc(k).set(clone(MY[k]))}catch(_){toast('Could not save — ask Monty to check your member access.')}}
 function subDoc(p,cb){try{db.doc(p).onSnapshot(s=>cb(s.exists?clone(s.data()):null),()=>{})}catch(_){}}
 function subCol(p,cb){try{db.collection(p).onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=clone(d.data())});cb(m)},()=>{})}catch(_){}}
-function setAdmin(){me.admin=me.member&&(me.owner||ROLES.includes(me.uid));canWrite=me.admin;$('#addev').hidden=!me.admin;renderGalAdmin();renderMembers()}
+function setAdmin(){me.admin=me.member&&(me.owner||ROLES.includes(me.uid));canWrite=me.admin&&!STATIC;$('#addev').hidden=!canWrite;if(STATIC&&me.admin&&!$('#livest').textContent)$('#livest').innerHTML='Admins: add or fix events in the <a href="https://app.pagescms.org" target="_blank" rel="noopener">phone editor</a>.';renderGalAdmin();renderMembers()}
 
 async function memInit(w){
  try{me.uid=usr?await usr.id():null;me.owner=usr?!!(await usr.isOwner()):false}catch(_){}
@@ -671,7 +732,7 @@ const MYARCH=`<div class="box"><h3>My Archery — the team's scoring app</h3>
  <li><b>Two scorers:</b> share your card as text from the app; the other scorer pastes it and only the disagreements come up.</li>
  <li><b>Version:</b> it prints at the bottom of the Rounds screen (2026.09.21 as of the latest notes).</li>
  <li><b>Log a round here:</b> after a shoot, add it under Members › My rounds and paste the shared card text if you like.</li></ul></div>`;
-function visitorView(){return `<div class="lock"><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><rect x="12" y="28" width="40" height="30" rx="6" fill="var(--jblue)"/><path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="var(--ink)" stroke-width="6"/><circle cx="32" cy="42" r="5" fill="#0c0e11"/></svg>
+function visitorView(){if(STATIC)return authView();return `<div class="lock"><svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true"><rect x="12" y="28" width="40" height="30" rx="6" fill="var(--jblue)"/><path d="M20 28v-8a12 12 0 0 1 24 0v8" fill="none" stroke="var(--ink)" stroke-width="6"/><circle cx="32" cy="42" r="5" fill="#0c0e11"/></svg>
  <h2>For team members</h2><p>The members area holds each archer's gear, rounds, events and results, plus team codes and carpools. ${STATIC?'Member sign-in is being set up and will open here soon.':me.ready?'You aren’t signed in as a team member.':'Checking your access…'}</p><p class="note">On the team? Ask Monty, Travis or Darvie to add you.</p></div><div style="margin-top:18px">${MYARCH}</div>`}
 function fld(n,l,v,t='text',extra=''){return `<label>${l}<input name="${n}" type="${t}" value="${esc(v??'')}" ${extra}></label>`}
 function ago(d){if(!d)return'';const m=Math.floor((today-pd(d))/(30.44*864e5));return m<1?'this month':m<12?m+' month'+(m>1?'s':'')+' ago':(m/12).toFixed(1).replace('.0','')+' years ago'}
@@ -794,10 +855,10 @@ family(){const e=memEdit&&memEdit.k==='kid'?memEdit:null;
   <div class="acts"><button data-act="editkid" data-id="${esc(k.id)}">Edit</button></div></article>`}).join('')||'<div class="empty">No youth archers added.</div>'}</div>
  <div class="box" style="margin-top:16px"><h3>How youth members work</h3><ul><li>Until approved, your youth archer is hidden from the team, the gallery and the results check.</li><li>Rides for youth archers are arranged between parents, so they don't get carpool options.</li><li>Any possible result found for your archer comes to you to confirm.</li></ul></div>`},
 admin(){const ann=(TEAM.ann&&TEAM.ann.items)||[];
- return `<div class="box"><h3>Calendar &amp; gallery admins</h3><p class="note">Admins can add, edit and verify calendar events, post announcements and sponsor codes, and upload or delete gallery photos. They can’t change the website itself. Everyone else on the team is a member.</p>
+ return `${STATIC?memAdminBox():`<div class="box"><h3>Calendar &amp; gallery admins</h3><p class="note">Admins can add, edit and verify calendar events, post announcements and sponsor codes, and upload or delete gallery photos. They can’t change the website itself. Everyone else on the team is a member.</p>
   <ul>${['<li><b>'+esc(me.owner?nm(me.uid)+' (you, site owner)':'Site owner')+'</b></li>'].concat(ROLES.map(u=>`<li>${esc(nm(u))}${me.owner?` <button class="danger" data-act="unadmin" data-id="${esc(u)}">Remove</button>`:''}</li>`)).join('')}</ul>
   ${me.owner?`<div class="frm" style="grid-template-columns:1fr auto;margin-top:6px"><label>Find a team member<input id="asearch" placeholder="Type a name or email"></label><button data-act="asearch" style="align-self:end">Search</button></div><div id="ahits">${adminHits.map(h=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div>${esc(h.name||'Someone')}${h.email?` <span class="note">${esc(h.email)}</span>`:''}</div>${ROLES.includes(h.id)?'<span class="tag">Admin</span>':`<button class="pri" data-act="mkadmin" data-id="${esc(h.id)}">Make admin</button>`}</div>`).join('')}</div>
-  <p class="note">People appear here once you’ve shared the site with them on claude.ai as Contributors.</p>`:''}</div>
+  <p class="note">People appear here once you’ve shared the site with them on claude.ai as Contributors.</p>`:''}</div>`}
  ${youthAdmin()}
  <form class="box frm" data-form="ann" style="margin-top:16px"><h3 class="full" style="margin:0">Post an announcement</h3><label class="full">Message<textarea name="text" maxlength="500" required></textarea></label><div class="acts full"><button class="pri" type="submit">Post</button></div>
   ${ann.length?'<div class="full">'+ann.map(a=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div>${esc(a.text)}<div class="note">${esc(nm(a.by))} · ${new Date(a.at).toLocaleDateString()}</div></div><button class="danger" type="button" data-act="delann" data-id="${esc(a.id)}">Delete</button></div>`).join('')+'</div>':''}</form>`}
@@ -816,7 +877,7 @@ function renderMembers(){const R=$('#memroot');if(!R)return;if(!me.member){R.inn
  if(memTab==='admin'&&!me.admin)memTab='overview';
  const tabs=[['overview','Overview'],['gear','My gear'],['rounds','My rounds'],['events','My events'],['family','My family'],['team','Team'],['sponsors','Sponsor codes'],['myarchery','My Archery']].concat(me.admin?[['admin','Admin']]:[]);
  const keep=document.activeElement&&R.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(keep)return;
- R.innerHTML=`<p class="hello">Signed in as <b>${esc(nm(me.uid))}</b>${me.admin?' · admin':''}</p><div class="mtabs">${tabs.map(([k,n])=>`<button data-act="tab" data-k="${k}" aria-pressed="${memTab===k}">${n}</button>`).join('')}</div><div class="mbody">${V[memTab]()}</div>`}
+ R.innerHTML=`<p class="hello">Signed in as ${STATIC&&!(ROSTER[me.uid]&&ROSTER[me.uid].name)&&!PROF[me.uid]?'<b>'+esc(AUTH.email||'you')+'</b> — add your name under Overview':'<b>'+esc(nm(me.uid))+'</b>'}${me.admin?' · admin':''}${STATIC?' · <a href="/cdn-cgi/access/logout">Sign out</a>':''}</p><div class="mtabs">${tabs.map(([k,n])=>`<button data-act="tab" data-k="${k}" aria-pressed="${memTab===k}">${n}</button>`).join('')}</div><div class="mbody">${V[memTab]()}</div>`}
 async function pubKids(){const kids=myKids().map(k=>{const c=k.consent||{};const o={id:k.id,first:k.first,lastInit:(k.last||'').charAt(0).toUpperCase(),cls:k.cls||{},consent:{name:c.name||'initial',photos:!!c.photos,results:!!c.results,signed:c.signed||''}};if(c.name==='full')o.last=k.last;return o});
  const d={...clone(ROSTER[me.uid]||{}),kids,at:Date.now()};try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d}catch(_){toast('Could not save — ask Monty to check your member access.')}}
 async function syncShared(){const pick=(o,ks)=>Object.fromEntries(ks.filter(k=>o[k]).map(k=>[k,o[k]]));
