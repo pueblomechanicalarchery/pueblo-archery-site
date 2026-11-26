@@ -1,9 +1,9 @@
 // Members API. All routes need a signed-in email (Cloudflare Access); most need an active member.
 import { json, fail, ensureSchema, signedInEmail, currentMember, isActive, isAdmin, isOwner, newId } from '../_lib.js';
 
-const PER_MEMBER = ['roster', 'teamgear', 'rsvp', 'results'];
+const PER_MEMBER = ['roster', 'teamgear', 'rsvp', 'results', 'wishes', 'swap'];
 const TEAM_DOCS = ['ann', 'sponsors', 'youth'];
-const MY_DOCS = ['bows', 'arrows', 'optics', 'rounds', 'prefs', 'family'];
+const MY_DOCS = ['bows', 'arrows', 'optics', 'wish', 'rounds', 'prefs', 'family'];
 const MAX_DOC = 256 * 1024;
 const cleanEmail = e => String(e || '').trim().toLowerCase();
 const okEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) && e.length <= 200;

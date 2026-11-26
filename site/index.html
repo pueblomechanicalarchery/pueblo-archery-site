@@ -587,7 +587,7 @@ const AUTH={state:'checking',email:'',member:null,err:''};
 async function api(path,opt={}){const r=await fetch('/api/'+path,{credentials:'same-origin',redirect:'manual',...opt,headers:{'content-type':'application/json'}});
  if(r.type==='opaqueredirect'||r.status===401||r.status===0)throw Object.assign(new Error('Please sign in again.'),{code:401});
  const d=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(d.error||'Something went wrong.'),{code:r.status});return d}
-const SUBS=[];const SHIM_COLS=['roster','teamgear','rsvp','results','team'];
+const SUBS=[];const SHIM_COLS=['roster','teamgear','rsvp','results','team','wishes','swap'];
 const snapD=d=>({exists:!!d.exists,data:()=>d.data});
 function subsFor(path){for(const s of SUBS)if(s.path===path||(s.col&&path.startsWith(s.path+'/')))s.load()}
 function shimDoc(path){const q='doc?path='+encodeURIComponent(path);return{
@@ -677,8 +677,8 @@ document.addEventListener('submit',async ev=>{const f=ev.target;if(f.id!=='minv'
 const ALBUMS=['Thursday Night 3D','AZ 3D Championship Series','Mountain shoots','Podiums & buckles','Team gear','Road trips'];
 const DISC=['3D','Indoor 5-spot','Vegas 3-spot','Field','Outdoor target','Other'];
 const me={uid:null,owner:false,admin:false,member:false,ready:false};
-let ROLES=[],ROSTER={},RSVP={},RESULTS={},TGEAR={},TEAM={},GAL=[],PROF={},assets=null,memTab='overview',memEdit=null,adminHits=[];
-const MY={bows:{items:[]},arrows:{items:[]},optics:{items:[]},rounds:{items:[]},prefs:{},family:{kids:[]}};
+let ROLES=[],ROSTER={},RSVP={},RESULTS={},TGEAR={},TEAM={},WISHES={},SWAP={},GAL=[],PROF={},assets=null,memTab='overview',memEdit=null,adminHits=[];
+const MY={bows:{items:[]},arrows:{items:[]},optics:{items:[]},wish:{items:[]},rounds:{items:[]},prefs:{},family:{kids:[]}};
 const kidKey=(u,k)=>u+'__'+k;
 const kidOk=(u,k)=>!!(TEAM.youth&&TEAM.youth.approved&&TEAM.youth.approved[kidKey(u,k)]);
 const kidName=k=>k&&(k.consent&&k.consent.name==='full'&&k.last?k.first+' '+k.last:(k.first||'Youth archer')+((k.lastInit||(k.last||'').charAt(0).toUpperCase())?' '+(k.lastInit||(k.last||'').charAt(0).toUpperCase())+'.':''));
@@ -711,12 +711,14 @@ async function memInit(w){
  subDoc('config/roles',d=>{ROLES=Array.isArray(d&&d.admins)?d.admins.map(String):[];setAdmin();resolveNames(ROLES)});
  if(me.member){
   subDoc('data/users/'+me.uid+'/family',d=>{MY.family=d&&Array.isArray(d.kids)?d:{kids:[]};renderMembers()});
-  for(const k of['bows','arrows','optics','rounds'])subDoc('data/users/'+me.uid+'/'+k,d=>{MY[k]=d&&Array.isArray(d.items)?d:{items:[]};renderMembers()});
+  for(const k of['bows','arrows','optics','wish','rounds'])subDoc('data/users/'+me.uid+'/'+k,d=>{MY[k]=d&&Array.isArray(d.items)?d:{items:[]};renderMembers()});
   let first=true;subDoc('data/users/'+me.uid+'/prefs',d=>{MY.prefs=d||{};if(first&&d&&d.legs){Object.assign(store.legs,d.legs);save();seriesCards()}first=false});
   subCol('roster',m=>{ROSTER=m;renderMembers();resolveNames(Object.keys(m))});
   subCol('rsvp',m=>{RSVP=m;renderMembers();resolveNames(Object.keys(m))});
   subCol('results',m=>{RESULTS=m;renderMembers()});
   subCol('teamgear',m=>{TGEAR=m;renderMembers()});
+  subCol('wishes',m=>{WISHES=m;renderMembers()});
+  subCol('swap',m=>{SWAP=m;renderMembers()});
   subCol('team',m=>{TEAM=m;renderMembers();galAdminOn=null;renderGalAdmin()});
   resolveNames([me.uid]);
  }
@@ -822,7 +824,70 @@ function maPreview(){const box=$('#maprev');if(!box)return;if(!IMPORTS.length){b
   <div class="rride"><label>Which archer is you?<select data-ci="${ci}" data-f="pick"><option value="-1">Skip this card</option>${d.s.map((s,i)=>`<option value="${i}"${c.pick===i?' selected':''}>${esc(s.n)} — ${esc((s.t||[]).filter(x=>typeof x==='number').reduce((a,b)=>a+b,0))}${have.has(String(d.id)+':'+String(s.n))?' (already imported)':''}</option>`).join('')}</select></label>
   ${myKids().length?`<label>For<select data-ci="${ci}" data-f="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${c.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}</div></div>`}).join('')+`<div class="acts"><button class="pri" data-act="maimport">Import selected</button><button data-act="maclear">Cancel</button></div>`;
  box.querySelectorAll('select[data-ci]').forEach(s=>s.onchange=()=>{const c=IMPORTS[+s.dataset.ci];if(s.dataset.f==='pick')c.pick=+s.value;else c.who=s.value})}
+/* ---- Wish list, gear swap, group buys ---- */
+const WISH_CATS=['Bow','Sight','Scope','Arrows','Release','Rest','Stabilizer','Optics','Apparel','Other'];
+const WISH_PRI=['Need soon','Next upgrade','Dream'];
+const SWAP_COND=['Like new','Good','Fair','Needs work'];
+const JERSEY_SPONSORS=['Easton','Threadz','Muley Freak','Annihilator','Q2i','Rinehart','BHE','Leupold','Pueblo Mechanical'];
+function wishBrandMap(){const u=a=>[...new Set(a)];return{Bow:Object.keys(GEAR.bows),Sight:GEAR.sightBrands,Scope:GEAR.scopeBrands,Arrows:GEAR.arrowBrands,
+ Release:['Carter','Scott','TruBall','Stan','Hot Shot','Tru-Fire','Spot-Hogg','B3 Archery'],Rest:['Hamskea','QAD','Vapor Trail','Trophy Taker','AAE','Ripcord'],
+ Stabilizer:['Bee Stinger','Doinker','Shrewd','Fuse','Easton'],Optics:u(Object.values(GEAR.optics).flat()),Apparel:['Threadz','Muley Freak','Sitka','KUIU','First Lite'],Other:[]}}
+const wnorm=x=>String(x||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const itemName=x=>[x.brand,x.model].filter(Boolean).join(' ')||x.cat||'Item';
+function gearMatch(w,g){if(!w||!g||w.cat!==g.cat)return false;const wb=wnorm(w.brand),gb=wnorm(g.brand),wm=wnorm(w.model),gm=wnorm(g.model);
+ if(wb&&gb&&wb!==gb)return false;if(!wb&&!wm)return false;if(wm&&gm)return gm.includes(wm)||wm.includes(gm);return !!(wb&&gb)}
+function sponsorFor(brand){const b=wnorm(brand);if(!b)return null;const codes=(TEAM.sponsors&&TEAM.sponsors.items)||[];
+ const c=codes.find(s=>{const n=wnorm(s.sponsor);return n&&(n.includes(b)||b.includes(n))});if(c)return{code:c.code,details:c.details,sponsor:c.sponsor};
+ const j=JERSEY_SPONSORS.find(n=>{const m=wnorm(n);return m.includes(b)||b.includes(m)});return j?{sponsor:j}:null}
+async function syncWishes(){const items=MY.wish.items.filter(i=>i.share).map(i=>{const o={};for(const k of['id','cat','brand','model','pri'])if(i[k])o[k]=i[k];return o});try{await db.doc('wishes/'+me.uid).set({items,at:Date.now()})}catch(_){}}
+async function saveSwap(fn){try{let base={items:[]};try{const sn=await db.doc('swap/'+me.uid).get();if(sn.exists&&Array.isArray(sn.data().items))base=clone(sn.data())}catch(_){}
+ const next=fn(base);SWAP[me.uid]=next;await db.doc('swap/'+me.uid).set(clone(next));return true}catch(_){toast('Could not save.');return false}}
+function teamWishGroups(){const g=new Map();for(const [u,d] of Object.entries(WISHES))for(const w of (d&&d.items)||[]){const k=w.cat+'|'+wnorm(w.brand)+'|'+wnorm(w.model);
+ if(!g.has(k))g.set(k,{w,who:new Set()});g.get(k).who.add(u)}return [...g.values()].sort((a,b)=>b.who.size-a.who.size||itemName(a.w).localeCompare(itemName(b.w)))}
+function allSwaps(){const out=[];for(const [u,d] of Object.entries(SWAP))for(const it of (d&&d.items)||[])out.push({u,it});return out.sort((a,b)=>(b.it.at||0)-(a.it.at||0))}
+function wishMatches(){const out=[];const swaps=allSwaps();
+ for(const w of MY.wish.items)for(const {u,it} of swaps)if(u!==me.uid&&gearMatch(w,it))out.push(`<li><b>${esc(nm(u))}</b> has a <b>${esc(itemName(it))}</b>${it.year?' ('+esc(it.year)+')':''} up for swap${it.ask?' — '+esc(it.ask):''}. It matches your wish list.</li>`);
+ for(const it of (SWAP[me.uid]&&SWAP[me.uid].items)||[])for(const [u,d] of Object.entries(WISHES))if(u!==me.uid)for(const w of (d&&d.items)||[])if(gearMatch(w,it))out.push(`<li>Your <b>${esc(itemName(it))}</b> is on <b>${esc(nm(u))}</b>’s wish list.</li>`);
+ return [...new Set(out)]}
+function wishView(){const e=memEdit;GEAR.wishBrands=wishBrandMap();
+ if(e&&e.k==='wish'){const x=e.id?MY.wish.items.find(i=>i.id===e.id)||{}:{share:true};
+  return `<form class="box frm" data-form="wish"><h3 class="full" style="margin:0">${e.id?'Edit wish':'Add to your wish list'}</h3>
+   ${sel('cat','Category',WISH_CATS,x.cat,{other:false,dep:'brand',src:'wishBrands'})}${sel('brand','Maker',brandOf(GEAR.wishBrands,x.cat),x.brand)}${fld('model','Model',x.model,'text','placeholder="e.g. Concept XTS 37, Accu-Touch Carbon Pro"')}
+   ${sel('pri','Priority',WISH_PRI,x.pri,{other:false})}${fld('price','Rough price (optional, private)',x.price,'text','placeholder="e.g. $1,500"')}
+   <label class="full">Notes (private)<textarea name="notes">${esc(x.notes)}</textarea></label>
+   <label class="full chk"><input type="checkbox" name="share" ${x.share?'checked':''}> Share with the team — shows on the team wish list so teammates with a hand-me-down (or a group buy) can find you. Price and notes stay private.</label>
+   <div class="acts full"><button class="pri" type="submit">Save</button><button type="button" data-act="cancel">Cancel</button></div></form>`}
+ if(e&&e.k==='swap'){const mine=(SWAP[me.uid]&&SWAP[me.uid].items)||[];const x=e.id?mine.find(i=>i.id===e.id)||{}:(e.pre||{});
+  return `<form class="box frm" data-form="swap"><h3 class="full" style="margin:0">${e.id?'Edit your listing':'List gear for sale, trade or hand-me-down'}</h3>
+   ${sel('cat','Category',WISH_CATS,x.cat,{other:false,dep:'brand',src:'wishBrands'})}${sel('brand','Maker',brandOf(GEAR.wishBrands,x.cat),x.brand)}${fld('model','Model',x.model)}${fld('year','Year (optional)',x.year)}
+   ${sel('cond','Condition',SWAP_COND,x.cond,{other:false})}${fld('ask','Asking',x.ask,'text','placeholder="e.g. $400, trade, free to a junior archer"')}
+   <label class="full">Details teammates should know<textarea name="notes" placeholder="Draw length / weight range, what’s included, how to reach you">${esc(x.notes)}</textarea></label>
+   <p class="note full">Everyone signed in to the members area can see your listing with your name. Remove it once it’s gone.</p>
+   <div class="acts full"><button class="pri" type="submit">Save listing</button><button type="button" data-act="cancel">Cancel</button></div></form>`}
+ const m=wishMatches(),groups=teamWishGroups(),swaps=allSwaps();
+ const wcard=w=>{const sp=sponsorFor(w.brand),also=groups.find(g=>g.w.cat===w.cat&&wnorm(g.w.brand)===wnorm(w.brand)&&wnorm(g.w.model)===wnorm(w.model));const others=also?[...also.who].filter(u=>u!==me.uid).length:0;
+  return `<article class="gcard"><div class="gh"><b>${esc(itemName(w))}</b><span class="tag">${esc(w.pri||'Wish')}</span>${w.share?'<span class="tag">Shared</span>':'<span class="tag past">Private</span>'}</div>
+   <p class="note">${esc([w.cat,w.price].filter(Boolean).join(' · '))}</p>${w.notes?`<p class="note">${esc(w.notes)}</p>`:''}
+   ${sp?`<p class="note"><b>Sponsor:</b> ${esc(sp.sponsor)}${sp.code?` — code <span class="code">${esc(sp.code)}</span>${sp.details?' · '+esc(sp.details):''}`:' — team jersey sponsor; ask an organizer about team pricing.'}</p>`:''}
+   ${others?`<p class="note">${others} teammate${others>1?'s want':' wants'} this too${others>=2?' — <b>group buy?</b>':''}</p>`:''}
+   <div class="acts"><button data-act="edit" data-k="wish" data-id="${esc(w.id)}">Edit</button><button data-act="del" data-k="wish" data-id="${esc(w.id)}" class="danger">Got it / remove</button></div></article>`};
+ const scard=({u,it})=>`<article class="gcard"><div class="gh"><b>${esc(itemName(it))}</b><span class="tag">${esc(it.cond||'Used')}</span></div>
+   <p class="note">${esc([it.cat,it.year,it.ask].filter(Boolean).join(' · '))}</p>${it.notes?`<p class="note">${esc(it.notes)}</p>`:''}<p class="note">Listed by <b>${esc(u===me.uid?'you':nm(u))}</b></p>
+   ${u===me.uid?`<div class="acts"><button data-act="edit" data-k="swap" data-id="${esc(it.id)}">Edit</button><button data-act="swapdel" data-id="${esc(it.id)}" class="danger">Sold / remove</button></div>`:''}</article>`;
+ const gb=groups.filter(g=>g.who.size>=3);
+ const gbBody=gb.map(g=>`• ${itemName(g.w)} (${g.w.cat}) — ${g.who.size} members interested`).join('\n');
+ return `${m.length?`<div class="box" style="border-color:var(--jblue)"><h3 style="margin-top:0">Matches for you</h3><ul>${m.join('')}</ul><p class="note">Reach out to each other directly — the team text works great.</p></div>`:''}
+ <div class="sechead"><h3 style="margin:0">My wish list</h3><button class="pri" data-act="add" data-k="wish">+ Add a wish</button></div>
+ <div class="gcards">${MY.wish.items.map(wcard).join('')||'<div class="empty">Nothing yet. Add the bow, sight or glass you’ve got your eye on — even if it’s a “someday.”</div>'}</div>
+ <div class="sechead" style="margin-top:20px"><h3 style="margin:0">Gear swap</h3><button class="pri" data-act="add" data-k="swap">+ List something</button></div>
+ <p class="note">Upgrading? List what you’re moving on from so it stays with the team. Listings that match someone’s wish list are flagged for both of you.</p>
+ <div class="gcards">${swaps.map(scard).join('')||'<div class="empty">No gear listed yet.</div>'}</div>
+ <h3 style="margin-top:20px">Team wish list</h3><p class="note">What teammates have shared. When three or more want the same thing, it’s a group-buy candidate.</p>
+ ${groups.length?`<div class="scroll"><table class="stack"><thead><tr><th>Item</th><th>Category</th><th>Wanted by</th></tr></thead><tbody>${groups.map(g=>`<tr><td>${esc(itemName(g.w))}${g.who.size>=3?' <span class="tag">Group buy?</span>':''}${(()=>{const sp=sponsorFor(g.w.brand);return sp?` <span class="tag">Sponsor: ${esc(sp.sponsor)}</span>`:''})()}</td><td>${esc(g.w.cat)}</td><td>${[...g.who].map(u=>esc(nm(u))).join(', ')}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">No shared wishes yet.</div>'}
+ ${me.admin?`<div class="box" style="margin-top:16px"><h3 style="margin-top:0">Group buy ideas (admins)</h3>${gb.length?`<ul>${gb.map(g=>`<li><b>${esc(itemName(g.w))}</b> — ${g.who.size} members</li>`).join('')}</ul>
+   <div class="acts"><a class="btn pri" href="mailto:?subject=${encodeURIComponent('Pueblo Mechanical Archery Team — group buy interest')}&body=${encodeURIComponent('Hi,\n\nSeveral members of the Pueblo Mechanical Archery Team are interested in the same gear. Could you put together a team price?\n\n'+gbBody+'\n\nThanks,\n'+((AUTH.member&&AUTH.member.name)||nm(me.uid)))}">Email a group-buy request</a></div>`:'<p class="note">Nothing has three or more interested members yet.</p>'}</div>`:''}`}
 const V={
+wish(){return wishView()},
 overview(){const r=myRsvp();const up=Object.entries(r).map(([id,x])=>({e:EV.find(e=>e.id===id),x})).filter(o=>o.e&&endOf(o.e)>=today&&o.x.s==='going').sort((a,b)=>a.e.s.localeCompare(b.e.s));
  const res=Object.entries((RESULTS[me.uid]&&RESULTS[me.uid].r)||{}).filter(([k,v])=>v.status==='possible');
  const old=MY.bows.items.filter(b=>b.stringDate&&(today-pd(b.stringDate))>365*864e5);
@@ -837,9 +902,9 @@ gear(){const e=memEdit;
  const bowCard=b=>`<article class="gcard"><div class="gh"><b>${esc(b.name||'Bow')}${whoName(b.who)?' · '+esc(whoName(b.who)):''}</b>${b.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc([[b.brand,b.model].filter(Boolean).join(' '),b.year].filter(Boolean).join(' · '))}</p>
   <dl class="spec">${[['Draw length',b.drawLen&&b.drawLen+'"'],['Draw weight',b.drawWt&&b.drawWt+' lb'],['Let-off',b.letoff&&b.letoff+'%'],['Peep height',b.peep&&b.peep+'"'],['Sight radius',b.radius&&b.radius+'"'],['Arrow speed',b.speed&&b.speed+' fps'],['Sight',[b.sightBrand,b.sight].filter(Boolean).join(' ')],['Scope / lens',[b.scopeBrand,b.scope].filter(Boolean).join(' ')],['Rest',b.rest],['Release',b.release],['Stabilizers',b.stabs],['Strings',b.stringDate&&'installed '+ago(b.stringDate)]].filter(x=>x[1]).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>
   ${b.marks&&b.marks.length?`<p class="note" style="margin:6px 0 2px"><b>Sight marks</b></p><div class="marks">${b.marks.map(m=>`<span>${esc(m.y)} yd <b>${esc(m.m)}</b></span>`).join('')}</div>`:''}
-  <div class="acts"><button data-act="edit" data-k="bows" data-id="${esc(b.id)}">Edit</button><button data-act="del" data-k="bows" data-id="${esc(b.id)}" class="danger">Delete</button></div></article>`;
+  <div class="acts"><button data-act="edit" data-k="bows" data-id="${esc(b.id)}">Edit</button><button data-act="toswap" data-k="bows" data-id="${esc(b.id)}">List for swap</button><button data-act="del" data-k="bows" data-id="${esc(b.id)}" class="danger">Delete</button></div></article>`;
 const optCard=o=>`<article class="gcard"><div class="gh"><b>${esc(o.name||o.type||'Optics')}</b>${o.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc([[o.brand,o.model].filter(Boolean).join(' '),o.mag,o.name&&o.type].filter(Boolean).join(' · '))}</p>${o.notes?`<p class="note">${esc(o.notes)}</p>`:''}
-  <div class="acts"><button data-act="edit" data-k="optics" data-id="${esc(o.id)}">Edit</button><button data-act="del" data-k="optics" data-id="${esc(o.id)}" class="danger">Delete</button></div></article>`;
+  <div class="acts"><button data-act="edit" data-k="optics" data-id="${esc(o.id)}">Edit</button><button data-act="toswap" data-k="optics" data-id="${esc(o.id)}">List for swap</button><button data-act="del" data-k="optics" data-id="${esc(o.id)}" class="danger">Delete</button></div></article>`;
  const arrCard=a=>`<article class="gcard"><div class="gh"><b>${esc(a.name||'Arrows')}${whoName(a.who)?' · '+esc(whoName(a.who)):''}</b>${a.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc([a.brand,a.model].filter(Boolean).join(' '))}</p>
   <dl class="spec">${[['Spine',a.spine],['Length',a.length&&a.length+'"'],['Total weight',a.totalWt&&a.totalWt+' gr'],['Point',a.pointWt&&a.pointWt+' gr'],['Insert',a.insert],['Nock',a.nock],['Fletching',[a.fletchCount&&a.fletchCount+'×',a.fletchType,a.fletchSize,a.fletchCfg].filter(Boolean).join(' ')],['FOC',foc(a)&&foc(a)+'%']].filter(x=>x[1]).map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>
   <div class="acts"><button data-act="edit" data-k="arrows" data-id="${esc(a.id)}">Edit</button><button data-act="del" data-k="arrows" data-id="${esc(a.id)}" class="danger">Delete</button></div></article>`;
@@ -946,7 +1011,7 @@ function ptView(r){if(!Array.isArray(r.pt)||!r.pt.length)return'';const ch=[];fo
  return `<details class="ptd"><summary>Per ${r.unit==='ends'?'end':'target'}</summary><div class="pt">${ch.map((c,ci)=>`<span>${c.map((x,j)=>`<i class="${x===null?'miss':String(x)===r.topL&&r.unit!=='ends'?'top':''}" title="${r.unit==='ends'?'End':'Target'} ${ci*5+j+1}">${x===null?'–':esc(x)}</i>`).join('')}</span>`).join('')}</div></details>`}
 function renderMembers(){const R=$('#memroot');if(!R)return;if(!me.member){R.innerHTML=visitorView();return}
  if(memTab==='admin'&&!me.admin)memTab='overview';
- const tabs=[['overview','Overview'],['gear','My gear'],['rounds','My rounds'],['events','My events'],['family','My family'],['team','Team'],['sponsors','Sponsor codes'],['myarchery','My Archery']].concat(me.admin?[['admin','Admin']]:[]);
+ const tabs=[['overview','Overview'],['gear','My gear'],['wish','Wish list & swap'],['rounds','My rounds'],['events','My events'],['family','My family'],['team','Team'],['sponsors','Sponsor codes'],['myarchery','My Archery']].concat(me.admin?[['admin','Admin']]:[]);
  const keep=document.activeElement&&R.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(keep)return;
  R.innerHTML=`<p class="hello">Signed in as ${STATIC&&!(ROSTER[me.uid]&&ROSTER[me.uid].name)&&!PROF[me.uid]?'<b>'+esc(AUTH.email||'you')+'</b> — add your name under Overview':'<b>'+esc(nm(me.uid))+'</b>'}${me.admin?' · admin':''}${STATIC?' · <a href="/cdn-cgi/access/logout">Sign out</a>':''}</p><div class="mtabs">${tabs.map(([k,n])=>`<button data-act="tab" data-k="${k}" aria-pressed="${memTab===k}">${n}</button>`).join('')}</div><div class="mbody">${V[memTab]()}</div>`}
 async function pubKids(){const kids=myKids().map(k=>{const c=k.consent||{};const o={id:k.id,first:k.first,lastInit:(k.last||'').charAt(0).toUpperCase(),cls:k.cls||{},consent:{name:c.name||'initial',photos:!!c.photos,results:!!c.results,signed:c.signed||''}};if(c.name==='full')o.last=k.last;return o});
@@ -959,10 +1024,12 @@ async function syncShared(){const pick=(o,ks)=>Object.fromEntries(ks.filter(k=>o
 $('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,k=b.dataset.k,id=b.dataset.id;
  if(a==='tab'){memTab=k;memEdit=null;renderMembers();return}
  if(a==='ev'){ev.preventDefault();location.hash='#calendar';setTimeout(()=>openEv(id),50);return}
+ if(a==='swapdel'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}await saveSwap(d=>{d.items=(d.items||[]).filter(i=>i.id!==id);return d});renderMembers();return}
+ if(a==='toswap'){const it=(MY[k].items||[]).find(i=>i.id===id)||{};memTab='wish';memEdit={k:'swap',pre:k==='bows'?{cat:'Bow',brand:it.brand,model:it.model,year:it.year}:{cat:'Optics',brand:it.brand,model:it.model}};renderMembers();window.scrollTo(0,0);return}
  if(a==='add'){memEdit={k};renderMembers();return}
  if(a==='edit'){memEdit={k,id};renderMembers();return}
  if(a==='cancel'){memEdit=null;renderMembers();return}
- if(a==='del'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}await saveItems(k,d=>{d.items=(d.items||[]).filter(i=>i.id!==id);return d});if(k!=='rounds')syncShared();renderMembers();return}
+ if(a==='del'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}await saveItems(k,d=>{d.items=(d.items||[]).filter(i=>i.id!==id);return d});if(k==='wish')await syncWishes();if(k!=='rounds')syncShared();renderMembers();return}
  if(a==='res'){const cur=clone(RESULTS[me.uid]||{r:{}});cur.r=cur.r||{};if(cur.r[id]){cur.r[id].status=b.dataset.s;cur.r[id].decided=Date.now()}try{await db.doc('results/'+me.uid).set(cur);toast(b.dataset.s==='confirmed'?'Result added to your record.':'Dismissed.')}catch(_){toast('Could not save.')}return}
  if(a==='maparse'){const txt=$('#maimp').value;const cards=parseMA(txt);if(!cards.length){toast('No My Archery card found. Paste the whole shared text, including the code that starts with MA1.');return}
   IMPORTS=cards.map(c=>({...c,pick:maGuess(c.d),who:'me'}));maPreview();return}
@@ -985,11 +1052,15 @@ $('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('fo
  const v=n=>{if(n==='nfaa'&&f.elements.nfaa_style)return [raw('nfaa_age'),raw('nfaa_style')].filter(Boolean).join(' ');if(n==='usaa'&&f.elements.usaa_div)return [raw('usaa_div'),raw('usaa_age')].filter(Boolean).join(' ');return raw(n)};
  if(t==='profile'){const d={kids:(ROSTER[me.uid]&&ROSTER[me.uid].kids)||[],name:v('name').slice(0,80),jersey:v('jersey').slice(0,12),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},at:Date.now()};
   try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d;f.querySelector('button').blur();toast('Profile saved.');renderMembers()}catch(_){toast('Could not save — ask Monty to check your member access.')}return}
- if(t==='bows'||t==='arrows'||t==='optics'){const ks=t==='optics'?['name','type','brand','model','mag','notes']:t==='bows'?['name','brand','model','year','use','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs','stringDate','notes']:['name','brand','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
+ if(t==='swap'){const o={id:(memEdit&&memEdit.id)||rid(),at:Date.now()};for(const k of['cat','brand','model','year','cond','ask','notes']){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?400:80)}
+  if(!o.brand&&!o.model){toast('Add a maker or model for your listing.');return}
+  document.activeElement.blur();memEdit=null;if(await saveSwap(d=>{const i=d.items.findIndex(x=>x.id===o.id);if(i>=0){o.at=d.items[i].at||o.at;d.items[i]=o}else d.items.push(o);return d}))toast('Listing saved.');renderMembers();return}
+ if(t==='bows'||t==='arrows'||t==='optics'||t==='wish'){const ks=t==='wish'?['cat','brand','model','pri','price','notes']:t==='optics'?['name','type','brand','model','mag','notes']:t==='bows'?['name','brand','model','year','use','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs','stringDate','notes']:['name','brand','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
   if(t==='bows'&&(!v('brand')||!v('model'))){toast('Pick the bow maker and model (or choose Other… and type them) before saving.');const el=f.elements[!v('brand')?'brand':'model'];if(el)el.focus();return}
-  const wv=f.who?f.who.value:'me';const o={id:(memEdit&&memEdit.id)||rid(),share:wv==='me'&&f.share.checked,who:wv};for(const k of ks){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?600:80)}
+  const wv=f.who?f.who.value:'me';const o={id:(memEdit&&memEdit.id)||rid(),share:wv==='me'&&!!(f.share&&f.share.checked),who:wv};for(const k of ks){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?600:80)}
   if(t==='bows')o.marks=v('marks').split('\n').map(l=>l.split(/[=:]/)).filter(p=>p.length>1&&p[0].trim()).slice(0,30).map(p=>({y:p[0].trim().slice(0,8),m:p.slice(1).join('=').trim().slice(0,12)}));
-  document.activeElement.blur();memEdit=null;await saveItems(t,d=>{const i=d.items.findIndex(x=>x.id===o.id);if(i>=0)d.items[i]=o;else d.items.push(o);return d});syncShared();toast('Saved.');renderMembers();return}
+  if(t==='wish'&&!o.brand&&!o.model){toast('Add a maker or model so teammates know what you’re after.');return}
+  document.activeElement.blur();memEdit=null;await saveItems(t,d=>{const i=d.items.findIndex(x=>x.id===o.id);if(i>=0)d.items[i]=o;else d.items.push(o);return d});if(t==='wish')await syncWishes();syncShared();toast('Saved.');renderMembers();return}
  if(t==='round'){const o={id:rid(),who:f.who?f.who.value:'me',date:v('date'),kind:v('kind'),disc:v('disc'),event:v('event').slice(0,120),score:v('score'),max:v('max'),xs:v('xs'),targets:v('targets'),notes:v('notes').slice(0,400)};const c=v('card');if(c)o.card=c.slice(0,6000);
   if(!isDate(o.date)||num(o.score)===null){toast('Add a date and a score.');return}
   document.activeElement.blur();await saveItems('rounds',d=>{d.items.push(o);if(d.items.length>500)d.items=d.items.slice(-500);return d});toast('Round saved.');renderMembers();return}
