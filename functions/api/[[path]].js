@@ -117,6 +117,20 @@ export async function onRequest({ request, env, params }) {
     }
     if (method === 'POST') {
       const a = body.action, now = Date.now();
+      if (a === 'invite_many') {
+        const list = Array.isArray(body.people) ? body.people.slice(0, 200) : [];
+        let added = 0, already = 0, bad = 0;
+        for (const x of list) {
+          const e = cleanEmail(x && x.email), name = clip(x && x.name, 80);
+          if (!okEmail(e)) { bad++; continue; }
+          const ex = await db.prepare('SELECT * FROM members WHERE email=?').bind(e).first();
+          if (ex && ex.status === 'active') { already++; continue; }
+          if (ex) await db.prepare("UPDATE members SET status='invited', name=COALESCE(NULLIF(?,''),name), updated=? WHERE id=?").bind(name, now, ex.id).run();
+          else await db.prepare("INSERT INTO members (id,email,name,role,status,note,created,updated) VALUES (?,?,?,'member','invited','',?,?)").bind(newId(), e, name, now, now).run();
+          added++;
+        }
+        return json({ ok: true, added, already, bad });
+      }
       if (a === 'invite') {
         const e = cleanEmail(body.email), name = clip(body.name, 80);
         if (!okEmail(e)) return fail(400, 'Enter a valid email address.');

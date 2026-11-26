@@ -627,6 +627,19 @@ function inviteMsg(x){const first=(x.name||'').trim().split(/\s+/)[0];return `Hi
 Once you're in, add your name and classes under Overview. You stay signed in for a month on that device.
 
 ${(AUTH.member&&AUTH.member.name)||nm(me.uid)||'Pueblo Mechanical Archery Team'}`}
+function inviteAllLink(list){const emails=list.map(x=>x.email).filter(Boolean);if(!emails.length)return '';
+ const body=`Hi everyone, you're invited to the Pueblo Mechanical Archery Team members area.
+
+1. Go to https://pueblomechanicalarchery.com/#members
+2. Tap Sign in and enter the email address this message was sent to.
+3. You'll get a one-time code by email (check spam if you don't see it). Type it in and you're in. No password needed.
+
+Once you're in, add your name and classes under Overview. You stay signed in for a month on that device.
+
+${(AUTH.member&&AUTH.member.name)||nm(me.uid)||'Pueblo Mechanical Archery Team'}`;
+ return `<a class="btn pri" href="mailto:?bcc=${emails.map(encodeURIComponent).join(',')}&subject=${encodeURIComponent('Your invite to the Pueblo Mechanical Archery Team site')}&body=${encodeURIComponent(body)}">Email all invited (${emails.length})</a>`}
+function parseInviteList(text){const out=[],seen=new Set();for(const line of String(text||'').split(/[\n;]+/)){const m=line.match(/[^\s<>,;"'()]+@[^\s<>,;"'()]+\.[^\s<>,;"'()]+/);if(!m)continue;const email=m[0].toLowerCase();if(seen.has(email))continue;seen.add(email);
+  const name=line.replace(m[0],'').replace(/[<>"'(),;\t]/g,' ').replace(/\s+/g,' ').trim().slice(0,80);out.push({name,email})}return out}
 function inviteLinks(x){const body=inviteMsg(x),sub='Your invite to the Pueblo Mechanical Archery Team site';
  return `<a class="btn" href="mailto:${encodeURIComponent(x.email)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}">Email invite</a><a class="btn" href="sms:?&body=${encodeURIComponent(body)}">Text invite</a>`}
 function memAdminBox(){if(!MEMS.loaded&&!MEMS.loading)loadMems();
@@ -639,12 +652,19 @@ function memAdminBox(){if(!MEMS.loaded&&!MEMS.loading)loadMems();
   ${pend.length?`<h4>Waiting for approval (${pend.length})</h4>${pend.map(x=>row(x,b('approve',x.id,'Approve','pri')+b('decline',x.id,'Decline','danger'))).join('')}`:''}
   <h4>Invite someone</h4><form id="minv" class="frm"><label>Name<input name="name" maxlength="80"></label><label>Email<input name="email" type="email" maxlength="200" required></label><div class="acts full"><button class="pri" type="submit">Invite</button></div></form>
   <p class="note">Invited people are approved as soon as they sign in with that email. Let them know to go to the Members page and tap Sign in.</p>
-  ${inv.length?`<h4>Invited, not signed in yet</h4><p class="note">Tap <b>Email invite</b> or <b>Text invite</b> to send them a ready-made message from your phone. The site doesn’t send email on its own.</p>${inv.map(x=>row(x,inviteLinks(x)+b('decline',x.id,'Cancel invite','danger'))).join('')}`:''}
+  <details class="box" style="margin:10px 0"><summary><b>Invite many at once</b> — paste a list</summary>
+  <form id="minvmany" class="frm" style="margin-top:10px"><label class="full">One person per line: a name and an email, or just an email. Copying a column of addresses from a spreadsheet or your email contacts works too.<textarea name="list" rows="8" placeholder="Ed Kuchinski, ekuchinski@example.com&#10;Koty Kamm <koty@example.com>&#10;someone@example.com"></textarea></label>
+  <div class="acts full"><button class="pri" type="submit">Invite everyone on the list</button></div><p class="note full" id="mmst"></p></form></details>
+  ${inv.length?`<h4>Invited, not signed in yet (${inv.length})</h4><p class="note">The site doesn’t send email on its own. Send one message to everyone with <b>Email all invited</b> (they’re added as BCC), or use the buttons next to each person.</p><div class="acts" style="margin:6px 0 10px">${inviteAllLink(inv)}</div>${inv.map(x=>row(x,inviteLinks(x)+b('decline',x.id,'Cancel invite','danger'))).join('')}`:''}
   <h4>Active members (${act.length})</h4>${act.map(x=>row(x,roleTag(x)+(x.role==='owner'?'':(me.owner?(x.role==='admin'?b('unadmin',x.id,'Remove admin'):b('admin',x.id,'Make admin')):'')+(x.id===me.uid?'':b('remove',x.id,'Remove','danger'))))).join('')}</div>`}
 document.addEventListener('click',async ev=>{const t=ev.target.closest('[data-mact]');if(!t)return;const a=t.dataset.mact,id=t.dataset.id;
  if((a==='remove'||a==='decline')&&t.dataset.sure!=='1'){t.dataset.sure='1';t.textContent='Tap again to confirm';return}
  t.disabled=true;try{await api('admin/members',{method:'POST',body:JSON.stringify({action:a,id})});toast({approve:'Approved — they can sign in now.',decline:'Request removed.',remove:'Member removed.',admin:'Admin added.',unadmin:'Admin removed.'}[a]||'Saved.');
   await loadMems();subsFor('config/roles');if(a==='approve'||a==='remove')SUBS.forEach(s=>s.col&&s.load())}catch(e){t.disabled=false;toast(e.message)}});
+document.addEventListener('submit',async ev=>{const f=ev.target;if(f.id!=='minvmany')return;ev.preventDefault();ev.stopPropagation();
+ const people=parseInviteList(f.elements.list.value),st=$('#mmst');if(!people.length){st.textContent='No email addresses found in that list.';return}
+ st.textContent=`Inviting ${people.length}…`;try{const d=await api('admin/members',{method:'POST',body:JSON.stringify({action:'invite_many',people})});
+  st.textContent='';f.reset();document.activeElement.blur();toast(`${d.added} invited${d.already?`, ${d.already} already members`:''}${d.bad?`, ${d.bad} skipped (bad address)`:''}. Now tap Email all invited.`);loadMems()}catch(e){st.textContent=e.message}},true);
 document.addEventListener('submit',async ev=>{const f=ev.target;if(f.id!=='minv'&&f.id!=='mjoin')return;ev.preventDefault();ev.stopPropagation();
  const v=n=>(f.elements[n]&&f.elements[n].value||'').trim();
  if(f.id==='minv'){try{await api('admin/members',{method:'POST',body:JSON.stringify({action:'invite',name:v('name'),email:v('email')})});f.reset();document.activeElement.blur();toast('Invite saved — now tap Email invite or Text invite to let them know.');loadMems()}catch(e){toast(e.message)}return}
