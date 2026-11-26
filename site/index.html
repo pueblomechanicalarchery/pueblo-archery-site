@@ -694,6 +694,10 @@ function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');c
 async function resolveNames(ids){if(!usr)return;const need=[...new Set(ids)].filter(i=>i&&!(i in PROF));if(!need.length)return;need.forEach(i=>PROF[i]='');
  try{const ps=await usr.profiles(need);for(const i of need)PROF[i]=(ps[i]&&ps[i].name)||'';renderMembers();renderGallery()}catch(_){}}
 const uidDoc=k=>db.doc('data/users/'+me.uid+'/'+k);
+/* Change one item list (bows, arrows, optics, rounds) against the latest saved copy, so a second
+   tab or device with an older copy can't wipe out items added elsewhere. */
+async function saveItems(k,fn){try{let base={items:[]};try{const sn=await uidDoc(k).get();if(sn.exists){const d=sn.data();if(d&&Array.isArray(d.items))base=clone(d)}}catch(_){base=clone(MY[k])}
+ const next=fn(base);next.items=next.items||[];MY[k]=next;await uidDoc(k).set(clone(next));return true}catch(_){toast('Could not save — ask Monty to check your member access.');return false}}
 async function saveMy(k){try{await uidDoc(k).set(clone(MY[k]))}catch(_){toast('Could not save — ask Monty to check your member access.')}}
 function subDoc(p,cb){try{db.doc(p).onSnapshot(s=>cb(s.exists?clone(s.data()):null),()=>{})}catch(_){}}
 function subCol(p,cb){try{db.collection(p).onSnapshot(s=>{const m={};s.docs.forEach(d=>{m[d.id]=clone(d.data())});cb(m)},()=>{})}catch(_){}}
@@ -958,7 +962,7 @@ $('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[da
  if(a==='add'){memEdit={k};renderMembers();return}
  if(a==='edit'){memEdit={k,id};renderMembers();return}
  if(a==='cancel'){memEdit=null;renderMembers();return}
- if(a==='del'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}MY[k]=clone(MY[k]);MY[k].items=MY[k].items.filter(i=>i.id!==id);await saveMy(k);if(k!=='rounds')syncShared();renderMembers();return}
+ if(a==='del'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}await saveItems(k,d=>{d.items=(d.items||[]).filter(i=>i.id!==id);return d});if(k!=='rounds')syncShared();renderMembers();return}
  if(a==='res'){const cur=clone(RESULTS[me.uid]||{r:{}});cur.r=cur.r||{};if(cur.r[id]){cur.r[id].status=b.dataset.s;cur.r[id].decided=Date.now()}try{await db.doc('results/'+me.uid).set(cur);toast(b.dataset.s==='confirmed'?'Result added to your record.':'Dismissed.')}catch(_){toast('Could not save.')}return}
  if(a==='maparse'){const txt=$('#maimp').value;const cards=parseMA(txt);if(!cards.length){toast('No My Archery card found. Paste the whole shared text, including the code that starts with MA1.');return}
   IMPORTS=cards.map(c=>({...c,pick:maGuess(c.d),who:'me'}));maPreview();return}
@@ -966,7 +970,7 @@ $('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[da
  if(a==='maimport'){const have=new Set(MY.rounds.items.map(r=>r.maId).filter(Boolean));const add=[];let dup=0;
   for(const c of IMPORTS){if(c.pick<0)continue;const r=maRound(c,c.pick,c.who);if(have.has(r.maId)){dup++;continue}have.add(r.maId);add.push(r)}
   if(!add.length){toast(dup?'Those rounds are already imported.':'Pick which archer is you on at least one card.');return}
-  MY.rounds=clone(MY.rounds);MY.rounds.items=MY.rounds.items.concat(add).slice(-500);IMPORTS=[];await saveMy('rounds');toast(`Imported ${add.length} round${add.length>1?'s':''}${dup?` (${dup} already there)`:''}.`);renderMembers();return}
+  IMPORTS=[];await saveItems('rounds',d=>{const have=new Set(d.items.map(x=>x.id));d.items=d.items.concat(add.filter(x=>!have.has(x.id))).slice(-500);return d});toast(`Imported ${add.length} round${add.length>1?'s':''}${dup?` (${dup} already there)`:''}.`);renderMembers();return}
  if(a==='addkid'){memEdit={k:'kid'};renderMembers();return}
  if(a==='editkid'){memEdit={k:'kid',id};renderMembers();return}
  if(a==='delkid'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again to remove';return}MY.family=clone(MY.family);MY.family.kids=myKids().filter(k=>k.id!==id);memEdit=null;await saveMy('family');await pubKids();renderMembers();return}
@@ -984,11 +988,10 @@ $('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('fo
  if(t==='bows'||t==='arrows'||t==='optics'){const ks=t==='optics'?['name','type','brand','model','mag','notes']:t==='bows'?['name','brand','model','year','use','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs','stringDate','notes']:['name','brand','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
   const wv=f.who?f.who.value:'me';const o={id:(memEdit&&memEdit.id)||rid(),share:wv==='me'&&f.share.checked,who:wv};for(const k of ks){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?600:80)}
   if(t==='bows')o.marks=v('marks').split('\n').map(l=>l.split(/[=:]/)).filter(p=>p.length>1&&p[0].trim()).slice(0,30).map(p=>({y:p[0].trim().slice(0,8),m:p.slice(1).join('=').trim().slice(0,12)}));
-  MY[t]=clone(MY[t]);const i=MY[t].items.findIndex(x=>x.id===o.id);if(i>=0)MY[t].items[i]=o;else MY[t].items.push(o);
-  document.activeElement.blur();memEdit=null;await saveMy(t);syncShared();toast('Saved.');renderMembers();return}
+  document.activeElement.blur();memEdit=null;await saveItems(t,d=>{const i=d.items.findIndex(x=>x.id===o.id);if(i>=0)d.items[i]=o;else d.items.push(o);return d});syncShared();toast('Saved.');renderMembers();return}
  if(t==='round'){const o={id:rid(),who:f.who?f.who.value:'me',date:v('date'),kind:v('kind'),disc:v('disc'),event:v('event').slice(0,120),score:v('score'),max:v('max'),xs:v('xs'),targets:v('targets'),notes:v('notes').slice(0,400)};const c=v('card');if(c)o.card=c.slice(0,6000);
   if(!isDate(o.date)||num(o.score)===null){toast('Add a date and a score.');return}
-  MY.rounds=clone(MY.rounds);MY.rounds.items.push(o);if(MY.rounds.items.length>500)MY.rounds.items=MY.rounds.items.slice(-500);document.activeElement.blur();await saveMy('rounds');toast('Round saved.');renderMembers();return}
+  document.activeElement.blur();await saveItems('rounds',d=>{d.items.push(o);if(d.items.length>500)d.items=d.items.slice(-500);return d});toast('Round saved.');renderMembers();return}
  if(t==='kid'){if(!f.guardian.checked){toast('Please confirm you are the parent or guardian.');return}
   const o={id:(memEdit&&memEdit.id)||rid(),first:v('first').slice(0,40),last:v('last').slice(0,40),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},consent:{name:v('nameShow')==='full'?'full':'initial',photos:v('photos')==='yes',results:v('results')==='yes',signed:isDate(v('signed'))?v('signed'):''}};
   if(!o.first||!o.last){toast('Add a first and last name.');return}
