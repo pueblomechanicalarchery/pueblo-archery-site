@@ -29,7 +29,8 @@ const events = folder('content/events').map(e => {
 const tac = readJson('content/tac.json', []);
 const gallery = folder('content/gallery');
 const webcheck = readJson('content/settings/webcheck.json', {});
+const thursday = readJson('content/settings/thursday.json', { cancelled: [] });
 
 fs.mkdirSync(path.join(out, 'data'), { recursive: true });
-fs.writeFileSync(path.join(out, 'data', 'site.json'), JSON.stringify({ built: new Date().toISOString(), events, tac, gallery, webcheck }));
+fs.writeFileSync(path.join(out, 'data', 'site.json'), JSON.stringify({ built: new Date().toISOString(), events, tac, gallery, webcheck, thursday }));
 console.log(`Built: ${events.length} events, ${tac.length} TAC stops, ${gallery.length} photo posts.`);

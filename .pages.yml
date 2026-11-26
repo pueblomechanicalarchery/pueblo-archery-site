@@ -126,6 +126,27 @@ content:
         options:
           path: images/gallery
 
+  - name: thursday
+    label: Thursday Night 3D (cancel a week)
+    type: file
+    path: content/settings/thursday.json
+    format: json
+    fields:
+      - name: cancelled
+        label: Cancelled Thursdays (add a date to show "Cancelled" on the calendar; remove it to undo)
+        type: object
+        list: true
+        fields:
+          - name: date
+            label: Thursday date
+            type: date
+            required: true
+            options:
+              format: yyyy-MM-dd
+          - name: reason
+            label: Reason (e.g. Thanksgiving, range closed)
+            type: string
+
   - name: tac
     label: Total Archery Challenge stops
     type: file

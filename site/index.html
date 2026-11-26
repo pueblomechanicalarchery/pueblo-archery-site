@@ -565,6 +565,8 @@ $('#addev').onclick=()=>openForm(null);
 /* ---- Static hosting (Cloudflare Pages): content comes from data/site.json, built from the content/ folder ---- */
 const STATIC=!(window.claude&&claude.use);
 if(STATIC)(async()=>{try{const r=await fetch('data/site.json',{cache:'no-cache'});if(!r.ok)throw 0;const d=await r.json();
+ for(const c of (d.thursday&&d.thursday.cancelled)||[]){if(!c||!/^\d{4}-\d{2}-\d{2}$/.test(c.date||''))continue;const w=BASE.find(x=>x.id==='thu'+c.date);if(!w)continue;const why=String(c.reason||'').slice(0,120);
+  w.t='Cancelled — Thursday Night Indoor 3D';w.cx=true;w.notes='No shoot this week'+(why?' ('+why+')':'')+'. Regular Thursday shoots resume the following week.';w.reg='';}
  const m={};for(const e of d.events||[])if(e&&e.id)m[e.id]=e;DBEV=m;rebuild();
  const t={};for(const x of d.tac||[])if(x&&x.id)t[x.id]=x;TACDB=t;tacRebuild();
  GAL=[];for(const g of d.gallery||[]){(g.photos||[]).forEach((p,i)=>{if(typeof p==='string'&&p)GAL.push({id:g.id+'-'+i,src:p,album:ALBUMS.includes(g.album)?g.album:ALBUMS[0],caption:g.caption||g.title||'',at:g.date?pd(g.date).getTime():0})})}
