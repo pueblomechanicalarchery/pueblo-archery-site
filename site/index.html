@@ -284,9 +284,9 @@ table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-bl
 <section class="band"><div class="wrap">
  <div class="cols3">
   <div class="box"><h3>Organizers</h3><ul><li><b>Travis Grimm</b> (Pueblo Mechanical)</li><li><b>Darvie Grimm</b></li></ul></div>
-  <div class="box"><h3>What we shoot</h3><ul>
+  <div class="box"><h3>What we shoot</h3><ul id="whatwe">
    <li><b>Target:</b> Mathews Title, Hoyt Concept X — also Darton Tritech, PSE, Bowtech</li>
-   <li><b>Hunting:</b> Mathews ARC and Lift, Hoyt RX and AX</li></ul></div>
+   <li><b>Hunting:</b> Mathews ARC and Lift, Hoyt RX and AX</li></ul><p class="note" id="whatwenote" hidden>From the bows on members’ gear lists — updates automatically.</p></div>
   <div class="box"><h3>Sponsors on our jerseys</h3><p class="note" style="margin-top:0">Ask an organizer about team discounts.</p>
    <div class="sponsors"><span>Pueblo Mechanical</span><span>Easton Archery</span><span>Threadz</span><span>Muley Freak</span><span>Annihilator Broadheads</span><span>Q2i Archery</span><span>Rinehart</span><span>BHE</span><span>Leupold</span></div></div>
  </div>
@@ -572,12 +572,16 @@ if(STATIC)(async()=>{try{const r=await fetch('data/site.json',{cache:'no-cache'}
  const t={};for(const x of d.tac||[])if(x&&x.id)t[x.id]=x;TACDB=t;tacRebuild();
  try{if(d.gear&&Array.isArray(d.gear.bows)&&d.gear.bows.length){const m={};for(const x of d.gear.bows){if(!x||!x.brand)continue;m[String(x.brand).slice(0,40)]=(x.groups||[]).filter(g=>g&&Array.isArray(g.models)).map(g=>({g:String(g.label||'').slice(0,40),o:g.models.filter(v=>typeof v==='string'&&v).map(v=>v.slice(0,60))}))}if(Object.keys(m).length)GEAR.bows=m}
   if(d.gear&&Array.isArray(d.gear.years)&&d.gear.years.length)GEAR.years=d.gear.years.filter(v=>typeof v==='string')}catch(_){}
+ loadWhatWe();
  GAL=[];for(const g of d.gallery||[]){(g.photos||[]).forEach((p,i)=>{if(typeof p==='string'&&p)GAL.push({id:g.id+'-'+i,src:p,album:ALBUMS.includes(g.album)?g.album:ALBUMS[0],caption:g.caption||g.title||'',at:g.date?pd(g.date).getTime():0})})}
  GAL.sort((a,b)=>(b.at||0)-(a.at||0));renderGallery();
  const w=d.webcheck;if(w&&w.at){const dt=pd(w.at);$('#webst').textContent=`Last automatic web check: ${MON[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()} — ${String(w.summary||'').slice(0,200)} The calendar is checked against club and association websites every Sunday evening.`}
  else $('#webst').textContent='Club and association websites are checked for new events every Sunday evening.';
  me.ready=true;renderMembers()}catch(_){$('#livest').textContent='Could not load the event list — please refresh the page.'}
  memAuth()})();
+async function loadWhatWe(){try{const r=await fetch('/pub/team-bows',{cache:'no-cache'});if(!r.ok)return;const d=await r.json();if(!(d.target||[]).length&&!(d.hunting||[]).length)return;
+ const fmt=l=>l.map(x=>esc(x.name)+(x.n>1?` <span class="note">×${x.n}</span>`:'')).join(', ');
+ $('#whatwe').innerHTML=(d.target.length?`<li><b>Target:</b> ${fmt(d.target)}</li>`:'')+(d.hunting.length?`<li><b>Hunting:</b> ${fmt(d.hunting)}</li>`:'');$('#whatwenote').hidden=false}catch(_){}}
 /* ---- Hosted members area: Cloudflare Access sign-in + members API ---- */
 const AUTH={state:'checking',email:'',member:null,err:''};
 async function api(path,opt={}){const r=await fetch('/api/'+path,{credentials:'same-origin',redirect:'manual',...opt,headers:{'content-type':'application/json'}});
@@ -837,7 +841,7 @@ const optCard=o=>`<article class="gcard"><div class="gh"><b>${esc(o.name||o.type
   <div class="acts"><button data-act="edit" data-k="arrows" data-id="${esc(a.id)}">Edit</button><button data-act="del" data-k="arrows" data-id="${esc(a.id)}" class="danger">Delete</button></div></article>`;
  if(e){const x=e.id?(MY[e.k].items.find(i=>i.id===e.id)||{}):{};
   if(e.k==='bows')return `<form class="box frm" data-form="bows"><h3 class="full" style="margin:0">${e.id?'Edit bow':'Add a bow'}</h3>${myKids().length?`<label>For<select name="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${x.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}
-   ${fld('name','Label',x.name,'text','placeholder="e.g. Target rig" required')}${sel('brand','Bow maker',Object.keys(GEAR.bows),x.brand,{dep:'model',src:'bows'})}${sel('model','Model',brandOf(GEAR.bows,x.brand),x.model)}${sel('year','Model year',GEAR.years,x.year)}${fld('drawLen','Draw length (in)',x.drawLen,'number','step="0.25"')}${fld('drawWt','Draw weight (lb)',x.drawWt,'number','step="0.5"')}${fld('letoff','Let-off (%)',x.letoff,'number')}
+   ${fld('name','Label',x.name,'text','placeholder="e.g. Target rig" required')}${sel('brand','Bow maker',Object.keys(GEAR.bows),x.brand,{dep:'model',src:'bows'})}${sel('model','Model',brandOf(GEAR.bows,x.brand),x.model)}${sel('year','Model year',GEAR.years,x.year)}${sel('use','Used for',['Target','Hunting','Both'],x.use,{other:false})}${fld('drawLen','Draw length (in)',x.drawLen,'number','step="0.25"')}${fld('drawWt','Draw weight (lb)',x.drawWt,'number','step="0.5"')}${fld('letoff','Let-off (%)',x.letoff,'number')}
    ${fld('peep','Peep height (in)',x.peep,'number','step="0.01"')}${fld('radius','Sight radius (in)',x.radius,'number','step="0.01"')}${fld('speed','Arrow speed (fps)',x.speed,'number')}${sel('sightBrand','Sight maker',GEAR.sightBrands,x.sightBrand)}${fld('sight','Sight model',x.sight,'text','placeholder="e.g. Accu-Touch Carbon Pro"')}${sel('scopeBrand','Scope maker',GEAR.scopeBrands,x.scopeBrand)}${sel('scope','Lens power',GEAR.lens,x.scope)}${fld('rest','Rest',x.rest)}${fld('release','Release',x.release)}${fld('stabs','Stabilizers',x.stabs)}${fld('stringDate','Strings installed',x.stringDate,'date')}
    <label class="full">Sight marks — one per line, yards = mark<textarea name="marks" placeholder="20 = 1.25&#10;30 = 2.10">${esc((x.marks||[]).map(m=>m.y+' = '+m.m).join('\n'))}</textarea></label>
    <label class="full">Notes<textarea name="notes">${esc(x.notes)}</textarea></label>
@@ -977,7 +981,7 @@ $('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('fo
  const v=n=>{if(n==='nfaa'&&f.elements.nfaa_style)return [raw('nfaa_age'),raw('nfaa_style')].filter(Boolean).join(' ');if(n==='usaa'&&f.elements.usaa_div)return [raw('usaa_div'),raw('usaa_age')].filter(Boolean).join(' ');return raw(n)};
  if(t==='profile'){const d={kids:(ROSTER[me.uid]&&ROSTER[me.uid].kids)||[],name:v('name').slice(0,80),jersey:v('jersey').slice(0,12),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},at:Date.now()};
   try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d;f.querySelector('button').blur();toast('Profile saved.');renderMembers()}catch(_){toast('Could not save — ask Monty to check your member access.')}return}
- if(t==='bows'||t==='arrows'||t==='optics'){const ks=t==='optics'?['name','type','brand','model','mag','notes']:t==='bows'?['name','brand','model','year','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs','stringDate','notes']:['name','brand','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
+ if(t==='bows'||t==='arrows'||t==='optics'){const ks=t==='optics'?['name','type','brand','model','mag','notes']:t==='bows'?['name','brand','model','year','use','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs','stringDate','notes']:['name','brand','model','spine','length','totalWt','pointWt','insert','nock','fletchCount','fletchType','fletchSize','fletchCfg','balance','notes'];
   const wv=f.who?f.who.value:'me';const o={id:(memEdit&&memEdit.id)||rid(),share:wv==='me'&&f.share.checked,who:wv};for(const k of ks){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?600:80)}
   if(t==='bows')o.marks=v('marks').split('\n').map(l=>l.split(/[=:]/)).filter(p=>p.length>1&&p[0].trim()).slice(0,30).map(p=>({y:p[0].trim().slice(0,8),m:p.slice(1).join('=').trim().slice(0,12)}));
   MY[t]=clone(MY[t]);const i=MY[t].items.findIndex(x=>x.id===o.id);if(i>=0)MY[t].items[i]=o;else MY[t].items.push(o);
