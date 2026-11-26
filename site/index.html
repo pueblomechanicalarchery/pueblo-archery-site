@@ -618,6 +618,17 @@ function authView(){const a=AUTH,mid=`<div style="margin-top:18px">${MYARCH}</di
  return box('Members area','The members area isn’t available right now. Please try again later.',a.err?`<p class="note">${esc(a.err)}</p>`:'')+mid}
 const MEMS={list:[],loaded:false,loading:false,err:''};
 async function loadMems(){MEMS.loading=true;try{MEMS.list=(await api('admin/members')).members||[];MEMS.err='';for(const x of MEMS.list)if(x.status==='active'&&x.name&&!PROF[x.id])PROF[x.id]=x.name}catch(e){MEMS.err=e.message}MEMS.loaded=true;MEMS.loading=false;renderMembers()}
+function inviteMsg(x){const first=(x.name||'').trim().split(/\s+/)[0];return `Hi${first?' '+first:''}, you're invited to the Pueblo Mechanical Archery Team members area.
+
+1. Go to https://pueblomechanicalarchery.com/#members
+2. Tap Sign in and enter this email address: ${x.email}
+3. You'll get a one-time code by email (check spam if you don't see it). Type it in and you're in. No password needed.
+
+Once you're in, add your name and classes under Overview. You stay signed in for a month on that device.
+
+${(AUTH.member&&AUTH.member.name)||nm(me.uid)||'Pueblo Mechanical Archery Team'}`}
+function inviteLinks(x){const body=inviteMsg(x),sub='Your invite to the Pueblo Mechanical Archery Team site';
+ return `<a class="btn" href="mailto:${encodeURIComponent(x.email)}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}">Email invite</a><a class="btn" href="sms:?&body=${encodeURIComponent(body)}">Text invite</a>`}
 function memAdminBox(){if(!MEMS.loaded&&!MEMS.loading)loadMems();
  const L=MEMS.list,pend=L.filter(x=>x.status==='pending'),inv=L.filter(x=>x.status==='invited'),act=L.filter(x=>x.status==='active');
  const row=(x,btns)=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div><b>${esc(x.name||'(no name)')}</b> <span class="note">${esc(x.email)}</span>${x.note?`<div class="note">${esc(x.note)}</div>`:''}</div><div style="display:flex;gap:6px;flex-wrap:wrap">${btns}</div></div>`;
@@ -628,7 +639,7 @@ function memAdminBox(){if(!MEMS.loaded&&!MEMS.loading)loadMems();
   ${pend.length?`<h4>Waiting for approval (${pend.length})</h4>${pend.map(x=>row(x,b('approve',x.id,'Approve','pri')+b('decline',x.id,'Decline','danger'))).join('')}`:''}
   <h4>Invite someone</h4><form id="minv" class="frm"><label>Name<input name="name" maxlength="80"></label><label>Email<input name="email" type="email" maxlength="200" required></label><div class="acts full"><button class="pri" type="submit">Invite</button></div></form>
   <p class="note">Invited people are approved as soon as they sign in with that email. Let them know to go to the Members page and tap Sign in.</p>
-  ${inv.length?`<h4>Invited, not signed in yet</h4>${inv.map(x=>row(x,b('decline',x.id,'Cancel invite','danger'))).join('')}`:''}
+  ${inv.length?`<h4>Invited, not signed in yet</h4><p class="note">Tap <b>Email invite</b> or <b>Text invite</b> to send them a ready-made message from your phone. The site doesn’t send email on its own.</p>${inv.map(x=>row(x,inviteLinks(x)+b('decline',x.id,'Cancel invite','danger'))).join('')}`:''}
   <h4>Active members (${act.length})</h4>${act.map(x=>row(x,roleTag(x)+(x.role==='owner'?'':(me.owner?(x.role==='admin'?b('unadmin',x.id,'Remove admin'):b('admin',x.id,'Make admin')):'')+(x.id===me.uid?'':b('remove',x.id,'Remove','danger'))))).join('')}</div>`}
 document.addEventListener('click',async ev=>{const t=ev.target.closest('[data-mact]');if(!t)return;const a=t.dataset.mact,id=t.dataset.id;
  if((a==='remove'||a==='decline')&&t.dataset.sure!=='1'){t.dataset.sure='1';t.textContent='Tap again to confirm';return}
@@ -636,7 +647,7 @@ document.addEventListener('click',async ev=>{const t=ev.target.closest('[data-ma
   await loadMems();subsFor('config/roles');if(a==='approve'||a==='remove')SUBS.forEach(s=>s.col&&s.load())}catch(e){t.disabled=false;toast(e.message)}});
 document.addEventListener('submit',async ev=>{const f=ev.target;if(f.id!=='minv'&&f.id!=='mjoin')return;ev.preventDefault();ev.stopPropagation();
  const v=n=>(f.elements[n]&&f.elements[n].value||'').trim();
- if(f.id==='minv'){try{await api('admin/members',{method:'POST',body:JSON.stringify({action:'invite',name:v('name'),email:v('email')})});f.reset();document.activeElement.blur();toast('Invite saved.');loadMems()}catch(e){toast(e.message)}return}
+ if(f.id==='minv'){try{await api('admin/members',{method:'POST',body:JSON.stringify({action:'invite',name:v('name'),email:v('email')})});f.reset();document.activeElement.blur();toast('Invite saved — now tap Email invite or Text invite to let them know.');loadMems()}catch(e){toast(e.message)}return}
  try{const d=await api('join',{method:'POST',body:JSON.stringify({name:v('name'),note:v('note')})});AUTH.member={...(AUTH.member||{}),name:v('name'),status:d.status};AUTH.state=d.status==='active'?'active':'pending';document.activeElement.blur();if(d.status==='active')memAuth();else renderMembers()}catch(e){$('#mjst').textContent=e.message}},true);
 /* ---- Members area, gallery uploads, RSVPs ---- */
 const ALBUMS=['Thursday Night 3D','AZ 3D Championship Series','Mountain shoots','Podiums & buckles','Team gear','Road trips'];
