@@ -818,7 +818,7 @@ const V={
 overview(){const r=myRsvp();const up=Object.entries(r).map(([id,x])=>({e:EV.find(e=>e.id===id),x})).filter(o=>o.e&&endOf(o.e)>=today&&o.x.s==='going').sort((a,b)=>a.e.s.localeCompare(b.e.s));
  const res=Object.entries((RESULTS[me.uid]&&RESULTS[me.uid].r)||{}).filter(([k,v])=>v.status==='possible');
  const old=MY.bows.items.filter(b=>b.stringDate&&(today-pd(b.stringDate))>365*864e5);
- const ann=((TEAM.ann&&TEAM.ann.items)||[]).slice(0,5);const p=ROSTER[me.uid]||{};const c=p.cls||{};
+ const ann=((TEAM.ann&&TEAM.ann.items)||[]).slice(0,5);const p=ROSTER[me.uid]||{name:(typeof AUTH!=='undefined'&&AUTH.member&&AUTH.member.name)||''};const c=p.cls||{};
  return `<div class="mgrid"><div class="box"><h3>Your next shoots</h3>${up.length?'<ul>'+up.slice(0,4).map(o=>`<li><a href="#calendar" data-act="ev" data-id="${esc(o.e.id)}">${esc(o.e.t)}</a> — ${esc(fmt(o.e))}</li>`).join('')+'</ul>':'<p class="note">Open an event on the calendar and tap “I’m going”.</p>'}
  ${res.length?`<p class="tag" style="margin-top:8px">${res.length} possible result${res.length>1?'s':''} to confirm — see My events</p>`:''}${old.length?`<p class="note">String check: ${old.map(b=>esc(b.name||b.model)+' strings went on '+esc(ago(b.stringDate))).join('; ')}.</p>`:''}</div>
  <div class="box"><h3>Team announcements</h3>${ann.length?ann.map(a=>`<p style="margin:0 0 10px">${esc(a.text)}<br><span class="note">${esc(nm(a.by))} · ${new Date(a.at).toLocaleDateString()}</span></p>`).join(''):'<p class="note">Nothing posted yet.</p>'}</div></div>
