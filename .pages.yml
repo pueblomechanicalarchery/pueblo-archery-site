@@ -74,6 +74,21 @@ content:
       - name: link
         label: Link (must start with https://)
         type: string
+      - name: early
+        label: Early info — from a flyer, not on the host's website yet (the Sunday check confirms it once posted)
+        type: boolean
+        default: false
+      - name: flyer
+        label: Flyer (optional photo or PDF)
+        type: file
+        options:
+          path: images/flyers
+      - name: confirmed
+        label: Confirmed on host website (filled in by the Sunday check)
+        type: string
+      - name: hostnote
+        label: Host website difference (filled in by the Sunday check)
+        type: string
       - name: src
         label: Added by
         type: select

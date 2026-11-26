@@ -123,7 +123,9 @@ input[type=search]{font:inherit;font-size:16px;min-height:44px;padding:8px 12px;
 .day.out{background:light-dark(#f3f6f8,#0e1217);color:var(--mute)}.day.today .dn{background:var(--adobe);color:#fff;border-radius:50%}
 .dn{font-size:13px;font-weight:700;width:24px;height:24px;display:grid;place-items:center}
 .pill{font-size:12.5px;line-height:1.25;padding:3px 6px;border-radius:6px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:0;min-height:0;text-align:left;font-weight:600;display:flex;gap:4px;align-items:center}
-.pill.bk{box-shadow:inset 0 0 0 2px var(--gold)}.pill.unv{outline:2px dashed var(--ink);outline-offset:-2px}.webnote{background:var(--goldbg);border-radius:8px;padding:8px 12px;font-size:14.5px;margin:8px 0}.pill.tba{opacity:.75;font-style:italic}
+.pill.bk{box-shadow:inset 0 0 0 2px var(--gold)}.pill.unv{outline:2px dashed var(--ink);outline-offset:-2px}
+.pill.early{outline:2px dotted #f5c400;outline-offset:-2px}
+.tag.early{background:var(--goldbg);color:var(--ink)}.webnote{background:var(--goldbg);border-radius:8px;padding:8px 12px;font-size:14.5px;margin:8px 0}.pill.tba{opacity:.75;font-style:italic}
 .more{font-size:12px;color:var(--mute);font-weight:600}
 .bkic{width:14px;height:10px;flex:none}
 .daydetail{margin-top:14px}
@@ -416,7 +418,7 @@ function on(dayIso){return EV.filter(e=>visible(e)&&e.s<=dayIso&&(e.e||e.s)>=day
 
 function chips(){const c=Object.entries(CATS).map(([k,v])=>`<button class="chip" data-cat="${k}" aria-pressed="${!store.off[k]}"><span class="sw" style="background:${v.c}"></span>${v.n}</button>`).join('');
  $('#chips').innerHTML=c+`<button class="chip" id="bonly" aria-pressed="${buckleOnly}">${BK} Buckle legs only</button>`;}
-function pill(e){const c=CATS[e.cat].c;const bk=isBk(e);return `<button class="pill${bk?' bk':''}${e.unv?' unv':''}" data-id="${esc(e.id)}" style="background:${c}" title="${esc(e.t)}">${bk?BK:''}<span>${esc(e.t)}</span></button>`}
+function pill(e){const c=CATS[e.cat].c;const bk=isBk(e);return `<button class="pill${bk?' bk':''}${e.unv?' unv':''}${e.early?' early':''}" data-id="${esc(e.id)}" style="background:${c}" title="${esc(e.t)}">${bk?BK:''}<span>${esc(e.t)}</span></button>`}
 function month(){const y=cur.getFullYear(),m=cur.getMonth();$('#mtitle').textContent=MONL[m]+' '+y;
  const start=new Date(y,m,1-new Date(y,m,1).getDay());let h=DOW.map(d=>`<div class="dow">${d}</div>`).join('');
  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(i===35&&d.getMonth()!==m)break;const di=iso(d);const evs=on(di);
@@ -424,7 +426,7 @@ function month(){const y=cur.getFullYear(),m=cur.getMonth();$('#mtitle').textCon
   h+=`<div class="${cls}" data-day="${di}" role="button" tabindex="0" aria-label="${MONL[d.getMonth()]} ${d.getDate()}, ${evs.length} events"><span class="dn">${d.getDate()}</span><div class="pills">${evs.slice(0,3).map(pill).join('')}</div>${evs.length>3?`<span class="more">+${evs.length-3} more</span>`:''}</div>`}
  $('#view').innerHTML=`<div class="grid">${h}</div>`}
 function evRow(e){const a=pd(e.s);const c=CATS[e.cat].c;const past=endOf(e)<today;const bk=isBk(e);
- return `<button class="ev" data-id="${esc(e.id)}" style="--c:${c}"><div class="dt">${MON[a.getMonth()]} ${a.getDate()}${e.e?'–'+pd(e.e).getDate():''}<small>${DOW[a.getDay()]}${e.e?' – '+DOW[pd(e.e).getDay()]:''}</small></div><div><div class="nm">${esc(e.t)}</div><div class="meta">${esc(e.where)} · ${esc(e.host)}</div></div><div class="tg">${e.unv&&!past?'<span class="tag">Found online · verify</span> ':''}${past?'<span class="tag past">Completed</span>':bk?`<span class="tag">${BK} ${esc(SERIES[e.ser].n.replace(' — 2027',''))}</span>`:e.ser?`<span class="tag">${esc(SERIES[e.ser].scope)}</span>`:''}</div></button>`}
+ return `<button class="ev" data-id="${esc(e.id)}" style="--c:${c}"><div class="dt">${MON[a.getMonth()]} ${a.getDate()}${e.e?'–'+pd(e.e).getDate():''}<small>${DOW[a.getDay()]}${e.e?' – '+DOW[pd(e.e).getDay()]:''}</small></div><div><div class="nm">${esc(e.t)}</div><div class="meta">${esc(e.where)} · ${esc(e.host)}</div></div><div class="tg">${e.unv&&!past?'<span class="tag">Found online · verify</span> ':''}${e.early&&!past?'<span class="tag early">Early info · flyer</span> ':''}${past?'<span class="tag past">Completed</span>':bk?`<span class="tag">${BK} ${esc(SERIES[e.ser].n.replace(' — 2027',''))}</span>`:e.ser?`<span class="tag">${esc(SERIES[e.ser].scope)}</span>`:''}</div></button>`}
 function list(){$('#mtitle').textContent='From '+MON[cur.getMonth()]+' '+cur.getFullYear();
  const from=iso(cur);let evs=EV.filter(e=>visible(e)&&(e.e||e.s)>=from).sort((a,b)=>a.s.localeCompare(b.s));
  const showWeekly=!store.off.weekly;const weekly=evs.filter(e=>e.weekly);evs=evs.filter(e=>!e.weekly);
@@ -440,8 +442,8 @@ function openEv(id){const e=EV.find(x=>x.id===id);if(!e)return;const s=e.ser?SER
  $('#dlg').style.setProperty('--c',c);
  $('#dlg').innerHTML=`<h3 id="mt">${esc(e.t)}</h3>${s?`<span class="tag">${s.buckle?BK+' Buckle leg — ':''}Counts toward: ${esc(s.n)}</span>`:''}
  <dl><dt>When</dt><dd>${esc(fmt(e))}</dd><dt>Where</dt><dd>${esc(e.where)}</dd><dt>Host</dt><dd>${esc(e.host)}</dd><dt>Type</dt><dd>${esc(CATS[e.cat].n)}</dd>${e.reg?`<dt>Registration</dt><dd>${esc(e.reg)}</dd>`:''}${e.notes?`<dt>Notes</dt><dd>${esc(e.notes)}</dd>`:''}${s?`<dt>Series rule</dt><dd>${esc(s.rule)}</dd>`:''}</dl>
- ${e.conf?'<p class="note"><b>Confirm date with host.</b></p>':''}${e.unv?`<p class="webnote"><b>Found online by the weekly calendar check.</b> Confirm the details on the host page${canWrite?', then tap Mark verified':''}.</p>`:''}${e.by?'<p class="by" id="byl"></p>':''}<div id="rsvpbox"></div>
- <div class="acts">${e.link?`<a class="btn" href="${esc(e.link)}" target="_blank" rel="noopener">Host page ↗</a>`:''}<button id="cp">Copy details</button>${s?`<button id="gos">See series tracker</button>`:''}${canWrite&&e.unv?'<button id="vf" class="pri">Mark verified</button>':''}${canWrite&&!e.weekly?'<button id="ed">Edit</button><button id="rm" class="danger">Remove</button>':''}<button id="cl">Close</button></div><p class="note" id="cpm" aria-live="polite"></p>`;
+ ${e.conf?'<p class="note"><b>Confirm date with host.</b></p>':''}${e.early?`<p class="webnote"><b>Early info from the host’s flyer.</b> It isn’t on the host’s website yet, so details could still change. The Sunday calendar check will confirm it once the host posts it.${e.hostnote?`<br><b>Host website now shows:</b> ${esc(e.hostnote)}`:''}</p>`:''}${!e.early&&e.confirmed?`<p class="note">Confirmed on the host’s website ${esc(fmtD(e.confirmed))}.</p>`:''}${e.unv?`<p class="webnote"><b>Found online by the weekly calendar check.</b> Confirm the details on the host page${canWrite?', then tap Mark verified':''}.</p>`:''}${e.by?'<p class="by" id="byl"></p>':''}<div id="rsvpbox"></div>
+ <div class="acts">${e.link?`<a class="btn" href="${esc(e.link)}" target="_blank" rel="noopener">Host page ↗</a>`:''}${e.flyer?`<a class="btn" href="${esc(e.flyer)}" target="_blank" rel="noopener">View flyer ↗</a>`:''}<button id="cp">Copy details</button>${s?`<button id="gos">See series tracker</button>`:''}${canWrite&&e.unv?'<button id="vf" class="pri">Mark verified</button>':''}${canWrite&&!e.weekly?'<button id="ed">Edit</button><button id="rm" class="danger">Remove</button>':''}<button id="cl">Close</button></div><p class="note" id="cpm" aria-live="polite"></p>`;
  $('#modal').classList.add('on');$('#cl').focus();
  $('#cl').onclick=close;$('#cp').onclick=()=>{navigator.clipboard.writeText(txt).then(()=>$('#cpm').textContent='Copied — paste into a text or your calendar.',()=>$('#cpm').textContent='Copy was blocked by the browser.')};
  if($('#gos'))$('#gos').onclick=()=>{close();pendingScroll='s-'+e.ser;if(curPage()==='buckle-series')route();else location.hash='#buckle-series'}
@@ -521,8 +523,10 @@ tacRender();
 /* ---- shared events: members add / edit / remove, everyone sees it live ---- */
 const BASE=EV.slice();let DBEV={};let db=null,usr=null,canWrite=false;
 const okLink=u=>/^https:\/\//i.test(u||'')?u:'';const isDate=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'');
+function fmtD(iso){const d=pd(iso);return MON[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()}
 function clean(id,d){if(!d||!isDate(d.s)||!d.t||!CATS[d.cat])return null;const e={id,t:String(d.t).slice(0,120),s:d.s,cat:d.cat,host:String(d.host||'').slice(0,100),where:String(d.where||'').slice(0,160),by:d.by||'',at:d.at||0,live:true};
- if(isDate(d.e)&&d.e>d.s)e.e=d.e;if(d.src==='web'&&d.verified!==true)e.unv=true;if(d.ser&&SERIES[d.ser])e.ser=d.ser;for(const k of['reg','notes'])if(d[k])e[k]=String(d[k]).slice(0,600);const l=okLink(d.link);if(l)e.link=l;return e}
+ if(isDate(d.e)&&d.e>d.s)e.e=d.e;if(d.src==='web'&&d.verified!==true)e.unv=true;if(d.ser&&SERIES[d.ser])e.ser=d.ser;for(const k of['reg','notes'])if(d[k])e[k]=String(d[k]).slice(0,600);const l=okLink(d.link);if(l)e.link=l;
+ if(d.early===true)e.early=true;if(typeof d.flyer==='string'&&/^\/images\/[\w\-./ ]+\.(jpe?g|png|webp|gif|pdf)$/i.test(d.flyer))e.flyer=d.flyer;if(isDate(d.confirmed))e.confirmed=d.confirmed;if(d.hostnote)e.hostnote=String(d.hostnote).slice(0,300);return e}
 function rebuild(){const out=[];const seen=new Set();for(const b of BASE){const o=DBEV[b.id];seen.add(b.id);if(o){if(o.removed)continue;const c=clean(b.id,o);out.push(c||b)}else out.push(b)}
  for(const [id,o] of Object.entries(DBEV)){if(seen.has(id)||o.removed)continue;const c=clean(id,o);if(c)out.push(c)}
  EV.length=0;EV.push(...out);render();nextUp();seriesCards();nationals();up3()}
