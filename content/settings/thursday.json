@@ -3,6 +3,14 @@
     {
       "date": "2026-11-26",
       "reason": "Thanksgiving"
+    },
+    {
+      "date": "2026-12-24",
+      "reason": "Christmas Eve, range closed"
+    },
+    {
+      "date": "2026-12-31",
+      "reason": "New Year's Eve, range closed"
     }
   ]
 }
