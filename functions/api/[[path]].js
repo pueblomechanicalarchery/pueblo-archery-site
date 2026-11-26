@@ -95,6 +95,12 @@ export async function onRequest({ request, env, params }) {
     const live = PER_MEMBER.includes(col) ? await activeIds(db) : null;
     const docs = results.map(r => ({ id: r.path.split('/').pop(), data: JSON.parse(r.data) }))
       .filter(d => !live || live.has(d.id));
+    if (col === 'roster') {
+      // Active members who haven't saved their profile yet still appear on the roster.
+      const have = new Set(docs.map(d => d.id));
+      const { results: act } = await db.prepare("SELECT id, name FROM members WHERE status='active'").all();
+      for (const a of act) if (!have.has(a.id)) docs.push({ id: a.id, data: { name: a.name || '', cls: {}, auto: true } });
+    }
     return json({ docs });
   }
 
