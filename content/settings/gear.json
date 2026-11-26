@@ -1,0 +1,341 @@
+{
+  "updated": "2026-11-25",
+  "years": [
+    "2027",
+    "2026",
+    "2025",
+    "2024",
+    "2023",
+    "2022",
+    "2021",
+    "2020",
+    "2019 or older"
+  ],
+  "bows": [
+    {
+      "brand": "Hoyt",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "Protocol RX 29",
+            "Protocol RX Ultra",
+            "Protocol RX Ultra LD",
+            "Protocol AX 31",
+            "Protocol AX 33",
+            "Protocol AX SD",
+            "Protocol AX LD"
+          ]
+        },
+        {
+          "label": "2027 target",
+          "models": [
+            "Concept XTS 34",
+            "Concept XTS 37",
+            "Concept XTS 40"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "Carbon RX-10",
+            "Carbon RX-10 Ultra",
+            "Carbon RX-10 Ultra LD",
+            "Carbon RX-10 SD",
+            "Alpha AX-3 29",
+            "Alpha AX-3 33",
+            "Alpha AX-3 33 LD",
+            "Alpha AX-3 SD"
+          ]
+        },
+        {
+          "label": "2025",
+          "models": [
+            "Carbon RX-9",
+            "Carbon RX-9 Ultra",
+            "Carbon RX-9 SD",
+            "Alpha AX-2 29",
+            "Alpha AX-2 32",
+            "Alpha AX-2 SD"
+          ]
+        },
+        {
+          "label": "2024",
+          "models": [
+            "Carbon RX-8",
+            "Carbon RX-8 Ultra",
+            "Alpha X 30",
+            "Alpha X 33"
+          ]
+        },
+        {
+          "label": "Target 2025–26",
+          "models": [
+            "Concept X 37",
+            "Concept X 40"
+          ]
+        },
+        {
+          "label": "Value / youth",
+          "models": [
+            "Torrex",
+            "Torrex XT",
+            "Highline",
+            "Kobalt"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Mathews",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "ARC APEX 28",
+            "ARC APEX 32",
+            "ARC APEX 35"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "ARC 30",
+            "ARC 34"
+          ]
+        },
+        {
+          "label": "2025",
+          "models": [
+            "LIFT X 29.5",
+            "LIFT X 33",
+            "LIFT RS",
+            "LIFT XD"
+          ]
+        },
+        {
+          "label": "2024",
+          "models": [
+            "LIFT 29.5",
+            "LIFT 33"
+          ]
+        },
+        {
+          "label": "Target",
+          "models": [
+            "TITLE 34",
+            "TITLE 36",
+            "TITLE 38",
+            "TITLE 40"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Bowtech",
+      "groups": [
+        {
+          "label": "2026",
+          "models": [
+            "Alliance",
+            "Alliance 33",
+            "Ascend"
+          ]
+        },
+        {
+          "label": "2025",
+          "models": [
+            "Proven 34",
+            "Solution LS",
+            "Virtue"
+          ]
+        },
+        {
+          "label": "2024",
+          "models": [
+            "Core SS",
+            "Core SR",
+            "CarbonOne X",
+            "Eva Gen3",
+            "Justice"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "PSE",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "ODIN Carbon",
+            "ODIN Sub 30",
+            "ODIN Specialist",
+            "Butcher"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "Sicario",
+            "Mach 33 FDS"
+          ]
+        },
+        {
+          "label": "2025",
+          "models": [
+            "Mach 33 DS",
+            "Mach 35 DS",
+            "Decree"
+          ]
+        },
+        {
+          "label": "2024",
+          "models": [
+            "Mach 30 DS"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Elite",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "Novus 31",
+            "Novus 34"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "Varos",
+            "Emerse",
+            "Carbon Axys"
+          ]
+        },
+        {
+          "label": "2025",
+          "models": [
+            "Artus",
+            "Carbon Eon",
+            "HNTR33",
+            "Exalt LD"
+          ]
+        },
+        {
+          "label": "2024",
+          "models": [
+            "Ethos",
+            "Kairos",
+            "Allure"
+          ]
+        },
+        {
+          "label": "Target",
+          "models": [
+            "Victra",
+            "Exalt35"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Darton",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "TriTech V2 31",
+            "TriTech V2 33",
+            "TriTech V2 35",
+            "TriTech V2 35 LD"
+          ]
+        },
+        {
+          "label": "2025–26",
+          "models": [
+            "TriTech 31",
+            "TriTech 33",
+            "TriTech 35",
+            "Consequence 31",
+            "Consequence SD",
+            "Sequel 31 ST²",
+            "Sequel 35 ST²",
+            "Fold of Honor 33"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Prime",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "HOLD 31",
+            "HOLD 33",
+            "HOLD 35",
+            "HOLD 37",
+            "CONTROL"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "Divide 31",
+            "Divide 33",
+            "Divide 35",
+            "Divide 37"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Bear",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "Source",
+            "Whitetail NXT",
+            "Warrant RTH",
+            "Paradigm Pro RTH",
+            "Legit Pro RTH",
+            "Legit NXT RTH"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Xpedition",
+      "groups": [
+        {
+          "label": "2027",
+          "models": [
+            "NexLite 35"
+          ]
+        },
+        {
+          "label": "2026",
+          "models": [
+            "NexLite"
+          ]
+        }
+      ]
+    },
+    {
+      "brand": "Diamond",
+      "groups": []
+    },
+    {
+      "brand": "APA",
+      "groups": []
+    },
+    {
+      "brand": "Obsession",
+      "groups": []
+    }
+  ]
+}

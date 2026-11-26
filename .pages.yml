@@ -147,6 +147,41 @@ content:
             label: Reason (e.g. Thanksgiving, range closed)
             type: string
 
+  - name: gear
+    label: Bow models (member dropdown list)
+    type: file
+    path: content/settings/gear.json
+    format: json
+    fields:
+      - name: updated
+        label: Last updated
+        type: string
+      - name: years
+        label: Model years (newest first)
+        type: string
+        list: true
+      - name: bows
+        label: Bow makers
+        type: object
+        list: true
+        fields:
+          - name: brand
+            label: Maker
+            type: string
+            required: true
+          - name: groups
+            label: Model groups (newest first)
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: Group (e.g. 2027, Target)
+                type: string
+              - name: models
+                label: Models
+                type: string
+                list: true
+
   - name: tac
     label: Total Archery Challenge stops
     type: file

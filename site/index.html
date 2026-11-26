@@ -569,6 +569,8 @@ if(STATIC)(async()=>{try{const r=await fetch('data/site.json',{cache:'no-cache'}
   w.t='Cancelled — Thursday Night Indoor 3D';w.cx=true;w.notes='No shoot this week'+(why?' ('+why+')':'')+'. Regular Thursday shoots resume the following week.';w.reg='';}
  const m={};for(const e of d.events||[])if(e&&e.id)m[e.id]=e;DBEV=m;rebuild();
  const t={};for(const x of d.tac||[])if(x&&x.id)t[x.id]=x;TACDB=t;tacRebuild();
+ try{if(d.gear&&Array.isArray(d.gear.bows)&&d.gear.bows.length){const m={};for(const x of d.gear.bows){if(!x||!x.brand)continue;m[String(x.brand).slice(0,40)]=(x.groups||[]).filter(g=>g&&Array.isArray(g.models)).map(g=>({g:String(g.label||'').slice(0,40),o:g.models.filter(v=>typeof v==='string'&&v).map(v=>v.slice(0,60))}))}if(Object.keys(m).length)GEAR.bows=m}
+  if(d.gear&&Array.isArray(d.gear.years)&&d.gear.years.length)GEAR.years=d.gear.years.filter(v=>typeof v==='string')}catch(_){}
  GAL=[];for(const g of d.gallery||[]){(g.photos||[]).forEach((p,i)=>{if(typeof p==='string'&&p)GAL.push({id:g.id+'-'+i,src:p,album:ALBUMS.includes(g.album)?g.album:ALBUMS[0],caption:g.caption||g.title||'',at:g.date?pd(g.date).getTime():0})})}
  GAL.sort((a,b)=>(b.at||0)-(a.at||0));renderGallery();
  const w=d.webcheck;if(w&&w.at){const dt=pd(w.at);$('#webst').textContent=`Last automatic web check: ${MON[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()} — ${String(w.summary||'').slice(0,200)} The calendar is checked against club and association websites every Sunday evening.`}
