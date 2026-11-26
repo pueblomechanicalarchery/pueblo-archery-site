@@ -824,6 +824,22 @@ function maPreview(){const box=$('#maprev');if(!box)return;if(!IMPORTS.length){b
   <div class="rride"><label>Which archer is you?<select data-ci="${ci}" data-f="pick"><option value="-1">Skip this card</option>${d.s.map((s,i)=>`<option value="${i}"${c.pick===i?' selected':''}>${esc(s.n)} — ${esc((s.t||[]).filter(x=>typeof x==='number').reduce((a,b)=>a+b,0))}${have.has(String(d.id)+':'+String(s.n))?' (already imported)':''}</option>`).join('')}</select></label>
   ${myKids().length?`<label>For<select data-ci="${ci}" data-f="who"><option value="me">Me</option>${myKids().map(k=>`<option value="${esc(k.id)}"${c.who===k.id?' selected':''}>${esc(kidName(k))}</option>`).join('')}</select></label>`:''}</div></div>`}).join('')+`<div class="acts"><button class="pri" data-act="maimport">Import selected</button><button data-act="maclear">Cancel</button></div>`;
  box.querySelectorAll('select[data-ci]').forEach(s=>s.onchange=()=>{const c=IMPORTS[+s.dataset.ci];if(s.dataset.f==='pick')c.pick=+s.value;else c.who=s.value})}
+/* ---- Admin: team apparel order sheet ---- */
+function apparelRows(){const rows=[];for(const [u,p] of Object.entries(ROSTER)){rows.push({name:p.name||nm(u),fit:p.fit||'',size:p.jersey||'',youth:false});
+  for(const k of (p.kids||[]))if(kidOk(u,k.id))rows.push({name:kidName(k)+' (youth, with '+(p.name||nm(u))+')',fit:'Youth',size:k.jersey||'',youth:true})}
+ return rows.sort((a,b)=>a.name.localeCompare(b.name))}
+function apparelBox(){const rows=apparelRows(),have=rows.filter(r=>r.size),miss=rows.filter(r=>!r.size);
+ const tally=new Map();for(const r of have){const k=(r.fit?r.fit+' ':'')+r.size;tally.set(k,(tally.get(k)||0)+1)}
+ const order=GEAR.jersey;const keys=[...tally.keys()].sort((a,b)=>{const sa=order.findIndex(z=>a.endsWith(' '+z)||a===z),sb=order.findIndex(z=>b.endsWith(' '+z)||b===z);return a.split(' ')[0].localeCompare(b.split(' ')[0])||sa-sb});
+ const text='Pueblo Mechanical Archery Team — apparel sizes\n\nTotals:\n'+keys.map(k=>`  ${k}: ${tally.get(k)}`).join('\n')+'\n\nBy member:\n'+have.map(r=>`  ${r.name} — ${[r.fit,r.size].filter(Boolean).join(' ')}`).join('\n')+(miss.length?`\n\nNo size yet: ${miss.map(r=>r.name).join(', ')}`:'');
+ const csv='Name,Fit,Size\n'+rows.map(r=>[r.name,r.fit,r.size].map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n');
+ APPAREL_TEXT=text;
+ return `<details class="box"><summary><b>Team apparel order</b> — ${have.length} of ${rows.length} sizes in</summary>
+  <p class="note">Sizes come from each member’s Overview (and youth archers on My family). Ask anyone missing to add theirs.</p>
+  ${keys.length?`<div class="scroll"><table class="stack"><thead><tr><th>Size</th><th>Count</th></tr></thead><tbody>${keys.map(k=>`<tr><td>${esc(k)}</td><td>${tally.get(k)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="note">No sizes entered yet.</p>'}
+  <div class="scroll" style="margin-top:10px"><table class="stack"><thead><tr><th>Name</th><th>Fit</th><th>Size</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r.fit)}</td><td>${r.size?esc(r.size):'<span class="note">not entered</span>'}</td></tr>`).join('')}</tbody></table></div>
+  <div class="acts" style="margin-top:10px"><button data-act="appcopy">Copy list</button><a class="btn" href="mailto:?subject=${encodeURIComponent('Team apparel sizes')}&body=${encodeURIComponent(text)}">Email list</a><a class="btn" download="pueblo-apparel-sizes.csv" href="data:text/csv;charset=utf-8,${encodeURIComponent(csv)}">Download spreadsheet (CSV)</a></div></details>`}
+let APPAREL_TEXT='';
 /* ---- Wish list, gear swap, group buys ---- */
 const WISH_CATS=['Bow','Sight','Scope','Arrows','Release','Rest','Stabilizer','Optics','Apparel','Other'];
 const WISH_PRI=['Need soon','Next upgrade','Dream'];
@@ -896,7 +912,7 @@ overview(){const r=myRsvp();const up=Object.entries(r).map(([id,x])=>({e:EV.find
  ${res.length?`<p class="tag" style="margin-top:8px">${res.length} possible result${res.length>1?'s':''} to confirm — see My events</p>`:''}${old.length?`<p class="note">String check: ${old.map(b=>esc(b.name||b.model)+' strings went on '+esc(ago(b.stringDate))).join('; ')}.</p>`:''}</div>
  <div class="box"><h3>Team announcements</h3>${ann.length?ann.map(a=>`<p style="margin:0 0 10px">${esc(a.text)}<br><span class="note">${esc(nm(a.by))} · ${new Date(a.at).toLocaleDateString()}</span></p>`).join(''):'<p class="note">Nothing posted yet.</p>'}</div></div>
  <form class="box frm" data-form="profile" style="margin-top:16px"><h3 class="full" style="margin:0">Your team profile</h3><p class="note full" style="margin:0">Teammates can see your name and classes. The results check uses them to find you in posted results.</p>
- ${fld('name','Name as it appears on results',p.name)}${sel('jersey','Jersey size',GEAR.jersey,p.jersey,{other:false})}${clsFields(c)}
+ ${fld('name','Name as it appears on results',p.name)}${sel('jersey','Shirt size (jerseys & sun shirts)',GEAR.jersey,p.jersey,{other:false})}${sel('fit','Fit',['Men\'s','Women\'s','Youth'],p.fit,{other:false})}${clsFields(c)}
  <div class="acts full"><button class="pri" type="submit">Save profile</button></div></form>`},
 gear(){const e=memEdit;
  const bowCard=b=>`<article class="gcard"><div class="gh"><b>${esc(b.name||'Bow')}${whoName(b.who)?' · '+esc(whoName(b.who)):''}</b>${b.share?'<span class="tag">Shared with team</span>':'<span class="tag past">Private</span>'}</div><p class="note">${esc([[b.brand,b.model].filter(Boolean).join(' '),b.year].filter(Boolean).join(' · '))}</p>
@@ -973,7 +989,7 @@ family(){const e=memEdit&&memEdit.k==='kid'?memEdit:null;
  if(e){const x=e.id?(myKids().find(k=>k.id===e.id)||{}):{};const c=x.consent||{};const cl=x.cls||{};
   return `<form class="box frm" data-form="kid"><h3 class="full" style="margin:0">${e.id?'Edit youth archer':'Add a youth archer'}</h3>
    ${fld('first','First name',x.first,'text','required maxlength="40"')}${fld('last','Last name',x.last,'text','required maxlength="40"')}
-   ${clsFields(cl)}
+   ${sel('jersey','Shirt size',GEAR.jersey,x.jersey,{other:false})}${clsFields(cl)}
    <h3 class="full" style="margin:8px 0 0">Your choices as parent or guardian</h3>
    <label>Name shown to the team<select name="nameShow"><option value="initial"${c.name!=='full'?' selected':''}>First name and last initial</option><option value="full"${c.name==='full'?' selected':''}>Full name</option></select></label>
    <label>Photos in the team gallery<select name="photos"><option value="no"${!c.photos?' selected':''}>No photos</option><option value="yes"${c.photos?' selected':''}>Photos are OK</option></select></label>
@@ -991,7 +1007,7 @@ family(){const e=memEdit&&memEdit.k==='kid'?memEdit:null;
   <div class="acts"><button data-act="editkid" data-id="${esc(k.id)}">Edit</button></div></article>`}).join('')||'<div class="empty">No youth archers added.</div>'}</div>
  <div class="box" style="margin-top:16px"><h3>How youth members work</h3><ul><li>Until approved, your youth archer is hidden from the team, the gallery and the results check.</li><li>Rides for youth archers are arranged between parents, so they don't get carpool options.</li><li>Any possible result found for your archer comes to you to confirm.</li></ul></div>`},
 admin(){const ann=(TEAM.ann&&TEAM.ann.items)||[];
- return `${STATIC?memAdminBox():`<div class="box"><h3>Calendar &amp; gallery admins</h3><p class="note">Admins can add, edit and verify calendar events, post announcements and sponsor codes, and upload or delete gallery photos. They can’t change the website itself. Everyone else on the team is a member.</p>
+ return `${apparelBox()}${STATIC?memAdminBox():`<div class="box"><h3>Calendar &amp; gallery admins</h3><p class="note">Admins can add, edit and verify calendar events, post announcements and sponsor codes, and upload or delete gallery photos. They can’t change the website itself. Everyone else on the team is a member.</p>
   <ul>${['<li><b>'+esc(me.owner?nm(me.uid)+' (you, site owner)':'Site owner')+'</b></li>'].concat(ROLES.map(u=>`<li>${esc(nm(u))}${me.owner?` <button class="danger" data-act="unadmin" data-id="${esc(u)}">Remove</button>`:''}</li>`)).join('')}</ul>
   ${me.owner?`<div class="frm" style="grid-template-columns:1fr auto;margin-top:6px"><label>Find a team member<input id="asearch" placeholder="Type a name or email"></label><button data-act="asearch" style="align-self:end">Search</button></div><div id="ahits">${adminHits.map(h=>`<div class="rrow" style="grid-template-columns:minmax(0,1fr) auto"><div>${esc(h.name||'Someone')}${h.email?` <span class="note">${esc(h.email)}</span>`:''}</div>${ROLES.includes(h.id)?'<span class="tag">Admin</span>':`<button class="pri" data-act="mkadmin" data-id="${esc(h.id)}">Make admin</button>`}</div>`).join('')}</div>
   <p class="note">People appear here once you’ve shared the site with them on claude.ai as Contributors.</p>`:''}</div>`}
@@ -1014,7 +1030,7 @@ function renderMembers(){const R=$('#memroot');if(!R)return;if(!me.member){R.inn
  const tabs=[['overview','Overview'],['gear','My gear'],['wish','Wish list & swap'],['rounds','My rounds'],['events','My events'],['family','My family'],['team','Team'],['sponsors','Sponsor codes'],['myarchery','My Archery']].concat(me.admin?[['admin','Admin']]:[]);
  const keep=document.activeElement&&R.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(keep)return;
  R.innerHTML=`<p class="hello">Signed in as ${STATIC&&!(ROSTER[me.uid]&&ROSTER[me.uid].name)&&!PROF[me.uid]?'<b>'+esc(AUTH.email||'you')+'</b> — add your name under Overview':'<b>'+esc(nm(me.uid))+'</b>'}${me.admin?' · admin':''}${STATIC?' · <a href="/cdn-cgi/access/logout">Sign out</a>':''}</p><div class="mtabs">${tabs.map(([k,n])=>`<button data-act="tab" data-k="${k}" aria-pressed="${memTab===k}">${n}</button>`).join('')}</div><div class="mbody">${V[memTab]()}</div>`}
-async function pubKids(){const kids=myKids().map(k=>{const c=k.consent||{};const o={id:k.id,first:k.first,lastInit:(k.last||'').charAt(0).toUpperCase(),cls:k.cls||{},consent:{name:c.name||'initial',photos:!!c.photos,results:!!c.results,signed:c.signed||''}};if(c.name==='full')o.last=k.last;return o});
+async function pubKids(){const kids=myKids().map(k=>{const c=k.consent||{};const o={id:k.id,first:k.first,lastInit:(k.last||'').charAt(0).toUpperCase(),jersey:k.jersey||'',cls:k.cls||{},consent:{name:c.name||'initial',photos:!!c.photos,results:!!c.results,signed:c.signed||''}};if(c.name==='full')o.last=k.last;return o});
  const d={...clone(ROSTER[me.uid]||{}),kids,at:Date.now()};try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d}catch(_){toast('Could not save — ask Monty to check your member access.')}}
 async function syncShared(){const pick=(o,ks)=>Object.fromEntries(ks.filter(k=>o[k]).map(k=>[k,o[k]]));
  const bows=MY.bows.items.filter(b=>b.share&&(!b.who||b.who==='me')).map(b=>pick(b,['name','brand','model','year','drawLen','drawWt','letoff','peep','radius','speed','sightBrand','sight','scopeBrand','scope','rest','release','stabs']));
@@ -1024,6 +1040,7 @@ async function syncShared(){const pick=(o,ks)=>Object.fromEntries(ks.filter(k=>o
 $('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,k=b.dataset.k,id=b.dataset.id;
  if(a==='tab'){memTab=k;memEdit=null;renderMembers();return}
  if(a==='ev'){ev.preventDefault();location.hash='#calendar';setTimeout(()=>openEv(id),50);return}
+ if(a==='appcopy'){try{await navigator.clipboard.writeText(APPAREL_TEXT);toast('Size list copied.')}catch(_){toast('Could not copy — use Email list instead.')}return}
  if(a==='swapdel'){if(b.dataset.sure!=='1'){b.dataset.sure='1';b.textContent='Tap again';return}await saveSwap(d=>{d.items=(d.items||[]).filter(i=>i.id!==id);return d});renderMembers();return}
  if(a==='toswap'){const it=(MY[k].items||[]).find(i=>i.id===id)||{};memTab='wish';memEdit={k:'swap',pre:k==='bows'?{cat:'Bow',brand:it.brand,model:it.model,year:it.year}:{cat:'Optics',brand:it.brand,model:it.model}};renderMembers();window.scrollTo(0,0);return}
  if(a==='add'){memEdit={k};renderMembers();return}
@@ -1050,7 +1067,7 @@ $('#memroot').addEventListener('click',async ev=>{const b=ev.target.closest('[da
 });
 $('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('form[data-form]');if(!f)return;ev.preventDefault();const t=f.dataset.form;const raw=n=>{const el=f.elements[n];if(!el||el.type==='checkbox')return el&&el.value?String(el.value).trim():'';let x=String(el.value).trim();if(x==='__o'){const o=f.elements[n+'__o'];x=o?String(o.value).trim():''}return x};
  const v=n=>{if(n==='nfaa'&&f.elements.nfaa_style)return [raw('nfaa_age'),raw('nfaa_style')].filter(Boolean).join(' ');if(n==='usaa'&&f.elements.usaa_div)return [raw('usaa_div'),raw('usaa_age')].filter(Boolean).join(' ');return raw(n)};
- if(t==='profile'){const d={kids:(ROSTER[me.uid]&&ROSTER[me.uid].kids)||[],name:v('name').slice(0,80),jersey:v('jersey').slice(0,12),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},at:Date.now()};
+ if(t==='profile'){const d={kids:(ROSTER[me.uid]&&ROSTER[me.uid].kids)||[],name:v('name').slice(0,80),jersey:v('jersey').slice(0,12),fit:v('fit').slice(0,10),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},at:Date.now()};
   try{await db.doc('roster/'+me.uid).set(d);ROSTER=clone(ROSTER);ROSTER[me.uid]=d;f.querySelector('button').blur();toast('Profile saved.');renderMembers()}catch(_){toast('Could not save — ask Monty to check your member access.')}return}
  if(t==='swap'){const o={id:(memEdit&&memEdit.id)||rid(),at:Date.now()};for(const k of['cat','brand','model','year','cond','ask','notes']){const x=v(k);if(x)o[k]=x.slice(0,k==='notes'?400:80)}
   if(!o.brand&&!o.model){toast('Add a maker or model for your listing.');return}
@@ -1065,7 +1082,7 @@ $('#memroot').addEventListener('submit',async ev=>{const f=ev.target.closest('fo
   if(!isDate(o.date)||num(o.score)===null){toast('Add a date and a score.');return}
   document.activeElement.blur();await saveItems('rounds',d=>{d.items.push(o);if(d.items.length>500)d.items=d.items.slice(-500);return d});toast('Round saved.');renderMembers();return}
  if(t==='kid'){if(!f.guardian.checked){toast('Please confirm you are the parent or guardian.');return}
-  const o={id:(memEdit&&memEdit.id)||rid(),first:v('first').slice(0,40),last:v('last').slice(0,40),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},consent:{name:v('nameShow')==='full'?'full':'initial',photos:v('photos')==='yes',results:v('results')==='yes',signed:isDate(v('signed'))?v('signed'):''}};
+  const o={id:(memEdit&&memEdit.id)||rid(),first:v('first').slice(0,40),last:v('last').slice(0,40),jersey:v('jersey').slice(0,12),cls:{asa:v('asa').slice(0,60),ibo:v('ibo').slice(0,60),nfaa:v('nfaa').slice(0,60),usaa:v('usaa').slice(0,60)},consent:{name:v('nameShow')==='full'?'full':'initial',photos:v('photos')==='yes',results:v('results')==='yes',signed:isDate(v('signed'))?v('signed'):''}};
   if(!o.first||!o.last){toast('Add a first and last name.');return}
   MY.family=clone(MY.family);MY.family.kids=MY.family.kids||[];const i=MY.family.kids.findIndex(k=>k.id===o.id);if(i>=0)MY.family.kids[i]=o;else MY.family.kids.push(o);
   document.activeElement.blur();memEdit=null;await saveMy('family');await pubKids();toast('Saved. An organizer will approve once they have your signed form.');renderMembers();return}
